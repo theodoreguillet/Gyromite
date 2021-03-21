@@ -13,7 +13,7 @@ public class Window
         JFrame frame = new JFrame (title);
         frame.add(game.viewport());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible (true);

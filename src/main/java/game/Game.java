@@ -59,8 +59,10 @@ class TestEntity2 extends Entity {
 public class Game extends Scene {
     private Window window;
 
-    TestEntity test;
-    double lastTestSpawnX = 0;
+    private TestEntity test;
+    private double lastTestSpawnX = 0;
+
+    private static final double GAME_HEIGHT = 500;
 
     public Game() {
         super();
@@ -78,8 +80,13 @@ public class Game extends Scene {
         FPSViewer fps = new FPSViewer(this);
         test = new TestEntity(this);
 
-        test.position().x += 100;
-        test.position().y += 50;
+        test.position().x = 100;
+        test.position().y = GAME_HEIGHT / 2;
+
+        var test1 = new TestEntity(this);
+        test1.position().y = GAME_HEIGHT - 50;
+        var test2 = new TestEntity(this);
+        test2.position().y = 50;
 
         testSpawn();
 
@@ -94,6 +101,12 @@ public class Game extends Scene {
         g.fillRect(0, 0, viewport().getWidth(), viewport().getHeight());
         g.setColor(Color.WHITE);
         g.fillRect(5, 5, viewport().getWidth() - 10, viewport().getHeight() - 10);
+    }
+
+    @Override
+    protected void preUpdate() {
+        double zoom = viewport().getHeight() / GAME_HEIGHT;
+        camera().setZoom(new Vector2(zoom, zoom));
     }
 
     @Override
