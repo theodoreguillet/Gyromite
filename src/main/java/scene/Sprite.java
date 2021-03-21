@@ -1,6 +1,6 @@
 package scene;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 
 public class Sprite extends Entity {
     public Sprite(Scene scene) {
@@ -18,14 +18,6 @@ public class Sprite extends Entity {
     public void render(Graphics2D g) {
         super.render(g);
 
-        g.setColor(Color.RED);
-        g.fillRect(-50, -50, 100, 100);
-        g.setColor(Color.BLACK);
-        g.fillRect(-45, -45, 90, 90);
-
-        g.setColor(Color.BLUE);
-        g.fillRect(-2, -2, 4, 4);
-
-        // ...
+        //
     }
 }

@@ -42,15 +42,15 @@ public class Camera {
 
         AffineTransform at = new AffineTransform();
 
-        // Move camera
-        at.translate(-position.x, -position.y);
-
         // Zoom
         at.translate((width - width * zoom.x) / 2, (height - height * zoom.y) / 2);
         at.scale(zoom.x, zoom.y);
 
         // Center camera
         at.translate(width / 2 + offset.x, height / 2 + offset.y);
+
+        // Move camera
+        at.translate(-position.x, -position.y);
 
         g.setTransform(at);
     }
@@ -61,7 +61,8 @@ public class Camera {
 
     public void update() {
         if(this.followed != null) {
-            // Update position
+            this.position.x = followed.position().x;
+            this.position.y = followed.position().y;
         }
     }
 }

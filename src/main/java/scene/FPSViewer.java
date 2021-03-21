@@ -31,9 +31,9 @@ public class FPSViewer extends Entity {
         ticks++;
 
         long timeMs = System.currentTimeMillis();
-        if(timeMs - lastSecondTimeMs > 1000) {
+        if(timeMs - lastSecondTimeMs >= 1000) {
             lastSecondTimeMs = timeMs;
-            averageFrames = frames / 60;
+            averageFrames = frames;
             averageTicks = ticks;
             frames = 0;
             ticks = 0;

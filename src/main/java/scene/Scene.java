@@ -35,6 +35,11 @@ public class Scene extends MainLoop {
     }
 
     @Override
+    protected void processInput() {
+        // ...
+    }
+
+    @Override
     protected final void update() {
         preUpdate();
         for(var e : entities) {
