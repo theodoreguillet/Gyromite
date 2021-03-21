@@ -85,6 +85,8 @@ public class Scene extends MainLoop {
 
     protected void preUpdate() { }
     protected void postUpdate() { }
-    protected void preRender(Graphics2D g) { }
+    protected void preRender(Graphics2D g) {
+        g.clearRect(0, 0, viewport().getWidth(), viewport.getHeight());
+    }
     protected void postRender(Graphics2D g) { }
 }
