@@ -1,9 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
 }
-
-group 'org.example'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -16,4 +14,13 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+ext {
+    javaMainClass = "com.baeldung.gradle.exec.MainClass"
+}
+
+application {
+    mainClassName = "Main"
+    applicationDefaultJvmArgs = ['-Dsun.java2d.uiScale=1']
 }
