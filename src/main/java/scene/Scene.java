@@ -1,6 +1,8 @@
 package scene;
 
 import core.MainLoop;
+import core.Vector2;
+import scene.physics.PhysicsProvider;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -11,6 +13,11 @@ public class Scene extends MainLoop {
     private final Viewport viewport = new Viewport();
     private final ArrayList<Entity> entities = new ArrayList<>();
     private Camera camera = new Camera(this);
+    private PhysicsProvider physics = new PhysicsProvider(
+            1.0 / MainLoop.OPTIMAL_TICKS,
+            10,
+            new Vector2(0, 0)
+    );
 
     public Viewport viewport() {
         return viewport;
@@ -28,6 +35,10 @@ public class Scene extends MainLoop {
 
     public Camera camera() {
         return camera;
+    }
+
+    public PhysicsProvider physics() {
+        return physics;
     }
 
     public void setCamera(Camera camera) {
@@ -51,7 +62,7 @@ public class Scene extends MainLoop {
 
     @Override
     protected final void updatePhysics() {
-        // ...
+        physics.step();
     }
 
     @Override

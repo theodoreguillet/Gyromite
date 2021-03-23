@@ -7,11 +7,11 @@ public class MainLoop {
     private final AtomicBoolean running = new AtomicBoolean();
     private final AtomicBoolean paused = new AtomicBoolean();
 
-    private static final long NANOSECOND         = 1000000000;
-    private static final double OPTIMAL_TICKS    = 50.0;
-    private static final double OPTIMAL_FPS      = 60.0;
-    private static final double NANOS_PER_TICK   = NANOSECOND / OPTIMAL_TICKS;
-    private static final double NANOS_PER_RENDER = NANOSECOND / OPTIMAL_FPS;
+    public static final long NANOSECOND         = 1000000000;
+    public static final double OPTIMAL_TICKS    = 50.0;
+    public static final double OPTIMAL_FPS      = 60.0;
+    public static final double NANOS_PER_TICK   = NANOSECOND / OPTIMAL_TICKS;
+    public static final double NANOS_PER_RENDER = NANOSECOND / OPTIMAL_FPS;
 
     public synchronized void start() {
         running.set(true);
