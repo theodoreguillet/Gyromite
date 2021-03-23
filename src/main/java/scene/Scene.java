@@ -1,5 +1,6 @@
 package scene;
 
+import core.Input;
 import core.MainLoop;
 import core.Vector2;
 import scene.physics.PhysicsProvider;
@@ -10,8 +11,9 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 public class Scene extends MainLoop {
-    private final Viewport viewport = new Viewport();
     private final ArrayList<Entity> entities = new ArrayList<>();
+    private final Viewport viewport = new Viewport();
+    private final Input input = new Input();
     private Camera camera = new Camera(this);
     private PhysicsProvider physics = new PhysicsProvider(
             1.0 / MainLoop.OPTIMAL_TICKS,
@@ -19,8 +21,19 @@ public class Scene extends MainLoop {
             new Vector2(0, 0)
     );
 
+    public Scene() {
+        super();
+        viewport.addEventListener(input);
+    }
+
     public Viewport viewport() {
         return viewport;
+    }
+    public Input input() {
+        return input;
+    }
+    public Camera camera() {
+        return camera;
     }
 
     public void addEntity(Entity entity) {
@@ -47,7 +60,7 @@ public class Scene extends MainLoop {
 
     @Override
     protected void processInput() {
-        // ...
+        input.process();
     }
 
     @Override
