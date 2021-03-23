@@ -1,4 +1,4 @@
-package scene;
+package core;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

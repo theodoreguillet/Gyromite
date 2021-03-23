@@ -2,13 +2,19 @@ package scene;
 
 import util.AWTEventListener;
 
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.AWTEvent;
+import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.EventListener;
 
 public class Viewport extends Canvas {
     private final ArrayList<AWTEventListener> eventListeners = new ArrayList<>();
 
+    public Viewport() {
+        super();
+        enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK |
+                AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+    }
 
     @Override
     protected void processEvent(AWTEvent event) {
@@ -28,6 +34,4 @@ public class Viewport extends Canvas {
 
     @Override
     public void paint(Graphics g) { }
-
-
 }

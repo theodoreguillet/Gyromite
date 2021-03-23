@@ -1,8 +1,9 @@
 package util;
 
-import java.awt.*;
+import java.awt.AWTEvent;
+import java.util.EventListener;
 
-public interface AWTEventListener {
+public interface AWTEventListener extends EventListener {
 
-    public void onEvent(AWTEvent event);
+    void onEvent(AWTEvent event);
 }

@@ -1,5 +1,6 @@
 package scene;
 
+import core.Input;
 import core.MainLoop;
 
 import java.awt.Graphics2D;
@@ -8,10 +9,10 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 public class Scene extends MainLoop {
-    private final Viewport viewport = new Viewport();
     private final ArrayList<Entity> entities = new ArrayList<>();
+    private final Viewport viewport = new Viewport();
+    private final Input input = new Input();
     private Camera camera = new Camera(this);
-    private Input input = new Input();
 
     public Scene() {
         super();
@@ -20,6 +21,12 @@ public class Scene extends MainLoop {
 
     public Viewport viewport() {
         return viewport;
+    }
+    public Input input() {
+        return input;
+    }
+    public Camera camera() {
+        return camera;
     }
 
     public void addEntity(Entity entity) {
@@ -30,10 +37,6 @@ public class Scene extends MainLoop {
 
     public void removeEntity(Entity entity) {
         entities.remove(entity);
-    }
-
-    public Camera camera() {
-        return camera;
     }
 
     public void setCamera(Camera camera) {
