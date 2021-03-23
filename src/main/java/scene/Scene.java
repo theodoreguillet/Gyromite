@@ -11,6 +11,12 @@ public class Scene extends MainLoop {
     private final Viewport viewport = new Viewport();
     private final ArrayList<Entity> entities = new ArrayList<>();
     private Camera camera = new Camera(this);
+    private Input input = new Input();
+
+    public Scene() {
+        super();
+        viewport.addEventListener(input);
+    }
 
     public Viewport viewport() {
         return viewport;
@@ -36,7 +42,7 @@ public class Scene extends MainLoop {
 
     @Override
     protected void processInput() {
-        // ...
+        input.process();
     }
 
     @Override
