@@ -17,7 +17,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class SceneTestPhysics extends Scene {
-    private static class Player extends Entity implements KeyListener {
+    private static class AREntity extends Entity {
+        public AREntity(Scene scene) {
+            super(scene);
+        }
+
+        @Override
+        public void update() {
+            super.update();
+            if(position().y > GAME_HEIGHT) {
+                remove();
+            }
+        }
+    }
+    private static class Player extends AREntity implements KeyListener {
         public Player(Scene scene) {
             super(scene);
             scene.input().addListener(this);
@@ -63,19 +76,13 @@ public class SceneTestPhysics extends Scene {
 
         FPSViewer fps = new FPSViewer(this);
 
-        Entity floor = new Entity(this);
+        AREntity floor = new AREntity(this);
         floor.position().set(0, 200);
         floor.setBody(new PolygonShape(200, 10), Body.Mode.STATIC);
 
-        /*
-        Entity circle = new Entity(this);
-        circle.position().set(0, -200);
-        circle.setBody(new CircleShape(10), Body.Mode.RIGID);
-        */
-
         Player player = new Player(this);
 
-        Entity area = new Entity(this);
+        AREntity area = new AREntity(this);
         area.setBody(new PolygonShape(50, 50), Body.Mode.TRANSPARENT)
                 .addBodyListener(new BodyListener() {
                     @Override
@@ -95,7 +102,7 @@ public class SceneTestPhysics extends Scene {
         input().addListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Entity entity = new Entity(SceneTestPhysics.this);
+                AREntity entity = new AREntity(SceneTestPhysics.this);
                 entity.position().set(camera().getWorldCoordinate(e.getX(), e.getY()));
                 if(e.getButton() == MouseEvent.BUTTON1) {
                     entity.setBody(new PolygonShape(10, 10), Body.Mode.CHARACTER);

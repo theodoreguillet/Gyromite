@@ -189,6 +189,7 @@ public class Body {
         for(Body body : lastContacts) {
             handleBodyExited(body);
         }
+        lastContacts.clear();
     }
 
     private void handleBodyEntered(Body body) {

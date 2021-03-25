@@ -55,6 +55,15 @@ public class Entity {
         this.orientMat.set(orient);
     }
 
+    /**
+     * Removes this entity from the scene.
+     * Also removes the body of this entity.
+     */
+    public void remove() {
+        removeBody();
+        scene.removeEntity(this);
+    }
+
     public void update() { }
 
     public void render(Graphics2D g) {

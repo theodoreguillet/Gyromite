@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 
 public class Scene extends MainLoop {
     private final ArrayList<Entity> entities = new ArrayList<>();
@@ -18,19 +20,12 @@ public class Scene extends MainLoop {
     private boolean antialiasing = true;
     private boolean renderPhysics = false;
 
+    private boolean updatingEntities = false;
+    private boolean removeEntity = false;
+
     public Scene() {
         super();
         viewport.addEventListener(input);
-    }
-
-    public void addEntity(Entity entity) {
-        if(!entities.contains(entity)) {
-            entities.add(entity);
-        }
-    }
-
-    public void removeEntity(Entity entity) {
-        entities.remove(entity);
     }
 
     public Viewport viewport() {
@@ -70,9 +65,7 @@ public class Scene extends MainLoop {
     @Override
     protected final void update() {
         preUpdate();
-        for(var e : entities) {
-            e.update();
-        }
+        updateEntities();
         camera.update();
         postUpdate();
     }
@@ -127,4 +120,34 @@ public class Scene extends MainLoop {
         g.clearRect(0, 0, viewport().getWidth(), viewport.getHeight());
     }
     protected void postRender(Graphics2D g) { }
+
+    void addEntity(Entity entity) {
+        if(!entities.contains(entity)) {
+            entities.add(entity);
+        }
+    }
+    void removeEntity(Entity entity) {
+        if(updatingEntities) {
+            removeEntity = true;
+        } else {
+            entities.remove(entity);
+        }
+    }
+
+    /**
+     * Update entities and allow entity remove during update
+     */
+    private void updateEntities() {
+        updatingEntities = true;
+        Iterator<Entity> it = entities.iterator();
+        while(it.hasNext()) {
+            Entity e = it.next();
+            removeEntity = false;
+            e.update();
+            if(removeEntity) {
+                it.remove();
+            }
+        }
+        updatingEntities = false;
+    }
 }
