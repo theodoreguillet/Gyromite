@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestPhysics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestPhysics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Resources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestVector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestVector2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,14 +75,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/game" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/test/resources" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\theod\Documents\Travail\Projet Java\Gyromite\src\test\resources" />
       <recent name="C:\Users\theod\Documents\Travail\Projet Java\Gyromite\src\main\java\game" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.TestRessources.testLoadImage">
     <configuration name="Gyromite [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -102,8 +105,30 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="TestRessources.testLoadImage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;TestRessources.testLoadImage&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TestRessources.testLoadImage" />
         <item itemvalue="Gradle.Gyromite [run]" />
       </list>
     </recent_temporary>
@@ -152,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616703213592</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="remove test">
+      <created>1616704062842</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1616704062842</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -173,6 +205,15 @@
     <MESSAGE value="game physic test" />
     <MESSAGE value="transparent body and contact events" />
     <MESSAGE value="entity remove" />
-    <option name="LAST_COMMIT_MESSAGE" value="entity remove" />
+    <MESSAGE value="remove test" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove test" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="GradleRunConfiguration">
+        <watch expression="getClass().getResource(&quot;.&quot;)" language="JAVA" />
+        <watch expression="System.class.getResource(&quot;.&quot;)" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

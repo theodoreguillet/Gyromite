@@ -2,6 +2,7 @@ package scene;
 
 import core.Input;
 import core.MainLoop;
+import core.Resources;
 import scene.physics.PhysicsProvider;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ public class Scene extends MainLoop {
     private final ArrayList<Entity> entities = new ArrayList<>();
     private final Viewport viewport = new Viewport();
     private final Input input = new Input();
+    private final Resources resources = new Resources();
     private final PhysicsProvider physics = new PhysicsProvider(MainLoop.DT, 10);
     private Camera camera = new Camera(this);
     private boolean antialiasing = true;
@@ -33,6 +35,9 @@ public class Scene extends MainLoop {
     }
     public Input input() {
         return input;
+    }
+    public Resources resources() {
+        return resources;
     }
     public PhysicsProvider physics() {
         return physics;
