@@ -36,6 +36,9 @@ public class PhysicsProvider {
      * Step physics. Called in game loop.
      */
     public void step() {
+        // Remove pending
+        bodies.removeIf(body -> body.pendingRemove);
+
         // Clear contacts
         contacts.clear();
         for(Body body : bodies) {
@@ -114,11 +117,12 @@ public class PhysicsProvider {
     }
 
     /**
-     * Remove a body
+     * Remove a body from physics.
+     * The body will be removed from the list in the next step.
      * @param body The body
      */
     public void remove(Body body) {
-        bodies.remove(body);
+        body.pendingRemove = true;
     }
 
     /**

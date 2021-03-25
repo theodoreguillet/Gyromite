@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestPhysics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestPhysics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616700959610</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="entity remove">
+      <created>1616703213592</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1616703213592</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -163,6 +168,7 @@
     <MESSAGE value="entity orient" />
     <MESSAGE value="game physic test" />
     <MESSAGE value="transparent body and contact events" />
-    <option name="LAST_COMMIT_MESSAGE" value="transparent body and contact events" />
+    <MESSAGE value="entity remove" />
+    <option name="LAST_COMMIT_MESSAGE" value="entity remove" />
   </component>
 </project>

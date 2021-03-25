@@ -45,6 +45,8 @@ public class Body {
 
     private final ArrayList<BodyListener> bodyListeners = new ArrayList<>();
 
+    boolean pendingRemove = false;
+
     double mass, invMass, inertia, invInertia;
 
     public final Shape shape;
@@ -87,6 +89,9 @@ public class Body {
 
     public PhysicsProvider physics() {
         return physics;
+    }
+    public Entity entity() {
+        return entity;
     }
     public Vector2 position() {
         return entity.position();

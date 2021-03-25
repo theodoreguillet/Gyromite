@@ -87,6 +87,7 @@ public class SceneTestPhysics extends Scene {
                 .addBodyListener(new BodyListener() {
                     @Override
                     public void bodyEntered(Body b) {
+                        b.entity().remove();
                         System.out.println("Body entered");
                     }
 
