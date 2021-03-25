@@ -87,7 +87,9 @@ public class SceneTestPhysics extends Scene {
                 .addBodyListener(new BodyListener() {
                     @Override
                     public void bodyEntered(Body b) {
-                        b.entity().remove();
+                        if(b.shape instanceof CircleShape) {
+                            b.entity().remove();
+                        }
                         System.out.println("Body entered");
                     }
 
