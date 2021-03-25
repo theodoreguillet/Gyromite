@@ -6,6 +6,7 @@ public class Mat2 implements Cloneable {
     public double m10, m11;
 
     public Mat2() {
+        this(0.0, 0.0, 0.0, 0.0);
     }
 
     public Mat2(double radians) {

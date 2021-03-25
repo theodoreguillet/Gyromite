@@ -1,5 +1,6 @@
 package scene;
 
+import core.Mat2;
 import core.Vector2;
 import scene.physics.Body;
 import scene.physics.Shape;
@@ -10,7 +11,10 @@ import java.awt.geom.AffineTransform;
 public class Entity {
     private final Scene scene;
     private Body body = null;
+
     private Vector2 position = new Vector2();
+    private double orient = 0.0; // Orientation in radians
+    private final Mat2 orientMat = new Mat2(0.0);
 
     public Entity(Scene scene) {
         this.scene = scene;
@@ -26,6 +30,12 @@ public class Entity {
     public Vector2 position() {
         return position;
     }
+    public double orient() {
+        return orient;
+    }
+    public Mat2 orientMat() {
+        return orientMat.clone();
+    }
 
     public void setBody(Shape shape, Body.Mode mode) {
         this.body = scene().physics().add(this, shape, mode);
@@ -38,6 +48,10 @@ public class Entity {
     }
     public void setPosition(Vector2 position) {
         this.position = position;
+    }
+    public void setOrient(double orient) {
+        this.orient = orient;
+        this.orientMat.set(orient);
     }
 
     public void update() { }

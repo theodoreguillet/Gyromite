@@ -48,9 +48,13 @@ public class SceneTestPhysics extends Scene {
         input().addListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Entity c = new Entity(SceneTestPhysics.this);
-                c.position().set(camera().getWorldCoordinate(e.getX(), e.getY()));
-                c.setBody(new CircleShape(10), Body.Mode.RIGID);
+                Entity entity = new Entity(SceneTestPhysics.this);
+                entity.position().set(camera().getWorldCoordinate(e.getX(), e.getY()));
+                if(e.getButton() == 1) {
+                    entity.setBody(new PolygonShape(10, 10), Body.Mode.CHARACTER);
+                } else {
+                    entity.setBody(new CircleShape(10), Body.Mode.RIGID);
+                }
             }
             @Override
             public void mousePressed(MouseEvent e) { }

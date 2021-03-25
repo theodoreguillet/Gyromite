@@ -30,8 +30,4 @@ public class CircleShape extends Shape {
         body.inertia = body.mass * radius * radius;
         body.invInertia = (body.inertia != 0.0) ? 1.0 / body.inertia : 0.0;
     }
-
-    @Override
-    protected void setOrient(double radians) {
-    }
 }

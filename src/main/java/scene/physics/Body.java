@@ -1,5 +1,6 @@
 package scene.physics;
 
+import core.Mat2;
 import core.Vector2;
 import scene.Entity;
 
@@ -33,7 +34,6 @@ public class Body {
     public final Vector2 force = new Vector2();
     public double angularVelocity;
     public double torque;
-    public double orient;
 
     public double staticFriction;
     public double dynamicFriction;
@@ -47,13 +47,13 @@ public class Body {
         velocity.set(0, 0);
         angularVelocity = 0;
         torque = 0;
-        orient = 0;
         force.set(0, 0);
         staticFriction = 0.5;
         dynamicFriction = 0.3f;
         restitution = 0.2f;
 
         shape.body = this;
+
         shape.initialize();
 
         setMode(mode);
@@ -61,6 +61,12 @@ public class Body {
 
     public Vector2 position() {
         return entity.position();
+    }
+    public double orient() {
+        return entity.orient();
+    }
+    public Mat2 orientMat() {
+        return entity.orientMat();
     }
 
     public Mode mode() {
@@ -90,11 +96,6 @@ public class Body {
     public void applyImpulse(Vector2 impulse, Vector2 contactVector) {
         velocity.addsi(impulse, invMass);
         angularVelocity += invInertia * Vector2.cross(contactVector, impulse);
-    }
-
-    public void setOrient(double radians) {
-        orient = radians;
-        shape.setOrient(radians);
     }
 
     public void clearForces() {
@@ -132,8 +133,7 @@ public class Body {
         }
 
         position().addsi(velocity, dt);
-        orient += angularVelocity * dt;
-        setOrient(orient);
+        entity.setOrient(entity.orient() + angularVelocity * dt);
 
         integrateForces(dt);
     }

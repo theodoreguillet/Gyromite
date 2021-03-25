@@ -28,6 +28,4 @@ public abstract class Shape {
     protected abstract void initialize();
 
     protected abstract void computeMass();
-
-    protected abstract void setOrient(double radians);
 }
