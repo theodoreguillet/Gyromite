@@ -70,6 +70,7 @@ public class Entity {
         AffineTransform at = new AffineTransform(g.getTransform());
 
         at.translate(position.x, position.y);
+        at.rotate(orient);
 
         g.setTransform(at);
     }

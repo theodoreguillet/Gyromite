@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/Rect2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestSprite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/img/ninja.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Resources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestVector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestVector2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Size.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,23 +71,27 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1qFkdsx9uD5KXmanX2cHifmAeeR" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/test/resources" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/game" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\theod\Documents\Travail\Projet Java\Gyromite\src\test\resources" />
       <recent name="C:\Users\theod\Documents\Travail\Projet Java\Gyromite\src\main\java\game" />
+      <recent name="C:\Users\theod\Documents\Travail\Projet Java\Gyromite\src\test\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TestRessources.testLoadImage">
+  <component name="RunManager" selected="Gradle.Gyromite [run]">
     <configuration name="Gyromite [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -128,8 +136,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.TestRessources.testLoadImage" />
         <item itemvalue="Gradle.Gyromite [run]" />
+        <item itemvalue="Gradle.TestRessources.testLoadImage" />
       </list>
     </recent_temporary>
   </component>
@@ -200,6 +208,7 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="physics and test" />
     <MESSAGE value="entity orient" />
     <MESSAGE value="game physic test" />
@@ -207,13 +216,5 @@
     <MESSAGE value="entity remove" />
     <MESSAGE value="remove test" />
     <option name="LAST_COMMIT_MESSAGE" value="remove test" />
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="GradleRunConfiguration">
-        <watch expression="getClass().getResource(&quot;.&quot;)" language="JAVA" />
-        <watch expression="System.class.getResource(&quot;.&quot;)" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

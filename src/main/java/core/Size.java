@@ -22,4 +22,16 @@ public class Size implements Cloneable {
         }
         return null;
     }
+
+    public Size set(Size size) {
+        width = size.width;
+        height = size.height;
+        return this;
+    }
+
+    public Size set(double w, double h) {
+        width = w;
+        height = h;
+        return this;
+    }
 }
