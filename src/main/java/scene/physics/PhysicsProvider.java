@@ -36,17 +36,18 @@ public class PhysicsProvider {
      * Step physics. Called in game loop.
      */
     public void step() {
-        // Generate new collision info
+        // Clear contacts
         contacts.clear();
+        for(Body body : bodies) {
+            body.clearContacts();
+        }
+
+        // Generate new collision info
         for (int i = 0; i < bodies.size(); ++i) {
             Body A = bodies.get(i);
 
             for (int j = i + 1; j < bodies.size(); ++j) {
                 Body B = bodies.get(j);
-
-                if (A.invMass == 0 && B.invMass == 0) {
-                    continue;
-                }
 
                 Manifold m = new Manifold(A, B);
                 m.solve();
@@ -88,6 +89,15 @@ public class PhysicsProvider {
         for (Body body : bodies) {
             body.clearForces();
         }
+
+        // Update bodies contacts
+        for (Manifold contact : contacts) {
+            contact.A.addContact(contact.B);
+            contact.B.addContact(contact.A);
+        }
+        for(Body b : bodies) {
+            b.updateContacts();
+        }
     }
 
     /**
@@ -124,13 +134,17 @@ public class PhysicsProvider {
      */
     public void render(Graphics2D g) {
         for (Body b : bodies) {
+            if(b.mode() == Body.Mode.TRANSPARENT) {
+                g.setColor(Color.GRAY);
+            } else {
+                g.setColor(Color.BLUE);
+            }
             if (b.shape instanceof CircleShape) {
                 CircleShape c = (CircleShape) b.shape;
 
                 double rx = StrictMath.cos(b.orient()) * c.radius;
                 double ry = StrictMath.sin(b.orient()) * c.radius;
 
-                g.setColor(Color.BLUE);
                 g.draw(new Ellipse2D.Double(b.position().x - c.radius, b.position().y - c.radius, c.radius * 2, c.radius * 2));
                 g.draw(new Line2D.Double(b.position().x, b.position().y, b.position().x + rx, b.position().y + ry));
             } else if (b.shape instanceof PolygonShape) {
@@ -151,7 +165,6 @@ public class PhysicsProvider {
                 }
                 path.closePath();
 
-                g.setColor(Color.blue);
                 g.draw(path);
             }
         }

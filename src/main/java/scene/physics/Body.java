@@ -4,6 +4,8 @@ import core.Mat2;
 import core.Vector2;
 import scene.Entity;
 
+import java.util.*;
+
 /**
  * Physics body
  */
@@ -26,25 +28,37 @@ public class Body {
          * Static mode.
          * The body can only move by user code.
          */
-        STATIC
+        STATIC,
+        /**
+         * Transparent mode
+         * The body is static and does not interact with other bodies
+         */
+        TRANSPARENT
     }
 
     private final PhysicsProvider physics;
     private final Entity entity;
     private Mode mode;
 
+    private HashSet<Body> contacts = new HashSet<>();
+    private HashSet<Body> lastContacts = new HashSet<>();
+
+    private final ArrayList<BodyListener> bodyListeners = new ArrayList<>();
+
     double mass, invMass, inertia, invInertia;
 
     public final Shape shape;
 
-    public final Vector2 velocity = new Vector2();
-    public final Vector2 force = new Vector2();
-    public double angularVelocity;
-    public double torque;
+    public final Vector2 velocity = new Vector2(0.0, 0.0);
+    public final Vector2 force = new Vector2(0.0, 0.0);
+    public double angularVelocity = 0.0;
+    public double torque = 0.0;
 
-    public double staticFriction;
-    public double dynamicFriction;
-    public double restitution;
+    public double staticFriction = 0.5;
+    public double dynamicFriction = 0.3;
+    public double restitution = 0.2;
+
+    public Vector2 gravity = new Vector2();
 
     public Body(PhysicsProvider physics, Entity entity, Shape shape, Mode mode) {
         this.physics = physics;
@@ -52,19 +66,23 @@ public class Body {
         this.mode = mode;
         this.shape = shape;
 
-        velocity.set(0, 0);
-        angularVelocity = 0;
-        torque = 0;
-        force.set(0, 0);
-        staticFriction = 0.5;
-        dynamicFriction = 0.3f;
-        restitution = 0.2f;
+        gravity.set(physics.gravity);
 
         shape.body = this;
-
         shape.initialize();
 
         setMode(mode);
+    }
+
+    public void addBodyListener(BodyListener listener) {
+        bodyListeners.add(listener);
+    }
+    public void removeBodyListener(BodyListener listener) {
+        bodyListeners.remove(listener);
+    }
+
+    public Set<Body> contacts() {
+        return Collections.unmodifiableSet(contacts);
     }
 
     public PhysicsProvider physics() {
@@ -89,7 +107,7 @@ public class Body {
 
         shape.computeMass();
 
-        if (mode == Mode.STATIC) {
+        if (mode == Mode.STATIC || mode == Mode.TRANSPARENT) {
             inertia = 0.0;
             invInertia = 0.0;
             mass = 0.0;
@@ -98,6 +116,10 @@ public class Body {
             inertia = 0.0;
             invInertia = 0.0;
         }
+    }
+
+    public void resetGravity() {
+        gravity.set(physics.gravity);
     }
 
     public void applyForce(Vector2 f) {
@@ -134,7 +156,7 @@ public class Body {
         double dts = dt * 0.5;
 
         velocity.addsi(force, invMass * dts);
-        velocity.addsi(physics.gravity, dts);
+        velocity.addsi(gravity, dts);
         angularVelocity += torque * invInertia * dts;
     }
 
@@ -147,5 +169,36 @@ public class Body {
         entity.setOrient(entity.orient() + angularVelocity * dt);
 
         integrateForces(dt);
+    }
+
+    protected void clearContacts() {
+        lastContacts = contacts;
+        contacts = new HashSet<>();
+    }
+
+    protected void addContact(Body other) {
+        contacts.add(other);
+    }
+
+    protected void updateContacts() {
+        for(Body body : contacts) {
+            if(!lastContacts.remove(body)) {
+                handleBodyEntered(body);
+            }
+        }
+        for(Body body : lastContacts) {
+            handleBodyExited(body);
+        }
+    }
+
+    private void handleBodyEntered(Body body) {
+        for(BodyListener listener : bodyListeners) {
+            listener.bodyEntered(body);
+        }
+    }
+    private void handleBodyExited(Body body) {
+        for(BodyListener listener : bodyListeners) {
+            listener.bodyExited(body);
+        }
     }
 }

@@ -6,6 +6,7 @@ import scene.Entity;
 import scene.FPSViewer;
 import scene.Scene;
 import scene.physics.Body;
+import scene.physics.BodyListener;
 import scene.physics.CircleShape;
 import scene.physics.PolygonShape;
 
@@ -73,6 +74,20 @@ public class SceneTestPhysics extends Scene {
         */
 
         Player player = new Player(this);
+
+        Entity area = new Entity(this);
+        area.setBody(new PolygonShape(50, 50), Body.Mode.TRANSPARENT)
+                .addBodyListener(new BodyListener() {
+                    @Override
+                    public void bodyEntered(Body b) {
+                        System.out.println("Body entered");
+                    }
+
+                    @Override
+                    public void bodyExited(Body b) {
+                        System.out.println("Body exited");
+                    }
+                });
 
         camera().setPosition(new Vector2(0, 0));
         camera().setZoom(new Vector2(1, 1));

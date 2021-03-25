@@ -6,6 +6,7 @@ import core.Vector2;
 class Manifold {
     Body A;
     Body B;
+    boolean transparent;
     double penetration;
     final Vector2 normal = new Vector2();
     final Vector2[] contacts = {new Vector2(), new Vector2()};
@@ -20,6 +21,7 @@ class Manifold {
     }
 
     void solve() {
+        transparent = A.mode() == Body.Mode.TRANSPARENT || B.mode() == Body.Mode.TRANSPARENT;
         Collisions.Solve(this, A, B);
     }
 
@@ -33,6 +35,10 @@ class Manifold {
     }
 
     void applyImpulse() {
+        if(transparent) {
+            return;
+        }
+
         // Early out and positional correct if both objects have infinite mass
         if (MathUtils.equal(A.invMass + B.invMass, 0)) {
             infiniteMassCorrection();
@@ -101,6 +107,9 @@ class Manifold {
     }
 
     void positionalCorrection() {
+        if(transparent || MathUtils.equal(A.invMass + B.invMass, 0)) {
+            return;
+        }
         double correction = StrictMath.max(penetration - PhysicsProvider.PENETRATION_ALLOWANCE, 0.0) / (A.invMass + B.invMass) * PhysicsProvider.PENETRATION_CORRECTION;
 
         A.position().addsi(normal, -A.invMass * correction);
@@ -108,8 +117,10 @@ class Manifold {
     }
 
     void infiniteMassCorrection() {
+        if(transparent) {
+            return;
+        }
         A.velocity.set(0, 0);
         B.velocity.set(0, 0);
     }
-
 }
