@@ -1,194 +1,205 @@
 package core;
 
 public class Mat2 implements Cloneable {
-    private double[][] data;
 
-    public static Mat2 Identity() {
-        return new Mat2(
-                1.0, 0.0,
-                0.0, 1.0
-        );
-    }
+    public double m00, m01;
+    public double m10, m11;
 
     public Mat2() {
-        data = new double[][]{ { 0.0, 0.0 }, { 0.0, 0.0 } };
+    }
+
+    public Mat2(double radians) {
+        set(radians);
     }
 
     public Mat2(double a, double b, double c, double d) {
-        data = new double[][]{ { a, b }, { c, d } };
-    }
-
-    public Mat2(Mat2 m) {
-        data = new double[][]{ { m.data[0][0], m.data[0][1] }, { m.data[1][0], m.data[1][1] } };
+        set(a, b, c, d);
     }
 
     /**
-     * Rotation matrix of given angle
-     * @param radians Angle of Rotation in radians
+     * Sets this matrix to a rotation matrix with the given radians.
      */
-    public Mat2(double radians) {
-        double c = Math.cos(radians);
-        double s = Math.sin(radians);
-        data = new double[][]{ { c, -s }, { s, c } };
+    public void set(double radians) {
+        double c = (double) StrictMath.cos(radians);
+        double s = (double) StrictMath.sin(radians);
+
+        m00 = c;
+        m01 = -s;
+        m10 = s;
+        m11 = c;
     }
 
     /**
-     * Set this matrix from the given matrix
-     * @param m The matrix
-     * @return This matrix for chaining
+     * Sets the values of this matrix.
      */
-    public Mat2 set(Mat2 m) {
-        data[0][0] = m.data[0][0];
-        data[0][1] = m.data[0][1];
-        data[1][0] = m.data[1][0];
-        data[1][1] = m.data[1][1];
-        return this;
+    public void set(double a, double b, double c, double d) {
+        m00 = a;
+        m01 = b;
+        m10 = c;
+        m11 = d;
     }
 
     /**
-     * Set this matrix from the given matrix
-     * @return This matrix for chaining
+     * Sets this matrix to have the same values as the given matrix.
      */
-    public Mat2 set(double a, double b, double c, double d) {
-        data[0][0] = a;
-        data[0][1] = b;
-        data[1][0] = c;
-        data[1][1] = d;
-        return this;
-    }
-
-    /**
-     * Set this matrix from the rotation matrix of given angle
-     * @param radians Angle of Rotation in radians
-     * @return This matrix for chaining
-     */
-    public Mat2 set(double radians) {
-        double c = Math.cos(radians);
-        double s = Math.sin(radians);
-        data[0][0] = c;
-        data[0][1] = -s;
-        data[1][0] = s;
-        data[1][1] = c;
-        return this;
+    public void set(Mat2 m) {
+        m00 = m.m00;
+        m01 = m.m01;
+        m10 = m.m10;
+        m11 = m.m11;
     }
 
     @Override
     public Mat2 clone() {
         try {
-            Mat2 m = (Mat2)super.clone();
-            return m.set(this);
+            return (Mat2) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace(System.err);
         }
         return null;
     }
 
-    public double get(int i, int j) {
-        assert(i >= 0 && i < 2 && j >= 0 && j < 2);
-        return this.data[i][j];
-    }
-
     /**
-     * Compute the matrix multiplication of this by another matrix
-     * @param m The matrix
-     * @return A new {@link Mat2} result of the matrix multiplication
+     * Sets the values of this matrix to their absolute value.
      */
-    public Mat2 mul(Mat2 m) {
-        return new Mat2(
-                data[0][0] * m.data[0][0] + data[0][1] * m.data[1][0],
-                data[0][0] * m.data[0][1] + data[0][1] * m.data[1][1],
-                data[1][0] * m.data[0][0] + data[1][1] * m.data[1][0],
-                data[1][0] * m.data[0][1] + data[1][1] * m.data[1][1]
-        );
+    public void absi() {
+        abs(this);
     }
 
     /**
-     * Compute the matrix multiplication of this by a {@link Vector2}
-     * @param v The vector
-     * @return A new {@link Vector2} result of the matrix multiplication by the vector
+     * Returns a new matrix that is the absolute value of this matrix.
      */
-    public Vector2 mul(Vector2 v) {
-        return new Vector2(
-                v.x * data[0][0] + v.y * data[0][1],
-                v.x * data[1][0] + v.y * data[1][1]
-        );
+    public Mat2 abs() {
+        return abs(new Mat2());
     }
 
     /**
-     * Transpose this matrix
-     * @return A new {@link Mat2} result of the transposition
+     * Sets out to the absolute value of this matrix.
+     */
+    public Mat2 abs(Mat2 out) {
+        out.m00 = StrictMath.abs(m00);
+        out.m01 = StrictMath.abs(m01);
+        out.m10 = StrictMath.abs(m10);
+        out.m11 = StrictMath.abs(m11);
+        return out;
+    }
+
+    /**
+     * Sets out to the x-axis (1st column) of this matrix.
+     */
+    public Vector2 getAxisX(Vector2 out) {
+        out.x = m00;
+        out.y = m10;
+        return out;
+    }
+
+    /**
+     * Returns a new vector that is the x-axis (1st column) of this matrix.
+     */
+    public Vector2 getAxisX() {
+        return getAxisX(new Vector2());
+    }
+
+    /**
+     * Sets out to the y-axis (2nd column) of this matrix.
+     */
+    public Vector2 getAxisY(Vector2 out) {
+        out.x = m01;
+        out.y = m11;
+        return out;
+    }
+
+    /**
+     * Returns a new vector that is the y-axis (2nd column) of this matrix.
+     */
+    public Vector2 getAxisY() {
+        return getAxisY(new Vector2());
+    }
+
+    /**
+     * Sets the matrix to it's transpose.
+     */
+    public void transposei() {
+        double t = m01;
+        m01 = m10;
+        m10 = t;
+    }
+
+    /**
+     * Sets out to the transpose of this matrix.
+     */
+    public Mat2 transpose(Mat2 out) {
+        out.m00 = m00;
+        out.m01 = m10;
+        out.m10 = m01;
+        out.m11 = m11;
+        return out;
+    }
+
+    /**
+     * Returns a new matrix that is the transpose of this matrix.
      */
     public Mat2 transpose() {
-        return new Mat2(
-                data[0][0], data[1][0],
-                data[0][1], data[1][1]
-        );
+        return transpose(new Mat2());
     }
 
     /**
-     * Return first column in a {@link Vector2}
-     * @return The first column of the matrix
+     * Transforms v by this matrix.
      */
-    public Vector2 axisX() {
-        return new Vector2(data[0][0], data[1][0]);
+    public Vector2 muli(Vector2 v) {
+        return mul(v.x, v.y, v);
     }
 
     /**
-     * Return second column in a {@link Vector2}
-     * @return The second column of the matrix
+     * Sets out to the transformation of v by this matrix.
      */
-    public Vector2 axisY() {
-        return new Vector2(data[0][1], data[1][1]);
+    public Vector2 mul(Vector2 v, Vector2 out) {
+        return mul(v.x, v.y, out);
     }
 
     /**
-     * Add the given matrix to this matrix
-     * @param m The matrix to add
-     * @return This matrix for chaining
+     * Returns a new vector that is the transformation of v by this matrix.
      */
-    public Mat2 add(Mat2 m) {
-        data[0][0] += m.data[0][0];
-        data[0][1] += m.data[0][1];
-        data[1][0] += m.data[1][0];
-        data[1][1] += m.data[1][1];
-        return this;
+    public Vector2 mul(Vector2 v) {
+        return mul(v.x, v.y, new Vector2());
     }
 
     /**
-     * Substrate the given matrix to this matrix
-     * @param m The matrix to add
-     * @return This matrix for chaining
+     * Sets out the to transformation of {x,y} by this matrix.
      */
-    public Mat2 sub(Mat2 m) {
-        data[0][0] -= m.data[0][0];
-        data[0][1] -= m.data[0][1];
-        data[1][0] -= m.data[1][0];
-        data[1][1] -= m.data[1][1];
-        return this;
+    public Vector2 mul(double x, double y, Vector2 out) {
+        out.x = m00 * x + m01 * y;
+        out.y = m10 * x + m11 * y;
+        return out;
     }
 
     /**
-     * Scales this matrix by a scalar
-     * @param scalar The scalar
-     * @return This matrix for chaining
+     * Multiplies this matrix by x.
      */
-    public Mat2 scl(double scalar) {
-        data[0][0] *= scalar;
-        data[0][1] *= scalar;
-        data[1][0] *= scalar;
-        data[1][1] *= scalar;
-        return this;
+    public void muli(Mat2 x) {
+        set(
+                m00 * x.m00 + m01 * x.m10,
+                m00 * x.m01 + m01 * x.m11,
+                m10 * x.m00 + m11 * x.m10,
+                m10 * x.m01 + m11 * x.m11);
     }
 
     /**
-     * Scales this matrix by the given matrix components
-     * @return This matrix for chaining
+     * Sets out to the multiplication of this matrix and x.
      */
-    public Mat2 scl(Mat2 m) {
-        data[0][0] *= m.data[0][0];
-        data[0][1] *= m.data[0][1];
-        data[1][0] *= m.data[1][0];
-        data[1][1] *= m.data[1][1];
-        return this;
+    public Mat2 mul(Mat2 x, Mat2 out) {
+        out.m00 = m00 * x.m00 + m01 * x.m10;
+        out.m01 = m00 * x.m01 + m01 * x.m11;
+        out.m10 = m10 * x.m00 + m11 * x.m10;
+        out.m11 = m10 * x.m01 + m11 * x.m11;
+        return out;
     }
+
+    /**
+     * Returns a new matrix that is the multiplication of this and x.
+     */
+    public Mat2 mul(Mat2 x) {
+        return mul(x, new Mat2());
+    }
+
 }

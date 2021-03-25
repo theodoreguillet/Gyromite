@@ -12,6 +12,7 @@ public class MainLoop {
     public static final double OPTIMAL_FPS      = 60.0;
     public static final double NANOS_PER_TICK   = NANOSECOND / OPTIMAL_TICKS;
     public static final double NANOS_PER_RENDER = NANOSECOND / OPTIMAL_FPS;
+    public static final double DT               = 1.0 / OPTIMAL_TICKS;
 
     public synchronized void start() {
         running.set(true);

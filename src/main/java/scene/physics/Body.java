@@ -4,86 +4,137 @@ import core.Vector2;
 import scene.Entity;
 
 public class Body {
+    public enum Mode {
+        /**
+         * Rigid body mode.
+         * It is affected by forces, and can move, rotate, and be affected by user code.
+         */
+        RIGID,
+        /**
+         * Character body mode.
+         * This behaves like a rigid body, but can not rotate.
+         */
+        CHARACTER,
+        /**
+         * Static mode.
+         * The body can only move by user code.
+         */
+        STATIC
+    }
+
     private final Entity entity;
-    private Shape shape;
+    private Mode mode;
 
-    private Vector2 velocity = new Vector2();
-    private double restitution = 0.0;
-    private double mass = 0.0;
-    private double invMass;
+    double mass, invMass, inertia, invInertia;
 
-    public Body(Entity entity, Shape shape) {
+    public final Shape shape;
+
+    public final Vector2 velocity = new Vector2();
+    public final Vector2 force = new Vector2();
+    public double angularVelocity;
+    public double torque;
+    public double orient;
+
+    public double staticFriction;
+    public double dynamicFriction;
+    public double restitution;
+
+    public Body(Entity entity, Shape shape, Mode mode) {
         this.entity = entity;
+        this.mode = mode;
         this.shape = shape;
-        entity.scene().physics().addBody(this);
+
+        velocity.set(0, 0);
+        angularVelocity = 0;
+        torque = 0;
+        orient = 0;
+        force.set(0, 0);
+        staticFriction = 0.5;
+        dynamicFriction = 0.3f;
+        restitution = 0.2f;
+
+        shape.body = this;
+        shape.initialize();
+
+        setMode(mode);
     }
 
-    public Shape shape() {
-        return shape;
-    }
     public Vector2 position() {
         return entity.position();
     }
-    public Vector2 velocity() {
-        return velocity;
-    }
-    public double restitution() {
-        return restitution;
-    }
-    public double mass() {
-        return mass;
+
+    public Mode mode() {
+        return mode;
     }
 
-    public void setShape(Shape shape) {
-        this.shape = shape;
-    }
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
-    }
-    public void setRestitution(double restitution) {
-        this.restitution = restitution;
-    }
-    public void setMass(double mass) {
-        this.mass = mass;
-        this.invMass = (mass == 0.0) ? 0.0 : 1.0 / mass;
+    public void setMode(Mode mode) {
+        this.mode = mode;
+
+        shape.computeMass();
+
+        if (mode == Mode.STATIC) {
+            inertia = 0.0;
+            invInertia = 0.0;
+            mass = 0.0;
+            invMass = 0.0;
+        } else if (mode == Mode.CHARACTER) {
+            inertia = 0.0;
+            invInertia = 0.0;
+        }
     }
 
-    private static void ResolveCollision(Body A, Body B, Vector2 normal)
-    {
-        // Do not resolve if both objects have an infinite mass
-        if(A.invMass == 0 && B.invMass == 0) {
+    public void applyForce(Vector2 f) {
+        force.addi(f);
+    }
+
+    public void applyImpulse(Vector2 impulse, Vector2 contactVector) {
+        velocity.addsi(impulse, invMass);
+        angularVelocity += invInertia * Vector2.cross(contactVector, impulse);
+    }
+
+    public void setOrient(double radians) {
+        orient = radians;
+        shape.setOrient(radians);
+    }
+
+    public void clearForces() {
+        force.set(0, 0);
+        torque = 0;
+    }
+
+    // Acceleration
+    // F = mA
+    // => A = F * 1/m
+
+    // Explicit Euler
+    // x += v * dt
+    // v += (1/m * F) * dt
+
+    // Semi-Implicit (Symplectic) Euler
+    // v += (1/m * F) * dt
+    // x += v * dt
+
+    protected void integrateForces(double dt) {
+        if (invMass == 0.0) {
             return;
         }
-        // Calculate relative velocity
-        Vector2 rv = B.velocity.clone().sub(A.velocity);
 
-        // Calculate relative velocity in terms of the normal direction
-        double velAlongNormal = rv.dot(normal);
+        double dts = dt * 0.5;
 
-        // Do not resolve if velocities are separating
-        if(velAlongNormal > 0) {
-            return;
-        }
-
-        // Calculate restitution
-        double e = Math.min(A.restitution, B.restitution);
-
-        // Calculate impulse scalar
-        double j = -(1 + e) * velAlongNormal / (A.invMass + B.invMass);
-
-        // Apply impulse
-        Vector2 impulse = normal.scl(j);
-        A.velocity.sclSub(impulse, A.invMass);
-        B.velocity.sclAdd(impulse, B.invMass);
+        velocity.addsi(force, invMass * dts);
+        velocity.addsi(PhysicsProvider.GRAVITY, dts);
+        angularVelocity += torque * invInertia * dts;
     }
 
-    private static void PositionalCorrection(Body A, Body B, double penetration, Vector2 normal) {
-        final double corrRatio = 0.2; // Correction ratio, usually 20% to 80%
-        final double slop = 0.01; // Penetration  threshold, usually 0.01 to 0.1
-        // Do not perform positional correction if the penetration is below slop
-        if(penetration <= slop) {
+    protected void integrateVelocity(double dt) {
+        if (invMass == 0.0) {
             return;
         }
-        Vector2 correction = normal.clone().scl(corrRatio * penetration / (A.invMass + B.invMass));
+
+        position().addsi(velocity, dt);
+        orient += angularVelocity * dt;
+        setOrient(orient);
+
+        integrateForces(dt);
     }
 }

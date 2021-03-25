@@ -2,6 +2,7 @@ package scene;
 
 import core.Vector2;
 import scene.physics.Body;
+import scene.physics.Shape;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -26,8 +27,14 @@ public class Entity {
         return position;
     }
 
-    public void setBody(Body body) {
-        this.body = body;
+    public void setBody(Shape shape, Body.Mode mode) {
+        this.body = scene().physics().add(this, shape, mode);
+    }
+    public void removeBody() {
+        if(this.body != null) {
+            scene().physics().remove(this.body);
+            this.body = null;
+        }
     }
     public void setPosition(Vector2 position) {
         this.position = position;

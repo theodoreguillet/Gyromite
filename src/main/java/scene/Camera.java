@@ -4,6 +4,8 @@ import core.Vector2;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 
 public class Camera {
     private final Scene scene;
@@ -37,6 +39,46 @@ public class Camera {
     }
 
     public void transform(Graphics2D g) {
+        g.setTransform(getTransform());
+    }
+
+    public void follow(Entity entity) {
+        followed = entity;
+    }
+
+    public void update() {
+        if(this.followed != null) {
+            this.position.x = followed.position().x;
+            this.position.y = followed.position().y;
+        }
+    }
+
+    public Vector2 getWorldCoordinate(Vector2 screen) {
+        return getWorldCoordinate(screen.x, screen.y);
+    }
+
+    public Vector2 getWorldCoordinate(double screenX, double screenY) {
+        AffineTransform at = getTransform();
+        try {
+            Point2D coordinates = at.inverseTransform(new Point2D.Double(screenX, screenY), new Point2D.Double());
+            return new Vector2(coordinates.getX(), coordinates.getY());
+        } catch (NoninvertibleTransformException e) {
+            e.printStackTrace(System.err);
+        }
+        return new Vector2();
+    }
+
+    public Vector2 getScreenCoordinate(Vector2 world) {
+        return getScreenCoordinate(world.x, world.y);
+    }
+
+    public Vector2 getScreenCoordinate(double worldX, double worldY) {
+        AffineTransform at = getTransform();
+        Point2D coordinates = at.transform(new Point2D.Double(worldX, worldY), new Point2D.Double());
+        return new Vector2(coordinates.getX(), coordinates.getY());
+    }
+
+    public AffineTransform getTransform() {
         double width = this.scene.viewport().getWidth();
         double height = this.scene.viewport().getHeight();
 
@@ -52,17 +94,6 @@ public class Camera {
         // Move camera
         at.translate(-position.x, -position.y);
 
-        g.setTransform(at);
-    }
-
-    public void follow(Entity entity) {
-        followed = entity;
-    }
-
-    public void update() {
-        if(this.followed != null) {
-            this.position.x = followed.position().x;
-            this.position.y = followed.position().y;
-        }
+        return at;
     }
 }
