@@ -2,9 +2,7 @@ package scene;
 
 import core.Input;
 import core.MainLoop;
-import core.Vector2;
 import scene.physics.PhysicsProvider;
-import scene.physics.PhysicsRenderer;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -113,7 +111,7 @@ public class Scene extends MainLoop {
 
         if(renderPhysics)  {
             g.setTransform(at);
-            PhysicsRenderer.render(physics, g);
+            physics.render(g);
         }
 
         g.setTransform(new AffineTransform());

@@ -7,7 +7,7 @@ import util.Pair;
 
 import java.util.HashMap;
 
-public abstract class Collisions {
+abstract class Collisions {
     private interface Solver {
         void solve(Manifold m, Body a, Body b);
     }

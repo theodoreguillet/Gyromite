@@ -19,12 +19,6 @@ public class Window
 
 
         viewport.setPreferredSize(dim);
-        /*
-        viewport.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent event) {
-                boolean focusGained = true;
-            }
-        });*/
 
         JFrame frame = new JFrame (title);
         frame.setVisible(true);
@@ -34,5 +28,6 @@ public class Window
         frame.pack();
         frame.setLocationRelativeTo(null);
         viewport.setFocusable(true);
+        viewport.requestFocus();
     }
 }

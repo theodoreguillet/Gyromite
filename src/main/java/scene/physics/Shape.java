@@ -1,10 +1,9 @@
 package scene.physics;
 
+/**
+ * Physics Shape
+ */
 public abstract class Shape {
-    public enum Type {
-        Circle, Poly, Count
-    }
-
     private double density = 1.0;
 
     Body body;

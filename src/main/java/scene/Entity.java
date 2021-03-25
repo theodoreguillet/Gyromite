@@ -37,8 +37,9 @@ public class Entity {
         return orientMat.clone();
     }
 
-    public void setBody(Shape shape, Body.Mode mode) {
+    public Body setBody(Shape shape, Body.Mode mode) {
         this.body = scene().physics().add(this, shape, mode);
+        return this.body;
     }
     public void removeBody() {
         if(this.body != null) {

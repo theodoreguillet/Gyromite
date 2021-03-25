@@ -4,7 +4,13 @@ import core.Mat2;
 import core.Vector2;
 import scene.Entity;
 
+/**
+ * Physics body
+ */
 public class Body {
+    /**
+     * The body mode
+     */
     public enum Mode {
         /**
          * Rigid body mode.
@@ -23,6 +29,7 @@ public class Body {
         STATIC
     }
 
+    private final PhysicsProvider physics;
     private final Entity entity;
     private Mode mode;
 
@@ -39,7 +46,8 @@ public class Body {
     public double dynamicFriction;
     public double restitution;
 
-    public Body(Entity entity, Shape shape, Mode mode) {
+    public Body(PhysicsProvider physics, Entity entity, Shape shape, Mode mode) {
+        this.physics = physics;
         this.entity = entity;
         this.mode = mode;
         this.shape = shape;
@@ -59,6 +67,9 @@ public class Body {
         setMode(mode);
     }
 
+    public PhysicsProvider physics() {
+        return physics;
+    }
     public Vector2 position() {
         return entity.position();
     }
@@ -123,7 +134,7 @@ public class Body {
         double dts = dt * 0.5;
 
         velocity.addsi(force, invMass * dts);
-        velocity.addsi(PhysicsProvider.GRAVITY, dts);
+        velocity.addsi(physics.gravity, dts);
         angularVelocity += torque * invInertia * dts;
     }
 

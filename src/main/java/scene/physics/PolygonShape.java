@@ -1,8 +1,10 @@
 package scene.physics;
 
-import core.Mat2;
 import core.Vector2;
 
+/**
+ * Physics body polygon shape
+ */
 public class PolygonShape extends Shape {
 
     public static final int MAX_POLY_VERTEX_COUNT = 64;

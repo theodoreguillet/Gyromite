@@ -2,6 +2,9 @@ package scene.physics;
 
 import core.MathUtils;
 
+/**
+ * Physics body circle shape
+ */
 public class CircleShape extends Shape {
     double radius;
 
