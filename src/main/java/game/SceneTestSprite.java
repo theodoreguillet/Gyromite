@@ -1,21 +1,20 @@
 package game;
 
 import core.MathUtils;
+import core.Rect2;
 import core.Vector2;
-import scene.Entity;
-import scene.FPSViewer;
-import scene.Scene;
-import scene.Sprite;
+import scene.*;
 import scene.physics.Body;
 import scene.physics.PolygonShape;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class SceneTestSprite extends Scene {
     private Window window;
 
-    private Sprite sprite;
-    private long lastTime = 0;
+    private AnimatedSprite ninja;
 
     private static final double GAME_HEIGHT = 500;
 
@@ -35,14 +34,49 @@ public class SceneTestSprite extends Scene {
 
         FPSViewer fps = new FPSViewer(this);
 
-        sprite = new Sprite(this, "ninja");
-        sprite.setVframes(3);
-        sprite.setHframes(6);
-        sprite.size().set(200, 200);
-        sprite.flipH(true);
-        // sprite.region().set(100, 100, 500, 500);
+        Sprite background = new Sprite(this, "test");
+        background.size().set(400.0 * 1920.0 / 1080.0, 400.0);
+
+        ninja = new AnimatedSprite(this);
+        ninja.size().set(200.0, 200.0);
+        ninja.addAnimation("run")
+                .addFrames("ninja", 6, 3, 6, 11)
+                .setSpeed(50)
+                .loop(true);
+        ninja.addAnimation("idle")
+                .addFrames("ninja", 6, 3, 0, 2)
+                .setSpeed(2)
+                .loop(true);
+        ninja.addAnimation("attack")
+                .addFrame("ninja", new Rect2(0, 750, 400, 1100))
+                .addFrame("ninja", new Rect2(400, 750, 740, 1100))
+                .addFrame("ninja", new Rect2(740, 750, 1210, 1100))
+                .addFrame("ninja", new Rect2(1210, 750, 1760, 1100))
+                .setSpeed(15)
+                .loop(false);
+
+        ninja.play("idle");
 
         camera().setZoom(new Vector2(1, 1));
+
+        input().addListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyChar() == ' ') {
+                    if(ninja.currentAnimation().equals("idle")) {
+                        ninja.play("run");
+                    } else if(ninja.currentAnimation().equals("run")) {
+                        ninja.play("attack");
+                    } else {
+                        ninja.play("idle");
+                    }
+                }
+            }
+            @Override
+            public void keyPressed(KeyEvent e) { }
+            @Override
+            public void keyReleased(KeyEvent e) { }
+        });
     }
 
     @Override
@@ -58,9 +92,8 @@ public class SceneTestSprite extends Scene {
         double zoom = viewport().getHeight() / GAME_HEIGHT;
         camera().setZoom(new Vector2(zoom, zoom));
 
-        if(System.currentTimeMillis() - lastTime > 100) {
-            lastTime = System.currentTimeMillis();
-            sprite.setframe(6 + (sprite.frame() + 1) % 6);
+        if(!ninja.isPlaying()) {
+            ninja.play("idle");
         }
     }
 }

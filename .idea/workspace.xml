@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/core/Rect2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestSprite.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/img/ninja.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteFrames.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Size.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestSprite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,6 +68,14 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1qFkdsx9uD5KXmanX2cHifmAeeR" />
   <component name="ProjectLevelVcsManager">
@@ -138,6 +145,8 @@
       <list>
         <item itemvalue="Gradle.Gyromite [run]" />
         <item itemvalue="Gradle.TestRessources.testLoadImage" />
+        <item itemvalue="Gradle.Gyromite [run]" />
+        <item itemvalue="Gradle.TestRessources.testLoadImage" />
       </list>
     </recent_temporary>
   </component>
@@ -192,7 +201,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616704062842</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="sprite, sprite sheet and test">
+      <created>1616716106078</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1616716106078</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

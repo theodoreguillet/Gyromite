@@ -1,19 +1,13 @@
 package scene;
 
 import core.Rect2;
-import core.Size;
-import core.Vector2;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class Sprite extends Entity {
+public class Sprite extends SpriteBase {
     private BufferedImage image;
 
-    private Size size = new Size();
-    private Vector2 offset = new Vector2();
-    private boolean flipH = false;
-    private boolean flipV = false;
     private Rect2 region = new Rect2();
     private int hframes = 1;
     private int vframes = 1;
@@ -34,18 +28,6 @@ public class Sprite extends Entity {
         setImage(image);
     }
 
-    public Size size() {
-        return size;
-    }
-    public Vector2 offset() {
-        return offset;
-    }
-    public boolean isFlipH() {
-        return flipH;
-    }
-    public boolean isFlipV() {
-        return flipV;
-    }
     public Rect2 region() {
         return region;
     }
@@ -64,18 +46,6 @@ public class Sprite extends Entity {
     }
     public void setImage(String id) {
         setImage(scene().resources().getImage(id));
-    }
-    public void setSize(Size size) {
-        this.size = size;
-    }
-    public void setOffset(Vector2 offset) {
-        this.offset = offset;
-    }
-    public void flipH(boolean flipH) {
-        this.flipH = flipH;
-    }
-    public void flipV(boolean flipV) {
-        this.flipV = flipV;
     }
     public void setRegion(Rect2 region) {
         this.region = region;
@@ -98,8 +68,8 @@ public class Sprite extends Entity {
             return;
         }
 
-        int hw = (int)size.width / 2;
-        int hh = (int)size.height / 2;
+        int hw = (int)size().width / 2;
+        int hh = (int)size().height / 2;
 
         int sx1, sy1, sx2, sy2;
         if(region.isEmpty()) {
@@ -123,10 +93,6 @@ public class Sprite extends Entity {
             sy2 = (int)region.max.y;
         }
 
-        g.translate(offset.x, offset.y);
-
-        g.scale(flipH ? -1 : 1, flipV ? -1 : 1);
         g.drawImage(image, -hw, -hh, hw, hh, sx1, sy1, sx2, sy2, null);
-        //
     }
 }
