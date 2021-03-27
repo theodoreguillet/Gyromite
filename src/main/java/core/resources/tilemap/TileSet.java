@@ -15,7 +15,7 @@ public class TileSet extends TileElement {
     public int tilewidth, tileheight;
     public int spacing;
     public int margin;
-    public ArrayList<Tile> tiles = new ArrayList<>();
+    public ArrayList<TileData> tiles = new ArrayList<>();
 
     @JsonIgnore
     public BufferedImage loadedImage = null;

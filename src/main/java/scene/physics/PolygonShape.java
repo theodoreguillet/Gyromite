@@ -13,6 +13,10 @@ public class PolygonShape extends Shape {
     Vector2[] vertices = Vector2.arrayOf(MAX_POLY_VERTEX_COUNT);
     Vector2[] normals = Vector2.arrayOf(MAX_POLY_VERTEX_COUNT);
 
+    private double I = 0.0;
+    private double area = 0.0;
+    private final Vector2 centroid = new Vector2();
+
     public PolygonShape() {
     }
 
@@ -35,6 +39,16 @@ public class PolygonShape extends Shape {
         return p;
     }
 
+    public double inertia() {
+        return I;
+    }
+    public double area() {
+        return area;
+    }
+    public Vector2 centroid() {
+        return centroid.clone();
+    }
+
     @Override
     protected void initialize() {
         computeMass();
@@ -42,10 +56,17 @@ public class PolygonShape extends Shape {
 
     @Override
     protected void computeMass() {
+        body.mass = density() * area;
+        body.invMass = (body.mass != 0.0) ? 1.0 / body.mass : 0.0;
+        body.inertia = I * density();
+        body.invInertia = (body.inertia != 0.0) ? 1.0 / body.inertia : 0.0;
+    }
+
+    private void computeCentroid() {
         // Calculate centroid and moment of inertia
-        Vector2 c = new Vector2(0.0, 0.0); // centroid
-        double area = 0.0;
-        double I = 0.0;
+        centroid.set(0.0, 0.0); // centroid
+        area = 0.0;
+        I = 0.0;
         final double k_inv3 = 1.0 / 3.0;
 
         for (int i = 0; i < vertexCount; ++i) {
@@ -60,27 +81,15 @@ public class PolygonShape extends Shape {
 
             // Use area to weight the centroid average, not just vertex position
             double weight = triangleArea * k_inv3;
-            c.addsi(p1, weight);
-            c.addsi(p2, weight);
+            centroid.addsi(p1, weight);
+            centroid.addsi(p2, weight);
 
             double intx2 = p1.x * p1.x + p2.x * p1.x + p2.x * p2.x;
             double inty2 = p1.y * p1.y + p2.y * p1.y + p2.y * p2.y;
             I += (0.25f * k_inv3 * D) * (intx2 + inty2);
         }
 
-        c.muli(1.0 / area);
-
-        // Translate vertices to centroid (make the centroid (0, 0)
-        // for the polygon in model space)
-        // Not really necessary, but I like doing this anyway
-        for (int i = 0; i < vertexCount; ++i) {
-            vertices[i].subi(c);
-        }
-
-        body.mass = density() * area;
-        body.invMass = (body.mass != 0.0) ? 1.0 / body.mass : 0.0;
-        body.inertia = I * density();
-        body.invInertia = (body.inertia != 0.0) ? 1.0 / body.inertia : 0.0;
+        centroid.muli(1.0 / area);
     }
 
     public void setBox(double hw, double hh) {
@@ -174,6 +183,9 @@ public class PolygonShape extends Shape {
             normals[i].cross(face, 1.0);
             normals[i].normalize();
         }
+
+        // Calculate centroid and moment of inertia
+        computeCentroid();
     }
 
     public Vector2 getSupport(Vector2 dir) {

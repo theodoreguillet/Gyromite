@@ -128,8 +128,8 @@ public class AnimatedSprite extends SpriteBase {
 
         int w = (int)size().width;
         int h = (int)size().height;
-        int x = (int)(position().x - size().width / 2);
-        int y = (int)(position().y - size().height / 2);
+        int x = (int)(-size().width / 2);
+        int y = (int)(-size().height / 2);
 
         g.drawImage(image, x, y, w, h, null);
     }

@@ -1,5 +1,9 @@
 package core.resources.tilemap;
 
+import core.Vector2;
+
+import java.util.ArrayList;
+
 public class TileObject {
     public int id;
     public String name = "";
@@ -9,4 +13,7 @@ public class TileObject {
     public String type = "";
     public double rotation = 0.0;
     public boolean visible = true;
+    // Shape (rect shape by default)
+    public boolean ellipse = false; // Ellipse shape
+    public ArrayList<Vector2> polygon = null; // Polygon shape
 }

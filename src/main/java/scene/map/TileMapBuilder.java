@@ -1,12 +1,15 @@
 package scene.map;
 
+import core.MathUtils;
 import core.Rect2;
+import core.Size;
 import core.Vector2;
 import core.resources.tilemap.*;
-import scene.Scene;
-import scene.Sprite;
+import scene.*;
 import scene.physics.Body;
+import scene.physics.CircleShape;
 import scene.physics.PolygonShape;
+import scene.physics.Shape;
 import util.Pair;
 
 import java.util.*;
@@ -85,11 +88,11 @@ public class TileMapBuilder {
     }
 
     public void build() {
-        if(tilemap.infinite) {
-            throw new RuntimeException("Infinite tilemap not supported");
+        if(tilemap.infinite || !tilemap.orientation.equals(TileMap.ORTHOGONAL)) {
+            System.err.println("Unsupported tilemap format");
+            return;
         }
 
-        tilemap.tilesets.sort(Comparator.comparingInt(o -> o.firstgid));
         for(var layer : tilemap.layers) {
             switch (layer.type) {
                 case Layer.TILE -> buildTileLayer(layer);
@@ -117,7 +120,7 @@ public class TileMapBuilder {
         }
     }
 
-    private void buildTile(Layer layer, int tileIdx, long tileGidRaw) {
+    private void buildTile(Layer layer, int tileMapIdx, long tileGidRaw) {
         // Read out the flags
         boolean hflip = (tileGidRaw & FLIPPED_HORIZONTALLY_FLAG) != 0;
         boolean vflip = (tileGidRaw & FLIPPED_VERTICALLY_FLAG) != 0;
@@ -133,31 +136,73 @@ public class TileMapBuilder {
             return;
         }
 
-        Rect2 tileRect = getTileRect(tileset, tileGid);
-        if(tileRect == null) {
-            return;
-        }
+        int tileId = tileGid - tileset.firstgid;
 
-        Rect2 mapRect = getTileMapRect(layer, tileIdx);
+        Rect2 mapRect = getTileMapRect(layer, tileMapIdx);
         if(mapRect == null) {
             return;
         }
 
-        Sprite sprite = new Sprite(scene, tileset.loadedImage);
+        SpriteBase sprite;
+
+        TileData tile = getTile(tileset, tileId);
+        if(tile != null && tile.animation != null && !tile.animation.isEmpty()) {
+            AnimatedSprite animatedSprite = new AnimatedSprite(scene);
+            var anim = animatedSprite.addAnimation("tile");
+            double totalDuration = 0.0;
+            for(var frame : tile.animation) {
+                var frameTileRect = getTileRect(tileset, frame.tileid);
+                if(frameTileRect == null) {
+                    return;
+                }
+
+                anim.addFrame(tileset.loadedImage, frameTileRect).loop(true);
+                totalDuration += frame.duration;
+            }
+            anim.setSpeed(1000.0 / totalDuration); // We don't support variable duration per frame
+            animatedSprite.play("tile");
+            sprite = animatedSprite;
+        } else {
+            Rect2 tileRect = getTileRect(tileset, tileId);
+            if(tileRect == null) {
+                return;
+            }
+
+            Sprite staticSprite = new Sprite(scene, tileset.loadedImage);
+            staticSprite.setRegion(tileRect);
+            sprite = staticSprite;
+        }
 
         Vector2 localPos = mapRect.center();
         sprite.position().set(getMapPosition(localPos));
 
         sprite.size().set(mapRect.size());
-        sprite.setRegion(tileRect);
         sprite.setOpacity(layer.opacity);
         sprite.flipH(hflip);
         sprite.flipV(vflip);
         sprite.flipD(dflip);
 
-        Tile tile = getTile(tileset, tileGid);
         if(collidingTilesIds.contains(tileGid) || (tile != null && collidingTilesTypes.contains(tile.type))) {
-            sprite.setBody(new PolygonShape(sprite.size().width / 2, sprite.size().height / 2), Body.Mode.STATIC);
+            if(tile != null && tile.objectgroup != null && !tile.objectgroup.objects.isEmpty()) {
+                for(var shapeObject : tile.objectgroup.objects) {
+                    Shape shape;
+                    if (shapeObject.ellipse) {
+                        shape = new CircleShape(shapeObject.width / 2.0);
+                    } else if (shapeObject.polygon != null) {
+                        shape = new PolygonShape(shapeObject.polygon.toArray(new Vector2[0]));
+                    } else {
+                        shape = new PolygonShape(shapeObject.width / 2.0, shapeObject.height / 2.0);
+                    }
+                    var collisionShape = new Entity(scene);
+                    collisionShape.setBody(shape, Body.Mode.STATIC);
+                    collisionShape.position().x = sprite.position().x - sprite.size().width / 2.0
+                            + shapeObject.x + shapeObject.width / 2.0;
+                    collisionShape.position().y = sprite.position().y - sprite.size().height / 2.0
+                            + shapeObject.y + shapeObject.height / 2.0;
+                }
+            } else {
+                sprite.setBody(new PolygonShape(sprite.size().width / 2, sprite.size().height / 2), Body.Mode.STATIC);
+            }
         }
     }
 
@@ -172,12 +217,12 @@ public class TileMapBuilder {
         return null;
     }
 
-    private Rect2 getTileRect(TileSet tileset, int tileGid) {
+    private Rect2 getTileRect(TileSet tileset, int tileId) {
         int w = tileset.tilewidth;
         int h = tileset.tileheight;
         int nx = tileset.imagewidth / w;
         int ny = tileset.imageheight / h;
-        int frame = tileGid - tileset.firstgid;
+        int frame = tileId;
         int frameX = frame % nx;
         int frameY = frame / nx;
         if(frameY < ny) {
@@ -193,22 +238,22 @@ public class TileMapBuilder {
         return null;
     }
 
-    private Tile getTile(TileSet tileset, int tileGid) {
+    private TileData getTile(TileSet tileset, int tileId) {
         for(var tile : tileset.tiles) {
-            if(tile.id == tileGid - tileset.firstgid) {
+            if(tile.id == tileId) {
                 return tile;
             }
         }
         return null;
     }
 
-    private Rect2 getTileMapRect(Layer layer, int tileIdx) {
+    private Rect2 getTileMapRect(Layer layer, int tileMapIdx) {
         int w = tilemap.tilewidth;
         int h = tilemap.tileheight;
         int nx = layer.width;
         int ny = layer.height;
-        int frameX = tileIdx % nx;
-        int frameY = tileIdx / nx;
+        int frameX = tileMapIdx % nx;
+        int frameY = tileMapIdx / nx;
         if(frameY < ny) {
             int x1 = layer.offsetx + frameX * w;
             int y1 = layer.offsety + frameY * h;

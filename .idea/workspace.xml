@@ -5,10 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Layer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Layer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Tile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,6 +152,7 @@
         <item itemvalue="Gradle.TestRessources.testLoadImage" />
         <item itemvalue="Gradle.Gyromite [run]" />
         <item itemvalue="Gradle.TestRessources.testLoadImage" />
+        <item itemvalue="Gradle.Gyromite [run]" />
       </list>
     </recent_temporary>
   </component>

@@ -37,6 +37,7 @@ public class SceneTestTilemap extends Scene {
                     return s;
                 })
                 .enableCollisions(46, 40)
+                .enableCollisions(25, 32)
                 .enableCollisions("cactus")
                 .build();
 
