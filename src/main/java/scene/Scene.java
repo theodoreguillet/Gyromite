@@ -95,6 +95,8 @@ public class Scene extends MainLoop {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
+        Composite cp = g.getComposite();
+
         g.setTransform(new AffineTransform());
         preRender(g);
 
@@ -103,15 +105,18 @@ public class Scene extends MainLoop {
 
         for(var e : entities) {
             g.setTransform(at);
+            g.setComposite(cp);
             e.render(g);
         }
 
         if(renderPhysics)  {
             g.setTransform(at);
+            g.setComposite(cp);
             physics.render(g);
         }
 
         g.setTransform(new AffineTransform());
+        g.setComposite(cp);
         postRender(g);
 
         g.dispose();

@@ -4,6 +4,7 @@ import core.Vector2;
 import core.resources.tilemap.TileMap;
 import scene.FPSViewer;
 import scene.Scene;
+import scene.Sprite;
 import scene.map.TileMapBuilder;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ public class SceneTestTilemap extends Scene {
 
     @Override
     protected void preload() {
+        resources().loadImage("/img/test.jpg", "test");
         resources().loadTilemap("/tilemaps/test.json", "testmap");
     }
 
@@ -27,6 +29,13 @@ public class SceneTestTilemap extends Scene {
         camera().setZoom(new Vector2(1, 1));
 
         new TileMapBuilder(this, "testmap")
+                .setObjectFactory(2, 3, (builder, object, layer) -> {
+                    Sprite s = new Sprite(builder.scene(), "test");
+                    s.setPosition(builder.getObjectPosition(object));
+                    s.size().set(object.width, object.height);
+                    s.setOpacity(layer.opacity);
+                    return s;
+                })
                 .build();
     }
 

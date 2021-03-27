@@ -2,10 +2,7 @@ package scene.map;
 
 import core.Rect2;
 import core.Vector2;
-import core.resources.tilemap.Layer;
-import core.resources.tilemap.Tile;
-import core.resources.tilemap.TileMap;
-import core.resources.tilemap.TileSet;
+import core.resources.tilemap.*;
 import scene.Scene;
 import scene.Sprite;
 import scene.physics.Body;
@@ -32,6 +29,16 @@ public class TileMapBuilder {
     public TileMapBuilder(Scene scene, String tilemap) {
         this.scene = scene;
         this.tilemap = scene.resources().getTilemap(tilemap);
+    }
+
+    public Scene scene() {
+        return scene;
+    }
+    public TileMap tilemap() {
+        return tilemap;
+    }
+    public Vector2 offset() {
+        return offset;
     }
 
     public TileMapBuilder enableCollisions(int tileId) {
@@ -76,10 +83,6 @@ public class TileMapBuilder {
         throw new IllegalArgumentException(String.format("Layer '%s' does not exists in tilemap", layerName));
     }
 
-    public Vector2 offset() {
-        return offset;
-    }
-
     public void build() {
         if(tilemap.infinite) {
             throw new RuntimeException("Infinite tilemap not supported");
@@ -92,6 +95,16 @@ public class TileMapBuilder {
                 case Layer.OBJECT -> buildObjectLayer(layer);
             }
         }
+    }
+
+    public Vector2 getObjectPosition(TileObject object) {
+        return getMapPosition(new Vector2(object.x + object.width / 2.0, object.y + object.height / 2.0));
+    }
+
+    public Vector2 getMapPosition(Vector2 localPos) {
+        double hw = (double)tilemap.width * (double)tilemap.tilewidth / 2.0;
+        double hh = (double)tilemap.height * (double)tilemap.tileheight / 2.0;
+        return localPos.add(this.offset).sub(new Vector2(hw, hh));
     }
 
     private void buildTileLayer(Layer layer) {
@@ -192,15 +205,19 @@ public class TileMapBuilder {
         return null;
     }
 
-    private Vector2 getMapPosition(Vector2 mapPos) {
-        double hw = (double)tilemap.width * (double)tilemap.tilewidth / 2.0;
-        double hh = (double)tilemap.height * (double)tilemap.tileheight / 2.0;
-        return mapPos.add(this.offset).sub(new Vector2(hw, hh));
-    }
-
     private void buildObjectLayer(Layer layer) {
         if(layer.objects == null) {
             return;
+        }
+
+        for(var object : layer.objects) {
+            var factory = objectFactoriesById.get(new Pair<>(layer.id, object.id));
+            if(factory == null) {
+                factory = objectFactoriesByName.get(new Pair<>(layer.id, object.name));
+            }
+            if(factory != null) {
+                factory.create(this, object, layer);
+            }
         }
     }
 }
