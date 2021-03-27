@@ -1,5 +1,6 @@
 package scene;
 
+import core.MathUtils;
 import core.Size;
 import core.Vector2;
 
@@ -10,6 +11,7 @@ public class SpriteBase extends Entity {
     private Vector2 offset = new Vector2();
     private boolean flipH = false;
     private boolean flipV = false;
+    private boolean flipD = false; // Anti diagonally flipping (for tile rotation)
     private double opacity = 1.0;
 
     public SpriteBase(Scene scene) {
@@ -28,6 +30,9 @@ public class SpriteBase extends Entity {
     public boolean isFlipV() {
         return flipV;
     }
+    public boolean isFlipD() {
+        return flipD;
+    }
     public double opacity() {
         return opacity;
     }
@@ -43,6 +48,9 @@ public class SpriteBase extends Entity {
     }
     public void flipV(boolean flipV) {
         this.flipV = flipV;
+    }
+    public void flipD(boolean flipD) {
+        this.flipD = flipD;
     }
     public void setOpacity(double opacity) {
         this.opacity = opacity;
@@ -63,5 +71,7 @@ public class SpriteBase extends Entity {
 
         g.translate(offset.x, offset.y);
         g.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+        g.rotate(flipD ? -MathUtils.PI / 2.0 : 0.0);
+        g.scale(flipD ? -1 : 1, 1);
     }
 }

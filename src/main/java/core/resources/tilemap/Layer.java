@@ -15,6 +15,6 @@ public class Layer extends TileElement {
     public int parallaxx, parallaxy;
     public boolean visible = true;
     public double opacity = 1.0;
-    public ArrayList<Integer> data = null;
+    public ArrayList<Long> data = null;
     public ArrayList<TileObject> objects = null;
 }

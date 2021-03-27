@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Layer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Layer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" afterDir="false" />
     </list>
@@ -226,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616811761497</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="tilemap collisions">
+      <created>1616812470844</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1616812470844</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -252,7 +260,8 @@
     <MESSAGE value="animated sprite" />
     <MESSAGE value="tilemap tiles and builder" />
     <MESSAGE value="tilemap objects and factory test" />
-    <option name="LAST_COMMIT_MESSAGE" value="tilemap objects and factory test" />
+    <MESSAGE value="tilemap collisions" />
+    <option name="LAST_COMMIT_MESSAGE" value="tilemap collisions" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

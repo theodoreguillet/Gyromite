@@ -12,6 +12,10 @@ import util.Pair;
 import java.util.*;
 
 public class TileMapBuilder {
+    private static final int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+    private static final int FLIPPED_VERTICALLY_FLAG   = 0x40000000;
+    private static final int FLIPPED_DIAGONALLY_FLAG   = 0x20000000;
+
     private final Scene scene;
     private final TileMap tilemap;
 
@@ -108,12 +112,22 @@ public class TileMapBuilder {
         if(layer.data == null) {
             return;
         }
-        for(int tileIdx = 0; tileIdx < layer.data.size(); tileIdx++) {
-            buildTile(layer, tileIdx, layer.data.get(tileIdx));
+        for(int i = 0; i < layer.data.size(); i++) {
+            buildTile(layer, i, layer.data.get(i));
         }
     }
 
-    private void buildTile(Layer layer, int tileIdx, int tileGid) {
+    private void buildTile(Layer layer, int tileIdx, long tileGidRaw) {
+        // Read out the flags
+        boolean hflip = (tileGidRaw & FLIPPED_HORIZONTALLY_FLAG) != 0;
+        boolean vflip = (tileGidRaw & FLIPPED_VERTICALLY_FLAG) != 0;
+        boolean dflip = (tileGidRaw & FLIPPED_DIAGONALLY_FLAG) != 0;
+
+        // Clear the flags
+        int tileGid = (int) (
+                tileGidRaw & ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG));
+
+        // Resolve the tile
         var tileset = getTileSet(tileGid);
         if (tileset == null) {
             return;
@@ -137,6 +151,9 @@ public class TileMapBuilder {
         sprite.size().set(mapRect.size());
         sprite.setRegion(tileRect);
         sprite.setOpacity(layer.opacity);
+        sprite.flipH(hflip);
+        sprite.flipV(vflip);
+        sprite.flipD(dflip);
 
         Tile tile = getTile(tileset, tileGid);
         if(collidingTilesIds.contains(tileGid) || (tile != null && collidingTilesTypes.contains(tile.type))) {
