@@ -3,13 +3,14 @@ package scene;
 import core.Size;
 import core.Vector2;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 
 public class SpriteBase extends Entity {
     private Size size = new Size();
     private Vector2 offset = new Vector2();
     private boolean flipH = false;
     private boolean flipV = false;
+    private double opacity = 1.0;
 
     public SpriteBase(Scene scene) {
         super(scene);
@@ -27,6 +28,9 @@ public class SpriteBase extends Entity {
     public boolean isFlipV() {
         return flipV;
     }
+    public double opacity() {
+        return opacity;
+    }
 
     public void setSize(Size size) {
         this.size = size;
@@ -40,13 +44,21 @@ public class SpriteBase extends Entity {
     public void flipV(boolean flipV) {
         this.flipV = flipV;
     }
+    public void setOpacity(double opacity) {
+        this.opacity = opacity;
+    }
 
     @Override
     public void render(Graphics2D g) {
         super.render(g);
 
-        if(size.width == 0 || size.height == 0) {
+        if(size.width == 0 || size.height == 0 || opacity <= 0.0) {
             return;
+        }
+
+        if(opacity < 1.0) {
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)opacity);
+            g.setComposite(ac);
         }
 
         g.translate(offset.x, offset.y);

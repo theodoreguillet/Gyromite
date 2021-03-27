@@ -2,14 +2,13 @@ package scene;
 
 import core.Input;
 import core.MainLoop;
-import core.Resources;
+import core.resources.Resources;
 import scene.physics.PhysicsProvider;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 public class Scene extends MainLoop {

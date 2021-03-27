@@ -4,7 +4,143 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="" />
+    <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Layer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileElement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileProperty.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/buch-outdoor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/desert.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/desert.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/hexagonal-mini.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/hexmini.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/isometric_grass_and_water.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/isometric_grass_and_water.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/isometric_staggered_grass_and_water.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/orthogonal-outside.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/perspective_walls.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/perspective_walls.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/perspective_walls.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/rpg/beach_tileset.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/rpg/beach_tileset.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/rpg/island.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/rpg/readme.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_001.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_002.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_003.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_004.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_005.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_006.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_007.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_008.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rule_009.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rules.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/rules_sewers.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_automap/sewers.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewer_tileset.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sewers.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/alter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/backgroundArch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/backgroundMountain.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/backgroundTower.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/backgroundTree.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/blobBlue.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/blobGreen.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/blue.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/bombStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/castleWall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/cloud.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/column1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/column2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/doorBlueStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/doorGreenStroke.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/doorRedStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/doorStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/earthWall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/earthWall2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/exit.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/flare.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/gemBlueStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/gemRedStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/grassLarge.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/grassSmall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/grey.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/hero.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/keyGreenStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/keyRedStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/keyYellowStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/objs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platform1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platform2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platform3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platform4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBase1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBase2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBase3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBase4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBlock1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBlock2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBlock3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformBlock4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformConnector1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformConnector2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformConnector3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/platformConnector4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/pushBlock1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/pushBlock2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/pushBlock3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/sandbox.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/sandbox2.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/shadow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/shieldStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/sign.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/skeleton.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/swordStroked.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/templates/block.tx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/templates/diamond.tx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/templates/hero.tx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/torch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/trap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/wallDecor1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/wallDecor2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/wallDecor3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/window1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/window2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/map/window3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/preview.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/sprites.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/backgroundSet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/block.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/buttonHelp.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/buttonStart.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/cloud.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/gem.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/heart.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/helpBackground.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/shield.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/title.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/sticker-knight/ui/title.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/test_hexagonal_tile_60x60x30.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/test_hexagonal_tile_60x60x30.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/examples/tmw_desert_spacing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Rect2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Rect2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -232,5 +368,12 @@
     <MESSAGE value="remove test" />
     <MESSAGE value="animated sprite" />
     <option name="LAST_COMMIT_MESSAGE" value="animated sprite" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="core.resources.TileMap$TileSet" memberName="tiles" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

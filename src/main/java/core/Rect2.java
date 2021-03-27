@@ -46,4 +46,8 @@ public class Rect2 implements Cloneable {
     public Size size() {
         return new Size(max.x - min.x, max.y - min.y);
     }
+
+    public Vector2 center() {
+        return min.add(max).divi(2);
+    }
 }

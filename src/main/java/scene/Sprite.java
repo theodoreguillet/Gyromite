@@ -56,7 +56,7 @@ public class Sprite extends SpriteBase {
     public void setVframes(int vframes) {
         this.vframes = vframes;
     }
-    public void setframe(int frame) {
+    public void setFrame(int frame) {
         this.frame = frame;
     }
 

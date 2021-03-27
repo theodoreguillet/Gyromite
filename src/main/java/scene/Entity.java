@@ -2,6 +2,7 @@ package scene;
 
 import core.Mat2;
 import core.Vector2;
+import scene.map.TileMapBuilder;
 import scene.physics.Body;
 import scene.physics.Shape;
 
@@ -47,8 +48,11 @@ public class Entity {
             this.body = null;
         }
     }
-    public void setPosition(Vector2 position) {
-        this.position = position;
+    public void setPosition(double x, double y) {
+        position.set(x, y);
+    }
+    public void setPosition(Vector2 pos) {
+        position.set(pos);
     }
     public void setOrient(double orient) {
         this.orient = orient;
