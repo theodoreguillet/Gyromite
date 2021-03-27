@@ -9,10 +9,7 @@ import scene.physics.Body;
 import scene.physics.PolygonShape;
 import util.Pair;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Vector;
+import java.util.*;
 
 public class TileMapBuilder {
     private final Scene scene;
@@ -41,12 +38,12 @@ public class TileMapBuilder {
         return offset;
     }
 
-    public TileMapBuilder enableCollisions(int tileId) {
-        collidingTilesIds.add(tileId);
+    public TileMapBuilder enableCollisions(Integer... tileIds) {
+        collidingTilesIds.addAll(Arrays.asList(tileIds));
         return this;
     }
-    public TileMapBuilder enableCollisions(String tileType) {
-        collidingTilesTypes.add(tileType);
+    public TileMapBuilder enableCollisions(String... tileTypes) {
+        collidingTilesTypes.addAll(Arrays.asList(tileTypes));
         return this;
     }
 
@@ -181,7 +178,7 @@ public class TileMapBuilder {
 
     private Tile getTile(TileSet tileset, int tileGid) {
         for(var tile : tileset.tiles) {
-            if(tile.id == tileGid) {
+            if(tile.id == tileGid - tileset.firstgid) {
                 return tile;
             }
         }

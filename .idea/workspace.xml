@@ -7,9 +7,8 @@
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616810505297</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="tilemap objects and factory test">
+      <created>1616811761497</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1616811761497</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -245,7 +251,8 @@
     <MESSAGE value="remove test" />
     <MESSAGE value="animated sprite" />
     <MESSAGE value="tilemap tiles and builder" />
-    <option name="LAST_COMMIT_MESSAGE" value="tilemap tiles and builder" />
+    <MESSAGE value="tilemap objects and factory test" />
+    <option name="LAST_COMMIT_MESSAGE" value="tilemap objects and factory test" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

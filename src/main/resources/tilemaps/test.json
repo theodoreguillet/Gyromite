@@ -27,7 +27,7 @@
          "height":10,
          "id":1,
          "name":"Foreground",
-         "opacity":0.38,
+         "opacity":1,
          "type":"tilelayer",
          "visible":true,
          "width":10,
@@ -85,6 +85,11 @@
          "spacing":1,
          "tilecount":48,
          "tileheight":32,
+         "tiles":[
+                {
+                 "id":30,
+                 "type":"cactus"
+                }],
          "tilewidth":32
         }],
  "tilewidth":32,

@@ -36,7 +36,11 @@ public class SceneTestTilemap extends Scene {
                     s.setOpacity(layer.opacity);
                     return s;
                 })
+                .enableCollisions(46, 40)
+                .enableCollisions("cactus")
                 .build();
+
+        setRenderPhysics(true);
     }
 
     @Override
