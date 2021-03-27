@@ -1,15 +1,62 @@
 package game;
 
+import core.MathUtils;
 import core.Vector2;
 import core.resources.tilemap.TileMap;
+import scene.Entity;
 import scene.FPSViewer;
 import scene.Scene;
 import scene.Sprite;
 import scene.map.TileMapBuilder;
+import scene.physics.Body;
+import scene.physics.CircleShape;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class SceneTestTilemap extends Scene {
+    private static class Player extends Entity implements KeyListener {
+        public Player(Scene scene) {
+            super(scene);
+            scene.input().addListener(this);
+            setBody(new CircleShape(10), Body.Mode.CHARACTER);
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            if(e.getKeyChar() == ' ') {
+                // Jump
+                // body().velocity.y = -80.0;
+            }
+        }
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                body().velocity.x = 100.0;
+                setOrient(0.0);
+            } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+                body().velocity.x = -100.0;
+                setOrient(MathUtils.PI);
+            } else if(e.getKeyCode() == KeyEvent.VK_UP) {
+                body().velocity.y = -100.0;
+                setOrient(-MathUtils.PI / 2.0);
+            } else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+                body().velocity.y = 100.0;
+                setOrient(MathUtils.PI / 2.0);
+            }
+        }
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
+                body().velocity.x = 0;
+            }
+            if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
+                body().velocity.y = 0;
+            }
+        }
+    }
+
     private Window window;
 
     private static final double GAME_HEIGHT = 500;
@@ -25,6 +72,10 @@ public class SceneTestTilemap extends Scene {
         window = new Window(800, 600, "Test", this);
 
         FPSViewer fps = new FPSViewer(this);
+
+        physics().gravity.set(0.0, 0.0);
+
+        Player player = new Player(this);
 
         camera().setZoom(new Vector2(1, 1));
 

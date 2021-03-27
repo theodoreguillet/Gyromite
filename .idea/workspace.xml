@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/Tile.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/test.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616812470844</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="tile animation and multi shapes">
+      <created>1616863685611</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1616863685612</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -269,7 +266,8 @@
     <MESSAGE value="tilemap tiles and builder" />
     <MESSAGE value="tilemap objects and factory test" />
     <MESSAGE value="tilemap collisions" />
-    <option name="LAST_COMMIT_MESSAGE" value="tilemap collisions" />
+    <MESSAGE value="tile animation and multi shapes" />
+    <option name="LAST_COMMIT_MESSAGE" value="tile animation and multi shapes" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
