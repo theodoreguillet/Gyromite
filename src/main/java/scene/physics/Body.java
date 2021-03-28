@@ -2,7 +2,7 @@ package scene.physics;
 
 import core.Mat2;
 import core.Vector2;
-import scene.Entity;
+import scene.Node;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ public class Body {
     }
 
     private final PhysicsProvider physics;
-    private final Entity entity;
+    private final Node node;
     private Mode mode;
 
     private HashSet<Body> contacts = new HashSet<>();
@@ -46,6 +46,10 @@ public class Body {
     private final ArrayList<BodyListener> bodyListeners = new ArrayList<>();
 
     boolean pendingRemove = false;
+
+    Vector2 position = new Vector2();
+    double orient = 0.0;
+    Mat2 orientMat = new Mat2(0.0);
 
     double mass, invMass, inertia, invInertia;
 
@@ -62,9 +66,9 @@ public class Body {
 
     public Vector2 gravity = new Vector2();
 
-    public Body(PhysicsProvider physics, Entity entity, Shape shape, Mode mode) {
+    public Body(PhysicsProvider physics, Node node, Shape shape, Mode mode) {
         this.physics = physics;
-        this.entity = entity;
+        this.node = node;
         this.mode = mode;
         this.shape = shape;
 
@@ -90,17 +94,17 @@ public class Body {
     public PhysicsProvider physics() {
         return physics;
     }
-    public Entity entity() {
-        return entity;
+    public Node node() {
+        return node;
     }
     public Vector2 position() {
-        return entity.position();
+        return position;
     }
     public double orient() {
-        return entity.orient();
+        return orient;
     }
     public Mat2 orientMat() {
-        return entity.orientMat();
+        return orientMat;
     }
 
     public Mode mode() {
@@ -153,7 +157,7 @@ public class Body {
     // v += (1/m * F) * dt
     // x += v * dt
 
-    protected void integrateForces(double dt) {
+    void integrateForces(double dt) {
         if (invMass == 0.0) {
             return;
         }
@@ -165,27 +169,37 @@ public class Body {
         angularVelocity += torque * invInertia * dts;
     }
 
-    protected void integrateVelocity(double dt) {
+    void integrateVelocity(double dt) {
         if (invMass == 0.0) {
             return;
         }
 
-        position().addsi(velocity, dt);
-        entity.setOrient(entity.orient() + angularVelocity * dt);
+        node.position().addsi(velocity, dt);
+        node.setOrient(node.orient() + angularVelocity * dt);
 
         integrateForces(dt);
     }
 
-    protected void clearContacts() {
+    void applyCorrection(Vector2 normal, double correction) {
+        node.position().addsi(normal, correction);
+    }
+
+    void clearContacts() {
         lastContacts = contacts;
         contacts = new HashSet<>();
     }
 
-    protected void addContact(Body other) {
+    void computePosition() {
+        position = node.worldPosition();
+        orient = node.worldOrient();
+        orientMat = new Mat2(orient);
+    }
+
+    void addContact(Body other) {
         contacts.add(other);
     }
 
-    protected void updateContacts() {
+    void updateContacts() {
         for(Body body : contacts) {
             if(!lastContacts.remove(body)) {
                 handleBodyEntered(body);

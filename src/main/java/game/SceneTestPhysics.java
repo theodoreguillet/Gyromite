@@ -2,7 +2,7 @@ package game;
 
 import core.MathUtils;
 import core.Vector2;
-import scene.Entity;
+import scene.Node;
 import scene.FPSViewer;
 import scene.Scene;
 import scene.physics.Body;
@@ -17,9 +17,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class SceneTestPhysics extends Scene {
-    private static class AREntity extends Entity {
-        public AREntity(Scene scene) {
-            super(scene);
+    private static class ARNode extends Node {
+        public ARNode() {
+            super();
         }
 
         @Override
@@ -30,10 +30,14 @@ public class SceneTestPhysics extends Scene {
             }
         }
     }
-    private static class Player extends AREntity implements KeyListener {
-        public Player(Scene scene) {
-            super(scene);
-            scene.input().addListener(this);
+    private static class Player extends ARNode implements KeyListener {
+        public Player() {
+            super();
+        }
+
+        @Override
+        protected void init() {
+            scene().input().addListener(this);
             setBody(new CircleShape(20), Body.Mode.CHARACTER);
         }
 
@@ -74,21 +78,21 @@ public class SceneTestPhysics extends Scene {
     protected void init() {
         window = new Window(800, 600, "Test", this);
 
-        FPSViewer fps = new FPSViewer(this);
+        FPSViewer fps = root().addChild(new FPSViewer());
 
-        AREntity floor = new AREntity(this);
+        ARNode floor = root().addChild(new ARNode());
         floor.position().set(0, 200);
         floor.setBody(new PolygonShape(200, 10), Body.Mode.STATIC);
 
-        Player player = new Player(this);
+        Player player = root().addChild(new Player());
 
-        AREntity area = new AREntity(this);
+        ARNode area = root().addChild(new ARNode());
         area.setBody(new PolygonShape(50, 50), Body.Mode.TRANSPARENT)
                 .addBodyListener(new BodyListener() {
                     @Override
                     public void bodyEntered(Body b) {
-                        if(b.shape instanceof CircleShape && !(b.entity() instanceof Player)) {
-                            b.entity().remove();
+                        if(b.shape instanceof CircleShape && !(b.node() instanceof Player)) {
+                            b.node().remove();
                         }
                         System.out.println("Body entered");
                     }
@@ -105,7 +109,7 @@ public class SceneTestPhysics extends Scene {
         input().addListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                AREntity entity = new AREntity(SceneTestPhysics.this);
+                ARNode entity = root().addChild(new ARNode());
                 entity.position().set(camera().getWorldCoordinate(e.getX(), e.getY()));
                 if(e.getButton() == MouseEvent.BUTTON1) {
                     entity.setBody(new PolygonShape(10, 10), Body.Mode.CHARACTER);

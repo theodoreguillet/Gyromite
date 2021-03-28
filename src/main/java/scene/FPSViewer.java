@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
 
-public class FPSViewer extends Entity {
+public class FPSViewer extends Node {
     private int ticks = 0;
     private int frames = 0;
 
@@ -13,21 +13,14 @@ public class FPSViewer extends Entity {
 
     private long lastSecondTimeMs = 0;
 
-    public FPSViewer(Scene scene) {
-        super(scene);
+    public FPSViewer() {
+        super();
     }
 
     @Override
-    public void render(Graphics2D g) {
-        frames++;
+    protected void update() {
+        super.update();
 
-        g.setTransform(new AffineTransform());
-        g.setColor(Color.black);
-        g.drawString("FPS: " + averageFrames + " Updates: " + averageTicks, 10, 20);
-    }
-
-    @Override
-    public void update() {
         ticks++;
 
         long timeMs = System.currentTimeMillis();
@@ -38,5 +31,16 @@ public class FPSViewer extends Entity {
             frames = 0;
             ticks = 0;
         }
+    }
+
+    @Override
+    protected void render(Graphics2D g) {
+        super.render(g);
+
+        frames++;
+
+        g.setTransform(new AffineTransform());
+        g.setColor(Color.black);
+        g.drawString("FPS: " + averageFrames + " Updates: " + averageTicks, 10, 20);
     }
 }

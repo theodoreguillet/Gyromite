@@ -2,7 +2,7 @@ package scene.physics;
 
 import core.Mat2;
 import core.Vector2;
-import scene.Entity;
+import scene.Node;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -43,6 +43,11 @@ public class PhysicsProvider {
         contacts.clear();
         for(Body body : bodies) {
             body.clearContacts();
+        }
+
+        // Compute bodies position from node world position
+        for(Body body : bodies) {
+            body.computePosition();
         }
 
         // Generate new collision info
@@ -105,13 +110,13 @@ public class PhysicsProvider {
 
     /**
      * Create a new body and add it
-     * @param entity The entity of the body
+     * @param node The entity of the body
      * @param shape The shape
      * @param mode The body mode. See {@link Body.Mode}
      * @return The body
      */
-    public Body add(Entity entity, Shape shape, Body.Mode mode) {
-        Body b = new Body(this, entity, shape, mode);
+    public Body add(Node node, Shape shape, Body.Mode mode) {
+        Body b = new Body(this, node, shape, mode);
         bodies.add(b);
         return b;
     }

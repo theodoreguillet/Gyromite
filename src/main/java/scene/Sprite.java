@@ -7,25 +7,26 @@ import java.awt.image.BufferedImage;
 
 public class Sprite extends SpriteBase {
     private BufferedImage image;
+    private String imageId = null;
 
     private Rect2 region = new Rect2();
     private int hframes = 1;
     private int vframes = 1;
     private int frame = 0;
 
-    public Sprite(Scene scene) {
-        super(scene);
+    public Sprite() {
+        super();
         image = null;
     }
 
-    public Sprite(Scene scene, BufferedImage image) {
-        super(scene);
-        setImage(image);
+    public Sprite(BufferedImage image) {
+        super();
+        this.image = image;
     }
 
-    public Sprite(Scene scene, String image) {
-        super(scene);
-        setImage(image);
+    public Sprite(String image) {
+        super();
+        this.imageId = image;
     }
 
     public Rect2 region() {
@@ -61,7 +62,14 @@ public class Sprite extends SpriteBase {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    protected void init() {
+        if(imageId != null) {
+            this.image = scene().resources().getImage(imageId);
+        }
+    }
+
+    @Override
+    protected void render(Graphics2D g) {
         super.render(g);
 
         if(image == null) {

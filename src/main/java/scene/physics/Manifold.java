@@ -112,8 +112,8 @@ class Manifold {
         }
         double correction = StrictMath.max(penetration - PhysicsProvider.PENETRATION_ALLOWANCE, 0.0) / (A.invMass + B.invMass) * PhysicsProvider.PENETRATION_CORRECTION;
 
-        A.position().addsi(normal, -A.invMass * correction);
-        B.position().addsi(normal, B.invMass * correction);
+        A.applyCorrection(normal, -A.invMass * correction);
+        B.applyCorrection(normal, B.invMass * correction);
     }
 
     void infiniteMassCorrection() {

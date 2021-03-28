@@ -2,8 +2,7 @@ package game;
 
 import core.MathUtils;
 import core.Vector2;
-import core.resources.tilemap.TileMap;
-import scene.Entity;
+import scene.Node;
 import scene.FPSViewer;
 import scene.Scene;
 import scene.Sprite;
@@ -16,10 +15,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class SceneTestTilemap extends Scene {
-    private static class Player extends Entity implements KeyListener {
-        public Player(Scene scene) {
-            super(scene);
-            scene.input().addListener(this);
+    private static class Player extends Node implements KeyListener {
+        public Player() {
+            super();
+        }
+
+        @Override
+        public void init() {
+            scene().input().addListener(this);
             setBody(new CircleShape(10), Body.Mode.CHARACTER);
         }
 
@@ -71,17 +74,17 @@ public class SceneTestTilemap extends Scene {
     protected void init() {
         window = new Window(800, 600, "Test", this);
 
-        FPSViewer fps = new FPSViewer(this);
+        FPSViewer fps = root().addChild(new FPSViewer());
 
         physics().gravity.set(0.0, 0.0);
 
-        Player player = new Player(this);
+        Player player = root().addChild(new Player());
 
         camera().setZoom(new Vector2(1, 1));
 
         new TileMapBuilder(this, "testmap")
                 .setObjectFactory(2, 3, (builder, object, layer) -> {
-                    Sprite s = new Sprite(builder.scene(), "test");
+                    Sprite s = builder.scene().root().addChild(new Sprite("test"));
                     s.setPosition(builder.getObjectPosition(object));
                     s.size().set(object.width, object.height);
                     s.setOpacity(layer.opacity);

@@ -5,6 +5,7 @@ import core.MainLoop;
 import core.resources.Resources;
 import scene.physics.PhysicsProvider;
 
+import javax.swing.text.html.parser.Entity;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
@@ -12,17 +13,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Scene extends MainLoop {
-    private final ArrayList<Entity> entities = new ArrayList<>();
     private final Viewport viewport = new Viewport();
     private final Input input = new Input();
     private final Resources resources = new Resources();
     private final PhysicsProvider physics = new PhysicsProvider(MainLoop.DT, 10);
+    private SceneRoot root = new SceneRoot(this);
     private Camera camera = new Camera(this);
     private boolean antialiasing = true;
     private boolean renderPhysics = false;
-
-    private boolean updatingEntities = false;
-    private boolean removeEntity = false;
 
     public Scene() {
         super();
@@ -40,6 +38,9 @@ public class Scene extends MainLoop {
     }
     public PhysicsProvider physics() {
         return physics;
+    }
+    public SceneRoot root() {
+        return root;
     }
     public Camera camera() {
         return camera;
@@ -69,7 +70,7 @@ public class Scene extends MainLoop {
     @Override
     protected final void update() {
         preUpdate();
-        updateEntities();
+        root.update();
         camera.update();
         postUpdate();
     }
@@ -95,29 +96,20 @@ public class Scene extends MainLoop {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
-        Composite cp = g.getComposite();
-
         g.setTransform(new AffineTransform());
-        preRender(g);
+        preRender((Graphics2D) g.create());
 
         camera.transform(g);
         AffineTransform at = g.getTransform();
 
-        for(var e : entities) {
-            g.setTransform(at);
-            g.setComposite(cp);
-            e.render(g);
-        }
+        root.render((Graphics2D) g.create());
 
         if(renderPhysics)  {
-            g.setTransform(at);
-            g.setComposite(cp);
-            physics.render(g);
+            physics.render((Graphics2D) g.create());
         }
 
         g.setTransform(new AffineTransform());
-        g.setComposite(cp);
-        postRender(g);
+        postRender((Graphics2D) g.create());
 
         g.dispose();
         bufferstrategy.show();
@@ -129,34 +121,4 @@ public class Scene extends MainLoop {
         g.clearRect(0, 0, viewport().getWidth(), viewport.getHeight());
     }
     protected void postRender(Graphics2D g) { }
-
-    void addEntity(Entity entity) {
-        if(!entities.contains(entity)) {
-            entities.add(entity);
-        }
-    }
-    void removeEntity(Entity entity) {
-        if(updatingEntities) {
-            removeEntity = true;
-        } else {
-            entities.remove(entity);
-        }
-    }
-
-    /**
-     * Update entities and allow entity remove during update
-     */
-    private void updateEntities() {
-        updatingEntities = true;
-        Iterator<Entity> it = entities.iterator();
-        while(it.hasNext()) {
-            Entity e = it.next();
-            removeEntity = false;
-            e.update();
-            if(removeEntity) {
-                it.remove();
-            }
-        }
-        updatingEntities = false;
-    }
 }

@@ -32,12 +32,12 @@ public class SceneTestSprite extends Scene {
     protected void init() {
         window = new Window(800, 600, "Test", this);
 
-        FPSViewer fps = new FPSViewer(this);
+        FPSViewer fps = root().addChild(new FPSViewer());
 
-        Sprite background = new Sprite(this, "test");
+        Sprite background = root().addChild(new Sprite("test"));
         background.size().set(400.0 * 1920.0 / 1080.0, 400.0);
 
-        ninja = new AnimatedSprite(this);
+        ninja = root().addChild(new AnimatedSprite());
         ninja.size().set(200.0, 200.0);
         ninja.addAnimation("run")
                 .addFrames("ninja", 6, 3, 6, 11)

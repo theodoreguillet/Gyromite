@@ -2,8 +2,8 @@ package scene.map;
 
 import core.resources.tilemap.Layer;
 import core.resources.tilemap.TileObject;
-import scene.Entity;
+import scene.Node;
 
 public interface TileObjectFactory {
-    Entity create(TileMapBuilder builder, TileObject object, Layer objectLayer);
+    Node create(TileMapBuilder builder, TileObject object, Layer objectLayer);
 }

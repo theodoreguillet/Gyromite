@@ -12,7 +12,7 @@ public class Camera {
     private Vector2 position = new Vector2();
     private Vector2 offset = new Vector2();
     private Vector2 zoom = new Vector2(1, 1);
-    private Entity followed = null;
+    private Node followed = null;
 
     public Camera(Scene scene) {
         this.scene = scene;
@@ -42,8 +42,8 @@ public class Camera {
         g.setTransform(getTransform());
     }
 
-    public void follow(Entity entity) {
-        followed = entity;
+    public void follow(Node node) {
+        followed = node;
     }
 
     public void update() {

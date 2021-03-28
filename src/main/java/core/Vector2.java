@@ -259,7 +259,7 @@ public class Vector2 implements Cloneable {
     /**
      * Rotates this vector by the given radians.
      */
-    public void rotate(double radians) {
+    public Vector2 rotate(double radians) {
         double c = StrictMath.cos(radians);
         double s = StrictMath.sin(radians);
 
@@ -268,6 +268,8 @@ public class Vector2 implements Cloneable {
 
         x = xp;
         y = yp;
+
+        return this;
     }
 
     /**

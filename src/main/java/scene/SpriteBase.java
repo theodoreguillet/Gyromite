@@ -6,7 +6,7 @@ import core.Vector2;
 
 import java.awt.*;
 
-public class SpriteBase extends Entity {
+public class SpriteBase extends Node {
     private Size size = new Size();
     private Vector2 offset = new Vector2();
     private boolean flipH = false;
@@ -14,8 +14,8 @@ public class SpriteBase extends Entity {
     private boolean flipD = false; // Anti diagonally flipping (for tile rotation)
     private double opacity = 1.0;
 
-    public SpriteBase(Scene scene) {
-        super(scene);
+    public SpriteBase() {
+        super();
     }
 
     public Size size() {
@@ -57,7 +57,7 @@ public class SpriteBase extends Entity {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    protected void render(Graphics2D g) {
         super.render(g);
 
         if(size.width == 0 || size.height == 0 || opacity <= 0.0) {

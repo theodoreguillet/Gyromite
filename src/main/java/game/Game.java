@@ -19,6 +19,6 @@ public class Game extends Scene {
     protected void init() {
         window = new Window(800, 600, "Test", this);
 
-        FPSViewer fps = new FPSViewer(this);
+        FPSViewer fps = root().addChild(new FPSViewer());
     }
 }

@@ -15,8 +15,8 @@ public class AnimatedSprite extends SpriteBase {
     private long frameTime = 0;
     private double speedScale = 1.0;
 
-    public AnimatedSprite(Scene scene) {
-        super(scene);
+    public AnimatedSprite() {
+        super();
     }
 
     public boolean hasAnimation(String id) {
@@ -79,7 +79,7 @@ public class AnimatedSprite extends SpriteBase {
     }
 
     @Override
-    public void update() {
+    protected void update() {
         super.update();
 
         if(!isPlaying()) {
@@ -114,7 +114,7 @@ public class AnimatedSprite extends SpriteBase {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    protected void render(Graphics2D g) {
         super.render(g);
 
         if(currentAnimation == null) {

@@ -102,6 +102,9 @@ public class PolygonShape extends Shape {
         normals[1].set(1.0, 0.0);
         normals[2].set(0.0, 1.0);
         normals[3].set(-1.0, 0.0);
+
+        // Calculate centroid and moment of inertia
+        computeCentroid();
     }
 
     public void set(Vector2... verts) {

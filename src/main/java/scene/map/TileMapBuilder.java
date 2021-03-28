@@ -1,8 +1,6 @@
 package scene.map;
 
-import core.MathUtils;
 import core.Rect2;
-import core.Size;
 import core.Vector2;
 import core.resources.tilemap.*;
 import scene.*;
@@ -147,7 +145,7 @@ public class TileMapBuilder {
 
         TileData tile = getTile(tileset, tileId);
         if(tile != null && tile.animation != null && !tile.animation.isEmpty()) {
-            AnimatedSprite animatedSprite = new AnimatedSprite(scene);
+            AnimatedSprite animatedSprite = scene.root().addChild(new AnimatedSprite());
             var anim = animatedSprite.addAnimation("tile");
             double totalDuration = 0.0;
             for(var frame : tile.animation) {
@@ -168,7 +166,7 @@ public class TileMapBuilder {
                 return;
             }
 
-            Sprite staticSprite = new Sprite(scene, tileset.loadedImage);
+            Sprite staticSprite = scene.root().addChild(new Sprite(tileset.loadedImage));
             staticSprite.setRegion(tileRect);
             sprite = staticSprite;
         }
@@ -193,7 +191,7 @@ public class TileMapBuilder {
                     } else {
                         shape = new PolygonShape(shapeObject.width / 2.0, shapeObject.height / 2.0);
                     }
-                    var collisionShape = new Entity(scene);
+                    var collisionShape = scene.root().addChild(new Node());
                     collisionShape.setBody(shape, Body.Mode.STATIC);
                     collisionShape.position().x = sprite.position().x - sprite.size().width / 2.0
                             + shapeObject.x + shapeObject.width / 2.0;

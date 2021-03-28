@@ -1,15 +1,17 @@
 package game;
 
 import core.Vector2;
-import scene.Entity;
+import scene.Node;
 import scene.FPSViewer;
 import scene.Scene;
+import scene.physics.Body;
+import scene.physics.PolygonShape;
 
 import java.awt.*;
 
-class TestEntity extends Entity {
-    public TestEntity(Scene scene) {
-        super(scene);
+class TestNode extends Node {
+    public TestNode() {
+        super();
     }
 
     @Override
@@ -33,9 +35,9 @@ class TestEntity extends Entity {
     }
 }
 
-class TestEntity2 extends Entity {
-    public TestEntity2(Scene scene) {
-        super(scene);
+class TestNode2 extends Node {
+    public TestNode2() {
+        super();
     }
 
     @Override
@@ -58,7 +60,7 @@ class TestEntity2 extends Entity {
 public class SceneTestGame extends Scene {
     private Window window;
 
-    private TestEntity test;
+    private TestNode test;
     private double lastTestSpawnX = 0;
 
     private static final double GAME_HEIGHT = 500;
@@ -76,22 +78,36 @@ public class SceneTestGame extends Scene {
     protected void init() {
         window = new Window(800, 600, "Test", this);
 
-        FPSViewer fps = new FPSViewer(this);
-        test = new TestEntity(this);
+        physics().gravity.set(0, 0);
+
+        FPSViewer fps = root().addChild(new FPSViewer());
+        test = root().addChild(new TestNode());
 
         test.position().x = 100;
         test.position().y = GAME_HEIGHT / 2;
 
-        var test1 = new TestEntity(this);
+        var test1 = root().addChild(new TestNode());
         test1.position().y = GAME_HEIGHT - 50;
-        var test2 = new TestEntity(this);
+        var test2 = root().addChild(new TestNode());
         test2.position().y = 50;
+
+        var test2Child = test2.addChild(new TestNode2());
+        test2Child.setPosition(100, 0);
+        test2Child.setBody(new PolygonShape(20, 20), Body.Mode.RIGID);
+        test2.setOrient(Math.PI / 4.0);
+
+        var wall = root().addChild(new Node());
+        wall.setPosition(200, test2Child.worldPosition().y);
+        wall.setBody(new PolygonShape(10, 100), Body.Mode.STATIC);
 
         testSpawn();
 
         camera().setZoom(new Vector2(1, 1));
+        camera().position().set(0, 250);
 
-        camera().follow(test);
+        // camera().follow(test);
+
+        setRenderPhysics(true);
     }
 
     @Override
@@ -117,9 +133,13 @@ public class SceneTestGame extends Scene {
 
     private void testSpawn() {
         lastTestSpawnX = test.position().x;
-        new TestEntity2(this).setPosition(new Vector2(test.position().x + 200, test.position().y + 100));
-        new TestEntity2(this).setPosition(new Vector2(test.position().x + 200, test.position().y - 100));
-        new TestEntity2(this).setPosition(new Vector2(test.position().x + 400, test.position().y + 100));
-        new TestEntity2(this).setPosition(new Vector2(test.position().x + 400, test.position().y - 100));
+        root().addChild(new TestNode2())
+                .setPosition(new Vector2(test.position().x + 200, test.position().y + 100));
+        root().addChild(new TestNode2())
+                .setPosition(new Vector2(test.position().x + 200, test.position().y - 100));
+        root().addChild(new TestNode2())
+                .setPosition(new Vector2(test.position().x + 400, test.position().y + 100));
+        root().addChild(new TestNode2())
+                .setPosition(new Vector2(test.position().x + 400, test.position().y - 100));
     }
 }
