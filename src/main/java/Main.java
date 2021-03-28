@@ -6,7 +6,7 @@ import scene.Scene;
 
 public class Main {
     public static void main(String[] args) {
-        Scene game = new SceneTestGame();
+        Scene game = new SceneTestPhysics();
         game.start();
     }
 }
