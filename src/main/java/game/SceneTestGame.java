@@ -78,8 +78,6 @@ public class SceneTestGame extends Scene {
     protected void init() {
         window = new Window(800, 600, "Test", this);
 
-        physics().gravity.set(0, 0);
-
         FPSViewer fps = root().addChild(new FPSViewer());
         test = root().addChild(new TestNode());
 
@@ -100,12 +98,16 @@ public class SceneTestGame extends Scene {
         wall.setPosition(200, test2Child.worldPosition().y);
         wall.setBody(new PolygonShape(10, 100), Body.Mode.STATIC);
 
+        var floor = root().addChild(new Node());
+        floor.setPosition(0, 400);
+        floor.setBody(new PolygonShape(400, 10), Body.Mode.STATIC);
+
         testSpawn();
 
         camera().setZoom(new Vector2(1, 1));
         camera().position().set(0, 250);
 
-        // camera().follow(test);
+        camera().follow(test2Child);
 
         setRenderPhysics(true);
     }

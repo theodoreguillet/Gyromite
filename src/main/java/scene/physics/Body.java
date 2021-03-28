@@ -164,8 +164,12 @@ public class Body {
 
         double dts = dt * 0.5;
 
+        Vector2 worldGravity = node.owner() != null
+                ? gravity.clone().rotate(-node.owner().worldOrient())
+                : gravity;
+
         velocity.addsi(force, invMass * dts);
-        velocity.addsi(gravity, dts);
+        velocity.addsi(worldGravity, dts);
         angularVelocity += torque * invInertia * dts;
     }
 

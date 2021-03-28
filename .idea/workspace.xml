@@ -5,29 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/scene/SceneRoot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Vector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Vector2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestPhysics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestPhysics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestSprite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Manifold.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Manifold.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +243,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616863685612</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="node childs and bodies">
+      <created>1616958889223</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1616958889223</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,28 +278,10 @@
     <MESSAGE value="tilemap objects and factory test" />
     <MESSAGE value="tilemap collisions" />
     <MESSAGE value="tile animation and multi shapes" />
-    <option name="LAST_COMMIT_MESSAGE" value="tile animation and multi shapes" />
+    <MESSAGE value="node childs and bodies" />
+    <option name="LAST_COMMIT_MESSAGE" value="node childs and bodies" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/scene/physics/Body.java</url>
-          <line>176</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/game/SceneTestGame.java</url>
-          <line>95</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="core.resources.TileMap$TileSet" memberName="tiles" />

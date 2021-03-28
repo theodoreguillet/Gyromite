@@ -32,6 +32,9 @@ public class Node {
     public Scene scene() {
         return owner == null ? null : owner.scene();
     }
+    public Node owner() {
+        return owner;
+    }
     public Body body() {
         return body;
     }

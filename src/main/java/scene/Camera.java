@@ -48,8 +48,7 @@ public class Camera {
 
     public void update() {
         if(this.followed != null) {
-            this.position.x = followed.position().x;
-            this.position.y = followed.position().y;
+            this.position.set(followed.worldPosition());
         }
     }
 

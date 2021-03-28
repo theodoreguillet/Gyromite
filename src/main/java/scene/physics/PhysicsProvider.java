@@ -143,6 +143,7 @@ public class PhysicsProvider {
      */
     public void render(Graphics2D g) {
         for (Body b : bodies) {
+            b.computePosition(); // Compute position for render
             if(b.mode() == Body.Mode.TRANSPARENT) {
                 g.setColor(Color.GRAY);
             } else {
