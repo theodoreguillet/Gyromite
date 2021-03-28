@@ -122,8 +122,8 @@ public class SceneTestGame extends Scene {
 
     @Override
     protected void preUpdate() {
-        double zoom = viewport().getHeight() / GAME_HEIGHT;
-        camera().setZoom(new Vector2(zoom, zoom));
+        // double zoom = viewport().getHeight() / GAME_HEIGHT;
+        // camera().setZoom(new Vector2(zoom, zoom));
     }
 
     @Override

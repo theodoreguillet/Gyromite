@@ -97,15 +97,6 @@ public class Body {
     public Node node() {
         return node;
     }
-    public Vector2 position() {
-        return position;
-    }
-    public double orient() {
-        return orient;
-    }
-    public Mat2 orientMat() {
-        return orientMat;
-    }
 
     public Mode mode() {
         return mode;
@@ -145,6 +136,16 @@ public class Body {
         torque = 0;
     }
 
+    Vector2 position() {
+        return position;
+    }
+    double orient() {
+        return orient;
+    }
+    Mat2 orientMat() {
+        return orientMat;
+    }
+
     // Acceleration
     // F = mA
     // => A = F * 1/m
@@ -180,12 +181,14 @@ public class Body {
 
         node.position().addsi(velocity, dt);
         node.setOrient(node.orient() + angularVelocity * dt);
+        computePosition();
 
         integrateForces(dt);
     }
 
     void applyCorrection(Vector2 normal, double correction) {
         node.position().addsi(normal, correction);
+        computePosition();
     }
 
     void clearContacts() {
