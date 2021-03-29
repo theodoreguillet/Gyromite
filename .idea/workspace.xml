@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -262,7 +261,42 @@
       <option name="project" value="LOCAL" />
       <updated>1616972390657</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="body position">
+      <created>1616973400125</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1616973400125</updated>
+    </task>
+    <task id="LOCAL-00017" summary="image smooth">
+      <created>1616978222714</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1616978222714</updated>
+    </task>
+    <task id="LOCAL-00018" summary="camera stretch">
+      <created>1616983318556</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1616983318556</updated>
+    </task>
+    <task id="LOCAL-00019" summary="physics update before update">
+      <created>1616983343647</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1616983343647</updated>
+    </task>
+    <task id="LOCAL-00020" summary="game test">
+      <created>1616983360525</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1616983360525</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -293,7 +327,12 @@
     <MESSAGE value="node childs and bodies" />
     <MESSAGE value="node world position" />
     <MESSAGE value="comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="comments" />
+    <MESSAGE value="body position" />
+    <MESSAGE value="image smooth" />
+    <MESSAGE value="camera stretch" />
+    <MESSAGE value="physics update before update" />
+    <MESSAGE value="game test" />
+    <option name="LAST_COMMIT_MESSAGE" value="game test" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
