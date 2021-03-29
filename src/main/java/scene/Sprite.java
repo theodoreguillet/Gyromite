@@ -1,6 +1,7 @@
 package scene;
 
 import core.Rect2;
+import core.Size;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -81,18 +82,19 @@ public class Sprite extends SpriteBase {
             if(vframes > 1 || hframes > 1 && frame < vframes * hframes) {
                 int frameX = frame % hframes;
                 int frameY = frame / hframes;
-                int sx1 = frameX * image.getWidth() / hframes;
-                int sy1 = frameY * image.getHeight() / vframes;
-                int sx2 = (frameX + 1) * image.getWidth() / hframes;
-                int sy2 = (frameY + 1) * image.getHeight() / vframes;
-                subImage = image.getSubimage(sx1, sy1, sx2, sy2);
+                int x = frameX * image.getWidth() / hframes;
+                int y = frameY * image.getHeight() / vframes;
+                int w = image.getWidth() / hframes;
+                int h = image.getHeight() / vframes;
+                subImage = image.getSubimage(x, y, w, h);
             } else {
                 subImage = image;
             }
         } else {
+            Size regionSize = region.size();
             subImage = image.getSubimage(
                     (int)region.min.x, (int)region.min.y,
-                    (int)region.max.x, (int)region.max.y);
+                    (int)regionSize.width, (int)regionSize.height);
         }
 
         // Smooth render of the image
