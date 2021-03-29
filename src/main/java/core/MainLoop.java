@@ -56,8 +56,8 @@ public class MainLoop {
             if (now - nextTick >= 0 && !paused.get()) {
                 processInput();
                 do {
-                    update();
                     updatePhysics();
+                    update();
 
                     nextTick += NANOS_PER_TICK;
                 } while (now - nextTick >= 0);
