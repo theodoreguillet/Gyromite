@@ -235,7 +235,7 @@ public class TiledMap extends Node {
             int x2 = x1 + w;
             int y2 = y1 + h;
 
-            if (x2 < tileset.loadedImage.getWidth() && y2 < tileset.loadedImage.getHeight()) {
+            if (x2 <= tileset.loadedImage.getWidth() && y2 <= tileset.loadedImage.getHeight()) {
                 return new Rect2(x1, y1, x2, y2);
             }
         }
