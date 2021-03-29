@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestGameTilemap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/phase_01.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/tileset.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,7 +64,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="tilemap" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -91,6 +96,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\theod\Documents\Travail\Projet Java\Gyromite\src\main\java\game" />
       <recent name="C:\Users\theod\Documents\Travail\Projet Java\Gyromite\src\test\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="game" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.Gyromite [run]">
@@ -358,7 +366,21 @@
       <option name="project" value="LOCAL" />
       <updated>1617055458832</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="tilemap visible layer">
+      <created>1617056963859</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1617056963859</updated>
+    </task>
+    <task id="LOCAL-00031" summary="tilemap fix">
+      <created>1617057818250</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1617057818250</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -375,8 +397,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="entity orient" />
-    <MESSAGE value="game physic test" />
     <MESSAGE value="transparent body and contact events" />
     <MESSAGE value="entity remove" />
     <MESSAGE value="remove test" />
@@ -400,7 +420,9 @@
     <MESSAGE value="input weak reference" />
     <MESSAGE value="node owner" />
     <MESSAGE value="tilemap" />
-    <option name="LAST_COMMIT_MESSAGE" value="tilemap" />
+    <MESSAGE value="tilemap visible layer" />
+    <MESSAGE value="tilemap fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="tilemap fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

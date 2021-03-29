@@ -273,8 +273,9 @@ public class Camera {
                 position.y += pos.y - max.y;
             }
             if(!bounds.isEmpty()) {
-                position.maxi(position, bounds.min);
-                position.mini(position, bounds.max);
+                var hs = new Vector2(size.width / 2.0, size.height / 2.0);
+                position.maxi(position, bounds.min.add(hs));
+                position.mini(position, bounds.max.sub(hs));
             }
         }
     }

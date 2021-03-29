@@ -1,6 +1,7 @@
 package scene.map;
 
 import core.Rect2;
+import core.Size2;
 import core.Vector2;
 import core.resources.tilemap.*;
 import scene.*;
@@ -29,8 +30,6 @@ public class TiledMap extends Node {
     private final HashMap<Pair<Integer, Integer>, TileObjectFactory> objectFactoriesById = new HashMap<>();
     private final HashMap<Pair<Integer, String>, TileObjectFactory> objectFactoriesByName = new HashMap<>();
 
-    private final Vector2 offset = new Vector2();
-
     public TiledMap(String tilemap) {
         this.tilemapResourceId = tilemap;
     }
@@ -43,8 +42,8 @@ public class TiledMap extends Node {
     public TileMapData tilemap() {
         return tilemap;
     }
-    public Vector2 offset() {
-        return offset;
+    public Size2 size() {
+        return new Size2(tilemap.width * tilemap.tilewidth, tilemap.height * tilemap.tileheight);
     }
 
     public TiledMap enableCollisions(Integer... tileIds) {
@@ -68,15 +67,6 @@ public class TiledMap extends Node {
     }
     public TiledMap setObjectFactory(int layer, String name, TileObjectFactory factory) {
         objectFactoriesByName.put(new Pair<>(layer, name), factory);
-        return this;
-    }
-
-    public TiledMap setOffset(double x, double y) {
-        offset.set(x, y);
-        return this;
-    }
-    public TiledMap setOffset(Vector2 offset) {
-        this.offset.set(offset);
         return this;
     }
 
@@ -112,7 +102,7 @@ public class TiledMap extends Node {
     public Vector2 getMapPosition(Vector2 localPos) {
         double hw = (double)tilemap.width * (double)tilemap.tilewidth / 2.0;
         double hh = (double)tilemap.height * (double)tilemap.tileheight / 2.0;
-        return localPos.add(this.offset).sub(new Vector2(hw, hh));
+        return localPos.sub(new Vector2(hw, hh));
     }
 
     private void buildTileLayer(Layer layer) {
