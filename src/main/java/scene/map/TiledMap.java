@@ -96,9 +96,11 @@ public class TiledMap extends Node {
         }
 
         for(var layer : tilemap.layers) {
-            switch (layer.type) {
-                case Layer.TILE -> buildTileLayer(layer);
-                case Layer.OBJECT -> buildObjectLayer(layer);
+            if (layer.visible) {
+                switch (layer.type) {
+                    case Layer.TILE -> buildTileLayer(layer);
+                    case Layer.OBJECT -> buildObjectLayer(layer);
+                }
             }
         }
     }

@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +59,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="tilemap" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -139,8 +140,8 @@
       <list>
         <item itemvalue="Gradle.Gyromite [run]" />
         <item itemvalue="Gradle.TestRessources.testLoadImage" />
-        <item itemvalue="Gradle.Gyromite [run]" />
         <item itemvalue="Gradle.TestRessources.testLoadImage" />
+        <item itemvalue="Gradle.Gyromite [run]" />
         <item itemvalue="Gradle.Gyromite [run]" />
       </list>
     </recent_temporary>
