@@ -23,8 +23,8 @@ public class PhysicsProvider {
      */
     public final Vector2 gravity = new Vector2(0.0, 100.0);
 
-    private final double dt;
-    private final int iterations;
+    final double dt;
+    final int iterations;
     private final ArrayList<Body> bodies = new ArrayList<>();
     private final ArrayList<Manifold> contacts = new ArrayList<>();
 

@@ -32,6 +32,23 @@ class Manifold {
         // Calculate static and dynamic friction
         sf = StrictMath.sqrt(A.staticFriction * A.staticFriction + B.staticFriction * B.staticFriction);
         df = StrictMath.sqrt(A.dynamicFriction * A.dynamicFriction + B.dynamicFriction * B.dynamicFriction);
+
+        for (int i = 0; i < contactCount; ++i)
+        {
+            // Calculate radii from COM to contact
+            Vector2 ra = contacts[i].sub( A.position );
+            Vector2 rb = contacts[i].sub( B.position );
+
+            Vector2 rv = B.velocity.add( Vector2.cross( B.angularVelocity, rb, new Vector2() ) ).subi( A.velocity ).subi( Vector2.cross( A.angularVelocity, ra, new Vector2() ) );
+
+            // Determine if we should perform a resting collision or not
+            // The idea is if the only thing moving this object is gravity,
+            // then the collision should be performed without any restitution
+            if (rv.len2() < (A.mode() == Body.Mode.STATIC ? B : A).gravity.mul(A.physics().dt).len2() + MathUtils.EPSILON)
+            {
+                e = 0.0;
+            }
+        }
     }
 
     void applyImpulse() {
