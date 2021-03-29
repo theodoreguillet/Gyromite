@@ -1,5 +1,6 @@
 package scene;
 
+import core.Rect2;
 import core.Size;
 import core.Vector2;
 
@@ -10,7 +11,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Camera of the {@link Scene}, displays from a point of view in the {@link Viewport}.
+ * Camera of the {@link Scene}, displays from a point of view inside the {@link Viewport}.
  */
 public class Camera {
     /**
@@ -49,16 +50,26 @@ public class Camera {
     private final Size size = new Size(800, 600);
     private final Vector2 offset = new Vector2();
     private final Vector2 zoom = new Vector2(1, 1);
+    private final Rect2 bounds = new Rect2();
     private Node followed = null;
+    private final Rect2 followBox = new Rect2();
     private StretchMode stretchMode = StretchMode.DISABLED;
 
     public Camera(Scene scene) {
         this.scene = scene;
     }
 
+    /**
+     * The position of the camera in the world.
+     * The coordinates correspond to the center point of the camera.
+     * @return The position
+     */
     public Vector2 position() {
         return position;
     }
+    /**
+     * @return The size of
+     */
     public Size size() {
         return size;
     }
@@ -67,6 +78,9 @@ public class Camera {
     }
     public Vector2 zoom() {
         return zoom;
+    }
+    public Rect2 bounds() {
+        return bounds;
     }
     public StretchMode stretchMode() {
         return stretchMode;
@@ -87,6 +101,12 @@ public class Camera {
     public void setZoom(double zoom) {
         this.zoom.set(zoom, zoom);
     }
+    public void setBounds(Rect2 bounds) {
+        this.bounds.set(bounds == null ? new Rect2() : bounds);
+    }
+    public void removeBounds() {
+        setBounds(null);
+    }
     public void setStretchMode(StretchMode stretchMode) {
         this.stretchMode = stretchMode;
     }
@@ -96,12 +116,32 @@ public class Camera {
     }
 
     public void follow(Node node) {
+        follow(node, new Rect2());
+    }
+    public void follow(Node node, Rect2 box) {
         followed = node;
+        followBox.set(box);
     }
 
     public void update() {
-        if(this.followed != null) {
-            this.position.set(followed.worldPosition());
+        if(followed != null) {
+            Vector2 pos = followed.worldPosition();
+            Vector2 min = followBox.min.add(position);
+            Vector2 max = followBox.max.add(position);
+            if(pos.x < min.x) {
+                position.x += pos.x - min.x;
+            } else if(pos.x > max.x) {
+                position.x += pos.x - max.x;
+            }
+            if(pos.y < min.y) {
+                position.y += pos.y - min.y;
+            } else if(pos.y > max.y) {
+                position.y += pos.y - max.y;
+            }
+            if(!bounds.isEmpty()) {
+                position.maxi(position, bounds.min);
+                position.mini(position, bounds.max);
+            }
         }
     }
 

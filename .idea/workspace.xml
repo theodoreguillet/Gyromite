@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -309,7 +310,28 @@
       <option name="project" value="LOCAL" />
       <updated>1616983627188</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="init, destroy and safe remove">
+      <created>1617016231005</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1617016231005</updated>
+    </task>
+    <task id="LOCAL-00024" summary="init, destroy and safe remove">
+      <created>1617016306325</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1617016306325</updated>
+    </task>
+    <task id="LOCAL-00025" summary="sub image size fix">
+      <created>1617041860726</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1617041860726</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -346,7 +368,9 @@
     <MESSAGE value="physics update before update" />
     <MESSAGE value="game test" />
     <MESSAGE value="scale factor" />
-    <option name="LAST_COMMIT_MESSAGE" value="scale factor" />
+    <MESSAGE value="init, destroy and safe remove" />
+    <MESSAGE value="sub image size fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="sub image size fix" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

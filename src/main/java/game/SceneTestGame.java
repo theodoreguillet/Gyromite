@@ -1,5 +1,6 @@
 package game;
 
+import core.Rect2;
 import core.Vector2;
 import scene.Camera;
 import scene.Node;
@@ -80,7 +81,7 @@ public class SceneTestGame extends Scene {
     @Override
     protected void init() {
         window = new Window(800, 600, "Test", this);
-
+        physics().gravity.set(0, 0);
         FPSViewer fps = root().addChild(new FPSViewer());
         test = root().addChild(new TestNode());
 
@@ -107,11 +108,11 @@ public class SceneTestGame extends Scene {
 
         testSpawn();
 
-        camera().setZoom(new Vector2(2, 2));
+        // camera().setZoom(new Vector2(2, 2));
         camera().setStretchMode(Camera.StretchMode.KEEP_ASPECT);
-        camera().position().set(0, 250);
+        camera().position().set(100, test2Child.worldPosition().y);
 
-        camera().follow(test2Child);
+        camera().follow(test2Child, new Rect2(-50, -50, 50, 50));
 
         setRenderPhysics(true);
     }
