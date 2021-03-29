@@ -262,16 +262,8 @@ public class Camera {
             Vector2 pos = followed.worldPosition();
             Vector2 min = followBox.min.add(position);
             Vector2 max = followBox.max.add(position);
-            if(pos.x < min.x) {
-                position.x += pos.x - min.x;
-            } else if(pos.x > max.x) {
-                position.x += pos.x - max.x;
-            }
-            if(pos.y < min.y) {
-                position.y += pos.y - min.y;
-            } else if(pos.y > max.y) {
-                position.y += pos.y - max.y;
-            }
+            position.addi(Vector2.min(pos.sub(min), new Vector2(0, 0), new Vector2()));
+            position.addi(Vector2.max(pos.sub(max), new Vector2(0, 0), new Vector2()));
             if(!bounds.isEmpty()) {
                 var hs = new Vector2(size.width / 2.0, size.height / 2.0);
                 position.maxi(position, bounds.min.add(hs));

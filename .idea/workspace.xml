@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestGameTilemap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/phase_01.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/tileset.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestGameTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestGameTilemap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Manifold.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Manifold.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -380,7 +378,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617057818250</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="camera bounds">
+      <created>1617059770985</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1617059770985</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -397,7 +402,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="transparent body and contact events" />
     <MESSAGE value="entity remove" />
     <MESSAGE value="remove test" />
     <MESSAGE value="animated sprite" />
@@ -422,7 +426,8 @@
     <MESSAGE value="tilemap" />
     <MESSAGE value="tilemap visible layer" />
     <MESSAGE value="tilemap fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="tilemap fix" />
+    <MESSAGE value="camera bounds" />
+    <option name="LAST_COMMIT_MESSAGE" value="camera bounds" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

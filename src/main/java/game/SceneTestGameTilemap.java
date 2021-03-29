@@ -76,9 +76,10 @@ public class SceneTestGameTilemap extends Scene {
         FPSViewer fps = root().addChild(new FPSViewer());
 
         Player player = root().addChild(new Player());
-        player.body().gravity.set(0, 0);
+        // player.body().gravity.set(0, 0);
 
-        var tiledmap = root().addChild(new TiledMap("phase_01"));
+        var tiledmap = root().addChild(new TiledMap("phase_01"))
+                .enableCollisions(1, 2, 3, 4, 5, 6, 14);
                 /*.setObjectFactory(2, 3, (builder, object, layer) -> {
                     Sprite s = builder.scene().root().addChild(new Sprite("test"));
                     s.setPosition(builder.getObjectPosition(object));
@@ -100,7 +101,7 @@ public class SceneTestGameTilemap extends Scene {
                 tiledmap.position().x + mapSize.width / 2.0,
                 tiledmap.position().y + mapSize.height / 2.0
         ));
-        camera().follow(player);
+        camera().follow(player, new Rect2(-150, -150, 150, 150));
 
         setRenderPhysics(true);
     }
