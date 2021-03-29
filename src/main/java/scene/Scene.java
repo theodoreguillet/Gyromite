@@ -109,6 +109,8 @@ public class Scene extends MainLoop {
         }
 
         g.setTransform(new AffineTransform());
+        camera.drawBlackBars((Graphics2D) g.create());
+
         postRender((Graphics2D) g.create());
 
         g.dispose();

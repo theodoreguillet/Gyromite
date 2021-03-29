@@ -1,18 +1,56 @@
 package scene;
 
+import core.Size;
 import core.Vector2;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
+/**
+ * Camera of the {@link Scene}, displays from a point of view in the {@link Viewport}.
+ */
 public class Camera {
+    /**
+     * Stretch mode of the camera rendering inside the viewport
+     * {@link StretchMode#DISABLED} by default.
+     */
+    public enum StretchMode {
+        /**
+         * No stretching.
+         */
+        DISABLED,
+        /**
+         * Ignore the aspect ratio when stretching the screen.
+         */
+        IGNORE_ASPECT,
+        /**
+         * Keep aspect ratio when stretching the screen.
+         */
+        KEEP_ASPECT,
+        /**
+         * Keep aspect ratio and expend height.
+         */
+        KEEP_WIDTH,
+        /**
+         * Keep aspect ratio and expend width.
+         */
+        KEEP_HEIGHT,
+        /**
+         * Keep aspect ratio and expend with and height.
+         */
+        EXPAND
+    }
+
     private final Scene scene;
-    private Vector2 position = new Vector2();
-    private Vector2 offset = new Vector2();
-    private Vector2 zoom = new Vector2(1, 1);
+    private final Vector2 position = new Vector2();
+    private final Size size = new Size(800, 600);
+    private final Vector2 offset = new Vector2();
+    private final Vector2 zoom = new Vector2(1, 1);
     private Node followed = null;
+    private StretchMode stretchMode = StretchMode.DISABLED;
 
     public Camera(Scene scene) {
         this.scene = scene;
@@ -21,21 +59,33 @@ public class Camera {
     public Vector2 position() {
         return position;
     }
+    public Size size() {
+        return size;
+    }
     public Vector2 offset() {
         return offset;
     }
     public Vector2 zoom() {
         return zoom;
     }
+    public StretchMode stretchMode() {
+        return stretchMode;
+    }
 
     public void setPosition(Vector2 position) {
-        this.position = position;
+        this.position.set(position);
+    }
+    public void setSize(Size size) {
+        this.size.set(size);
     }
     public void setOffset(Vector2 offset) {
-        this.offset = offset;
+        this.offset.set(offset);
     }
     public void setZoom(Vector2 zoom) {
-        this.zoom = zoom;
+        this.zoom.set(zoom);
+    }
+    public void setStretchMode(StretchMode stretchMode) {
+        this.stretchMode = stretchMode;
     }
 
     public void transform(Graphics2D g) {
@@ -78,21 +128,66 @@ public class Camera {
     }
 
     public AffineTransform getTransform() {
-        double width = this.scene.viewport().getWidth();
-        double height = this.scene.viewport().getHeight();
-
         AffineTransform at = new AffineTransform();
 
-        // Zoom
-        at.translate((width - width * zoom.x) / 2, (height - height * zoom.y) / 2);
-        at.scale(zoom.x, zoom.y);
+        if(size.width == 0 || size.height == 0) {
+            return at;
+        }
+
+        double viewportWidth = scene.viewport().getWidth();
+        double viewportHeight = scene.viewport().getHeight();
+        Vector2 scale = getScale();
 
         // Center camera
-        at.translate(width / 2 + offset.x, height / 2 + offset.y);
+        at.translate(viewportWidth / 2 + offset.x, viewportHeight / 2 + offset.y);
+
+        // Zoom
+        at.scale(scale.x, scale.y);
 
         // Move camera
         at.translate(-position.x, -position.y);
 
         return at;
+    }
+
+    /**
+     * Draw black bars following {@link StretchMode}
+     */
+    protected void drawBlackBars(Graphics2D g) {
+        if(stretchMode == StretchMode.EXPAND || stretchMode == StretchMode.IGNORE_ASPECT) {
+            return;
+        }
+
+        g.setTransform(new AffineTransform());
+        Vector2 scale = getScale();
+        double width = size.width * scale.x;
+        double height = size.height * scale.y;
+        double viewportWidth = scene.viewport().getWidth();
+        double viewportHeight = scene.viewport().getHeight();
+        double hdw = Math.max(0, viewportWidth - width) / 2.0;
+        double hdh = Math.max(0, viewportHeight - height) / 2.0;
+
+        g.setColor(Color.BLACK);
+
+        if(stretchMode == StretchMode.KEEP_ASPECT || stretchMode == StretchMode.KEEP_WIDTH) {
+            g.fill(new Rectangle2D.Double(0, 0, hdw, height));
+            g.fill(new Rectangle2D.Double(hdw + width, 0, hdw, height));
+        }
+        if(stretchMode == StretchMode.KEEP_ASPECT || stretchMode == StretchMode.KEEP_HEIGHT) {
+            g.fill(new Rectangle2D.Double(0, 0, width, hdh));
+            g.fill(new Rectangle2D.Double(0, hdh + height, width, hdh));
+        }
+    }
+
+    private Vector2 getScale() {
+        if(stretchMode == StretchMode.DISABLED) {
+            return zoom;
+        }
+        double factorX = (double)scene.viewport().getWidth() / size.width;
+        double factorY = (double)scene.viewport().getHeight() / size.height;
+        if(stretchMode.ordinal() >= StretchMode.KEEP_ASPECT.ordinal()) {
+            factorX = factorY = Math.min(factorX, factorY);
+        }
+        return new Vector2(zoom.x * factorX, zoom.y * factorY);
     }
 }
