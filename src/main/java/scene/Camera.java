@@ -84,6 +84,9 @@ public class Camera {
     public void setZoom(Vector2 zoom) {
         this.zoom.set(zoom);
     }
+    public void setZoom(double zoom) {
+        this.zoom.set(zoom, zoom);
+    }
     public void setStretchMode(StretchMode stretchMode) {
         this.stretchMode = stretchMode;
     }
@@ -136,13 +139,13 @@ public class Camera {
 
         double viewportWidth = scene.viewport().getWidth();
         double viewportHeight = scene.viewport().getHeight();
-        Vector2 scale = getScale();
+        Vector2 scaleFactor = getScaleFactor();
 
         // Center camera
         at.translate(viewportWidth / 2 + offset.x, viewportHeight / 2 + offset.y);
 
         // Zoom
-        at.scale(scale.x, scale.y);
+        at.scale(zoom.x * scaleFactor.x, zoom.y * scaleFactor.y);
 
         // Move camera
         at.translate(-position.x, -position.y);
@@ -159,9 +162,9 @@ public class Camera {
         }
 
         g.setTransform(new AffineTransform());
-        Vector2 scale = getScale();
-        double width = size.width * scale.x;
-        double height = size.height * scale.y;
+        Vector2 scaleFactor = getScaleFactor();
+        double width = size.width * scaleFactor.x;
+        double height = size.height * scaleFactor.y;
         double viewportWidth = scene.viewport().getWidth();
         double viewportHeight = scene.viewport().getHeight();
         double hdw = Math.max(0, viewportWidth - width) / 2.0;
@@ -179,15 +182,15 @@ public class Camera {
         }
     }
 
-    private Vector2 getScale() {
+    private Vector2 getScaleFactor() {
         if(stretchMode == StretchMode.DISABLED) {
-            return zoom;
+            return new Vector2(1, 1);
         }
         double factorX = (double)scene.viewport().getWidth() / size.width;
         double factorY = (double)scene.viewport().getHeight() / size.height;
         if(stretchMode.ordinal() >= StretchMode.KEEP_ASPECT.ordinal()) {
             factorX = factorY = Math.min(factorX, factorY);
         }
-        return new Vector2(zoom.x * factorX, zoom.y * factorY);
+        return new Vector2(factorX, factorY);
     }
 }

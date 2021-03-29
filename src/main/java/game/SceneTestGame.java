@@ -107,7 +107,7 @@ public class SceneTestGame extends Scene {
 
         testSpawn();
 
-        camera().setZoom(new Vector2(1, 1));
+        camera().setZoom(new Vector2(2, 2));
         camera().setStretchMode(Camera.StretchMode.KEEP_ASPECT);
         camera().position().set(0, 250);
 
