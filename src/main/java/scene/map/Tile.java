@@ -23,11 +23,6 @@ public class Tile extends Node {
         this.type = type;
     }
 
-    @Override
-    public void init() {
-        super.init();
-    }
-
     public void addCollisionShape(Shape shape, Vector2 pos) {
         var collision = addChild(new Node());
         collision.setBody(shape, Body.Mode.STATIC);

@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMapData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -359,7 +350,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617045597549</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="tilemap">
+      <created>1617055458832</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1617055458832</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -376,7 +374,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="physics and test" />
     <MESSAGE value="entity orient" />
     <MESSAGE value="game physic test" />
     <MESSAGE value="transparent body and contact events" />
@@ -401,7 +398,8 @@
     <MESSAGE value="camera follow box" />
     <MESSAGE value="input weak reference" />
     <MESSAGE value="node owner" />
-    <option name="LAST_COMMIT_MESSAGE" value="node owner" />
+    <MESSAGE value="tilemap" />
+    <option name="LAST_COMMIT_MESSAGE" value="tilemap" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
