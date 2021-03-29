@@ -76,31 +76,29 @@ public class Sprite extends SpriteBase {
             return;
         }
 
-        int hw = (int)size().width / 2;
-        int hh = (int)size().height / 2;
-
-        int sx1, sy1, sx2, sy2;
+        BufferedImage subImage;
         if(region.isEmpty()) {
             if(vframes > 1 || hframes > 1 && frame < vframes * hframes) {
                 int frameX = frame % hframes;
                 int frameY = frame / hframes;
-                sx1 = frameX * image.getWidth() / hframes;
-                sy1 = frameY * image.getHeight() / vframes;
-                sx2 = (frameX + 1) * image.getWidth() / hframes;
-                sy2 = (frameY + 1) * image.getHeight() / vframes;
+                int sx1 = frameX * image.getWidth() / hframes;
+                int sy1 = frameY * image.getHeight() / vframes;
+                int sx2 = (frameX + 1) * image.getWidth() / hframes;
+                int sy2 = (frameY + 1) * image.getHeight() / vframes;
+                subImage = image.getSubimage(sx1, sy1, sx2, sy2);
             } else {
-                sx1 = 0;
-                sy1 = 0;
-                sx2 = image.getWidth();
-                sy2 = image.getHeight();
+                subImage = image;
             }
         } else {
-            sx1 = (int)region.min.x;
-            sy1 = (int)region.min.y;
-            sx2 = (int)region.max.x;
-            sy2 = (int)region.max.y;
+            subImage = image.getSubimage(
+                    (int)region.min.x, (int)region.min.y,
+                    (int)region.max.x, (int)region.max.y);
         }
 
-        g.drawImage(image, -hw, -hh, hw, hh, sx1, sy1, sx2, sy2, null);
+        // Smooth render of the image
+        g.translate(-size().width / 2.0, -size().height / 2.0);
+        g.scale(size().width / (double)subImage.getWidth(), size().height / (double)subImage.getHeight());
+
+        g.drawImage(subImage, 0, 0, null);
     }
 }

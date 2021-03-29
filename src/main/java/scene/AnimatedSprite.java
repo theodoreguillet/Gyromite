@@ -126,11 +126,9 @@ public class AnimatedSprite extends SpriteBase {
         }
         BufferedImage image = anim.getFrame(currentAnimationFrame);
 
-        int w = (int)size().width;
-        int h = (int)size().height;
-        int x = (int)(-size().width / 2);
-        int y = (int)(-size().height / 2);
+        g.translate(-size().width / 2.0, -size().height / 2.0);
+        g.scale(size().width / (double)image.getWidth(), size().height / (double)image.getHeight());
 
-        g.drawImage(image, x, y, w, h, null);
+        g.drawImage(image, 0, 0, null);
     }
 }
