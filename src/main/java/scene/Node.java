@@ -1,13 +1,14 @@
 package scene;
 
-import core.Mat2;
 import core.Vector2;
 import scene.physics.Body;
 import scene.physics.Shape;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Base class for all {@link Scene} objects.
@@ -52,6 +53,12 @@ public class Node {
      */
     public Node owner() {
         return owner;
+    }
+    /**
+     * @return Children of this node
+     */
+    public List<Node> children() {
+        return Collections.unmodifiableList(children);
     }
     /**
      * @return The physics body of this node

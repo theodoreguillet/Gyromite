@@ -5,30 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Input.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/MainLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/MainLoop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Mat2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Mat2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/MathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/MathUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Rect2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Rect2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Size2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/core/Vector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Vector2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/Window.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SceneRoot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SceneRoot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteFrames.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteFrames.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Viewport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Viewport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/BodyListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/BodyListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/CircleShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/CircleShape.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileMapData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestTilemap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileMapBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TileObjectFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -418,6 +404,14 @@
     <option name="LAST_COMMIT_MESSAGE" value="node owner" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="core.resources.TileMap$TileSet" memberName="tiles" />

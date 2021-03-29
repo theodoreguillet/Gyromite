@@ -2,12 +2,11 @@ package core.resources;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import core.resources.tilemap.TileMap;
+import core.resources.tilemap.TileMapData;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ import java.util.Map;
  */
 public class Resources {
     private final Map<String, BufferedImage> images = new HashMap<>();
-    private final Map<String, TileMap> tilemaps = new HashMap<>();
+    private final Map<String, TileMapData> tilemaps = new HashMap<>();
 
     public boolean loadImage(String name, String id) {
         var img = loadImage(name);
@@ -36,7 +35,7 @@ public class Resources {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
         try {
-            var tilemap = mapper.readValue(url, TileMap.class);
+            var tilemap = mapper.readValue(url, TileMapData.class);
             loadTileMapImages(name, tilemap);
             tilemaps.put(id, tilemap);
             return true;
@@ -49,7 +48,7 @@ public class Resources {
     public BufferedImage getImage(String id) {
         return images.get(id);
     }
-    public TileMap getTilemap(String id) {
+    public TileMapData getTilemap(String id) {
         return tilemaps.get(id);
     }
 
@@ -66,7 +65,7 @@ public class Resources {
         return null;
     }
 
-    private void loadTileMapImages(String name, TileMap tilemap) {
+    private void loadTileMapImages(String name, TileMapData tilemap) {
         String dir = getResourceDir(name);
         for(var tileset : tilemap.tilesets) {
             String imageName = tileset.image.replace('\\', '/');

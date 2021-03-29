@@ -2,7 +2,7 @@ package core.resources.tilemap;
 
 import java.util.ArrayList;
 
-public class TileMap extends TileElement {
+public class TileMapData extends TileElement {
     public static final String ORTHOGONAL = "orthogonal";
     public int width, height;
     public int tilewidth, tileheight;

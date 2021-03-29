@@ -6,7 +6,7 @@ import scene.Node;
 import scene.FPSViewer;
 import scene.Scene;
 import scene.Sprite;
-import scene.map.TileMapBuilder;
+import scene.map.TiledMap;
 import scene.physics.Body;
 import scene.physics.CircleShape;
 
@@ -82,7 +82,7 @@ public class SceneTestTilemap extends Scene {
 
         camera().setZoom(new Vector2(1, 1));
 
-        new TileMapBuilder(this, "testmap")
+        root().addChild(new TiledMap("testmap"))
                 .setObjectFactory(2, 3, (builder, object, layer) -> {
                     Sprite s = builder.scene().root().addChild(new Sprite("test"));
                     s.setPosition(builder.getObjectPosition(object));
