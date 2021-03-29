@@ -1,6 +1,7 @@
 package game;
 
 import core.Vector2;
+import scene.Camera;
 import scene.Node;
 import scene.FPSViewer;
 import scene.Scene;
@@ -8,6 +9,8 @@ import scene.physics.Body;
 import scene.physics.PolygonShape;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 class TestNode extends Node {
     public TestNode() {
@@ -105,6 +108,7 @@ public class SceneTestGame extends Scene {
         testSpawn();
 
         camera().setZoom(new Vector2(1, 1));
+        camera().setStretchMode(Camera.StretchMode.KEEP_ASPECT);
         camera().position().set(0, 250);
 
         camera().follow(test2Child);
@@ -114,10 +118,28 @@ public class SceneTestGame extends Scene {
 
     @Override
     protected void preRender(Graphics2D g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, viewport().getWidth(), viewport().getHeight());
         g.setColor(Color.WHITE);
-        g.fillRect(5, 5, viewport().getWidth() - 10, viewport().getHeight() - 10);
+        g.fill(new Rectangle2D.Double(0, 0, viewport().getWidth(), viewport().getHeight()));
+        /*
+        g.setColor(Color.BLACK);
+
+        g.fill(new Rectangle2D.Double(0, 0, viewport().getWidth(), viewport().getHeight()));
+        camera().transform(g);
+
+        g.setColor(Color.WHITE);
+        g.fill(new Rectangle2D.Double(camera().position().x - camera().size().width / 2.0,
+                camera().position().y - camera().size().height / 2.0,
+                camera().size().width, camera().size().height));
+         */
+    }
+
+    @Override
+    protected void postRender(Graphics2D g) {
+        double vw = viewport().getWidth();
+        double vh = viewport().getHeight();
+        g.setColor(Color.BLACK);
+        g.draw(new Line2D.Double(0.0, vh / 2.0, vw, vh / 2.0));
+        g.draw(new Line2D.Double(vw / 2.0, 0.0, vw / 2.0, vh));
     }
 
     @Override
