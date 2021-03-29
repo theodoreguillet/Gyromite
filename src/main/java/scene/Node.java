@@ -148,7 +148,7 @@ public class Node {
      */
     public void removeChild(Node childNode) {
         if(children.contains(childNode)) {
-            childNode.removeBody();
+            childNode.destroy();
 
             if(updatingChildNodes) {
                 childrenToRemove.add(childNode);
@@ -193,13 +193,28 @@ public class Node {
     /**
      * Initialization method called after adding the node to the scene tree.
      */
-    protected void init() { }
+    protected void init() {
+        boolean lastUpdateFlag = updatingChildNodes;
+        updatingChildNodes = true; // Prevent child removing during loop
+        for(var child : children) {
+            child.init();
+        }
+        updatingChildNodes = lastUpdateFlag;
+    }
 
     /**
      * Destroy method called when {@link Node#remove()} or {@link Node#removeChild(Node)} is called with this node.
      * This method should be overrided to free resources and allow this object to be garbage collected.
      */
-    protected void destroy() { }
+    protected void destroy() {
+        boolean lastUpdateFlag = updatingChildNodes;
+        updatingChildNodes = true; // Prevent child removing during loop
+        for(var child : children) {
+            child.destroy();
+        }
+        updatingChildNodes = lastUpdateFlag;
+        removeBody();
+    }
 
     /**
      * Update method called each update tick (See {@link core.MainLoop})
@@ -220,10 +235,13 @@ public class Node {
 
         g.setTransform(at);
 
+        boolean lastUpdateFlag = updatingChildNodes;
+        updatingChildNodes = true; // Prevent child removing during loop
         for(var child : children) {
             var gCopy = (Graphics2D) g.create();
             child.render(gCopy);
         }
+        updatingChildNodes = lastUpdateFlag;
     }
 
     /**
@@ -231,6 +249,11 @@ public class Node {
      */
     private void updateChildNodes() {
         updatingChildNodes = true;
+
+        if(!childrenToRemove.isEmpty()) {
+            children.removeAll(childrenToRemove);
+            childrenToRemove.clear();
+        }
 
         for (int childIdx = 0; childIdx < children.size(); childIdx++) {
             Node child = children.get(childIdx);
