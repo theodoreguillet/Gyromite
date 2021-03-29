@@ -213,7 +213,7 @@ public class Node {
             child.destroy();
         }
         updatingChildNodes = lastUpdateFlag;
-        removeBody();
+        scene().physics().remove(this.body);
     }
 
     /**

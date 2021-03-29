@@ -5,6 +5,7 @@ import util.AWTEventListener;
 import javax.security.auth.kerberos.KerberosTicket;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -14,22 +15,29 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Input implements AWTEventListener {
     private final ConcurrentLinkedQueue<AWTEvent> events = new ConcurrentLinkedQueue<>();
-    private final List<EventListener> listeners  = new ArrayList<>();
+    private final List<WeakReference<EventListener>> listeners  = new ArrayList<>();
 
     public void process() {
         while (!events.isEmpty()) {
             AWTEvent event = events.poll();
-            for (var listener : listeners) {
-                processEvent(listener, event);
+
+            var it = listeners.iterator();
+            while(it.hasNext()) {
+                var listener = it.next().get(); // get weak reference
+                if(listener == null) {
+                    it.remove();
+                } else {
+                    processEvent(listener, event);
+                }
             }
         }
     }
 
     public void addListener(EventListener listener) {
-        listeners.add(listener);
+        listeners.add(new WeakReference<>(listener));
     }
     public void removeListener(EventListener listener) {
-        listeners.remove(listener);
+        listeners.removeIf(lwr -> lwr.get() == listener);
     }
 
     @Override
