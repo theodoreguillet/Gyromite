@@ -11,6 +11,9 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
+/**
+ * The game window.
+ */
 public class Window
 {
     public Window (int width, int height, String title, Scene scene) {

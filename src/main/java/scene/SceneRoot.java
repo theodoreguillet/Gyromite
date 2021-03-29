@@ -1,5 +1,8 @@
 package scene;
 
+/**
+ * The root node of the {@link Scene}
+ */
 public class SceneRoot extends Node {
     final Scene scene;
     public SceneRoot(Scene scene) {

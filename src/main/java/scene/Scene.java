@@ -12,6 +12,11 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Manage the game loop with a tree of nodes.
+ * Contains all game elements.
+ * Process the render with a {@link Camera}.
+ */
 public class Scene extends MainLoop {
     private final Viewport viewport = new Viewport();
     private final Input input = new Input();
@@ -27,37 +32,80 @@ public class Scene extends MainLoop {
         viewport.addEventListener(input);
     }
 
+    /**
+     * @return The view into the screen.
+     */
     public Viewport viewport() {
         return viewport;
     }
+    /**
+     * @return The inputs manager.
+     */
     public Input input() {
         return input;
     }
+    /**
+     * @return The resources manager.
+     */
     public Resources resources() {
         return resources;
     }
+    /**
+     * @return The physics manager.
+     */
     public PhysicsProvider physics() {
         return physics;
     }
+    /**
+     * @return The root of the nodes tree.
+     */
     public SceneRoot root() {
         return root;
     }
+    /**
+     * @return The camera used to render the game in the {@link Viewport}
+     */
     public Camera camera() {
         return camera;
     }
+    /**
+     * @return Return <code>true</code> if the antialiasing is enabled.
+     *         The antialiasing is enabled by default and reduce the
+     *         aliasing artifacts along the edges of rendered shapes.
+     */
     public boolean isAntialiasing() {
         return antialiasing;
     }
+    /**
+     * @return Return <code>true</code> if the physics rendering is enabled.
+     *         The physics rendering must be used for debug purposes to show
+     *         bodies shapes with collisions points.
+     */
     public boolean isRenderPhysics() {
         return renderPhysics;
     }
 
+    /**
+     * @param camera Set the camera used to render the game in the {@link Viewport}
+     */
     public void setCamera(Camera camera) {
         this.camera = camera;
     }
+    /**
+     * Set whether the antialiasing is enabled or not.
+     * The antialiasing is enabled by default and reduce the
+     * aliasing artifacts along the edges of rendered shapes.
+     * @param antialiasing <code>true</code> to enable the antialiasing
+     */
     public void setAntialiasing(boolean antialiasing) {
         this.antialiasing = antialiasing;
     }
+    /**
+     * Set whether the physics rendering is enabled or not.
+     * The physics rendering must be used for debug purposes to show
+     * bodies shapes with collisions points.
+     * @param renderPhysics <code>true</code> to enable the physics rendering
+     */
     public void setRenderPhysics(boolean renderPhysics) {
         this.renderPhysics = renderPhysics;
     }

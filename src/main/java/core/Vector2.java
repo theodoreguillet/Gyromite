@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * A 2D vector.
+ */
 public class Vector2 implements Cloneable {
     public double x, y;
 

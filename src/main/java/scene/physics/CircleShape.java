@@ -12,6 +12,9 @@ public class CircleShape extends Shape {
         radius = r;
     }
 
+    /**
+     * @return The radius of the circle shape.
+     */
     public double radius() {
         return radius;
     }

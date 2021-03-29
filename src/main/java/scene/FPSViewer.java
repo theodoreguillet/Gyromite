@@ -4,6 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Show rendering and update speed on the screen.
+ */
 public class FPSViewer extends Node {
     private int ticks = 0;
     private int frames = 0;

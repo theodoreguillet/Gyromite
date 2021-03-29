@@ -6,9 +6,29 @@
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Input.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/MainLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/MainLoop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Mat2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Mat2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/MathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/MathUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Rect2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Rect2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Size2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/Vector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/Vector2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/AnimatedSprite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SceneRoot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SceneRoot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Sprite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/SpriteFrames.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/SpriteFrames.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Viewport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Viewport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Body.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/BodyListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/BodyListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/CircleShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/CircleShape.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PolygonShape.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,7 +359,21 @@
       <option name="project" value="LOCAL" />
       <updated>1617043009727</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="input weak reference">
+      <created>1617043997929</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1617043997929</updated>
+    </task>
+    <task id="LOCAL-00028" summary="node owner">
+      <created>1617045597549</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1617045597549</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -379,7 +413,9 @@
     <MESSAGE value="init, destroy and safe remove" />
     <MESSAGE value="sub image size fix" />
     <MESSAGE value="camera follow box" />
-    <option name="LAST_COMMIT_MESSAGE" value="camera follow box" />
+    <MESSAGE value="input weak reference" />
+    <MESSAGE value="node owner" />
+    <option name="LAST_COMMIT_MESSAGE" value="node owner" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

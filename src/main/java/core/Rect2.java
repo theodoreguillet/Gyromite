@@ -43,8 +43,8 @@ public class Rect2 implements Cloneable {
         return min.x == max.x && min.y == max.y;
     }
 
-    public Size size() {
-        return new Size(max.x - min.x, max.y - min.y);
+    public Size2 size() {
+        return new Size2(max.x - min.x, max.y - min.y);
     }
 
     public Vector2 center() {

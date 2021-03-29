@@ -1,11 +1,16 @@
 package scene;
 
 import core.Rect2;
-import core.Size;
+import core.Size2;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+/**
+ * A sprite node.
+ * Displays an image. The image can be a region of a larger
+ * atlas texture or a frame from a sprite sheet.
+ */
 public class Sprite extends SpriteBase {
     private BufferedImage image;
     private String imageId = null;
@@ -30,34 +35,70 @@ public class Sprite extends SpriteBase {
         this.imageId = image;
     }
 
+    /**
+     * @return The region of the atlas image to display.
+     */
     public Rect2 region() {
         return region;
     }
+    /**
+     * @return The number of columns in the sprite sheet.
+     */
     public int hframes() {
         return hframes;
     }
+    /**
+     * @return The number of rows in the sprite sheet
+     */
     public int vframes() {
         return vframes;
     }
+    /**
+     * @return The position of the frame to display from the sprite sheet.
+     */
     public int frame() {
         return frame;
     }
 
+    /**
+     * Set the image to display
+     * @param image The image to display
+     */
     public void setImage(BufferedImage image) {
         this.image = image;
     }
+    /**
+     * Set the image to display from a resource
+     * @param id The id of the image in the resources
+     */
     public void setImage(String id) {
         setImage(scene().resources().getImage(id));
     }
+    /**
+     * Set the region of the atlas image to display.
+     * @param region The coordinates of the region in the atlas image.
+     */
     public void setRegion(Rect2 region) {
         this.region = region;
     }
+    /**
+     * Set the number of columns in the sprite sheet.
+     * @param hframes The number of columns.
+     */
     public void setHframes(int hframes) {
         this.hframes = hframes;
     }
+    /**
+     * Set the number of rows in the sprite sheet.
+     * @param vframes The number of rows.
+     */
     public void setVframes(int vframes) {
         this.vframes = vframes;
     }
+    /**
+     * Set the position of the frame to display from the sprite sheet.
+     * @param frame The position of the frame.
+     */
     public void setFrame(int frame) {
         this.frame = frame;
     }
@@ -91,7 +132,7 @@ public class Sprite extends SpriteBase {
                 subImage = image;
             }
         } else {
-            Size regionSize = region.size();
+            Size2 regionSize = region.size();
             subImage = image.getSubimage(
                     (int)region.min.x, (int)region.min.y,
                     (int)regionSize.width, (int)regionSize.height);

@@ -12,11 +12,18 @@ import java.util.EventObject;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-
+/**
+ * The inputs manager.
+ * Queue events from {@link scene.Viewport} and send them
+ * to listeners when {{@link Input#process()}} is called.
+ */
 public class Input implements AWTEventListener {
     private final ConcurrentLinkedQueue<AWTEvent> events = new ConcurrentLinkedQueue<>();
-    private final List<WeakReference<EventListener>> listeners  = new ArrayList<>();
+    private final List<WeakReference<EventListener>> listeners = new ArrayList<>();
 
+    /**
+     * Send events to listeners. Called by {@link scene.Scene}.
+     */
     public void process() {
         while (!events.isEmpty()) {
             AWTEvent event = events.poll();
@@ -33,9 +40,18 @@ public class Input implements AWTEventListener {
         }
     }
 
+    /**
+     * Register an event listener.
+     * @param listener The event listener.
+     */
     public void addListener(EventListener listener) {
         listeners.add(new WeakReference<>(listener));
     }
+
+    /**
+     * Remove an event listener
+     * @param listener The event listner.
+     */
     public void removeListener(EventListener listener) {
         listeners.removeIf(lwr -> lwr.get() == listener);
     }

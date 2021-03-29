@@ -11,14 +11,15 @@ import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
 /**
- * Provide physics constraints on bodies with shapes
+ * The physics manager.
+ * Provide physics constraints on bodies with shapes.
  */
 public class PhysicsProvider {
     public static final double PENETRATION_ALLOWANCE = 0.05;
     public static final double PENETRATION_CORRECTION = 0.4;
 
     /**
-     * The gravity vector
+     * The gravity force applied to all bodies
      */
     public final Vector2 gravity = new Vector2(0.0, 100.0);
 

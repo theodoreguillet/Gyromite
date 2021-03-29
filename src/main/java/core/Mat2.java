@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * A 2D matrix.
+ */
 public class Mat2 implements Cloneable {
 
     public double m00, m01;

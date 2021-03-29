@@ -7,7 +7,7 @@ import scene.Node;
 import java.util.*;
 
 /**
- * Physics body
+ * A physics body
  */
 public class Body {
     /**
@@ -53,17 +53,45 @@ public class Body {
 
     double mass, invMass, inertia, invInertia;
 
+    /**
+     * The shape of the body.
+     */
     public final Shape shape;
 
+    /**
+     * The linear velocity.
+     */
     public final Vector2 velocity = new Vector2(0.0, 0.0);
+    /**
+     * The linear force. Will be integrated to the body velocity.
+     */
     public final Vector2 force = new Vector2(0.0, 0.0);
+    /**
+     * The angular velocity.
+     */
     public double angularVelocity = 0.0;
+    /**
+     * The torque force. Will be integrated to the body angular velocity.
+     */
     public double torque = 0.0;
 
+    /**
+     * The static friction constant.
+     */
     public double staticFriction = 0.5;
+    /**
+     * The dynamic friction constant.
+     */
     public double dynamicFriction = 0.3;
+    /**
+     * The coefficient of restitution.
+     */
     public double restitution = 0.2;
 
+    /**
+     * The gravity force applied to the body.
+     * By default the same as {@link PhysicsProvider#gravity}.
+     */
     public Vector2 gravity = new Vector2();
 
     public Body(PhysicsProvider physics, Node node, Shape shape, Mode mode) {
@@ -80,28 +108,50 @@ public class Body {
         setMode(mode);
     }
 
+    /**
+     * Add a collision event listener to the body.
+     * @param listener The collision event listener.
+     */
     public void addBodyListener(BodyListener listener) {
         bodyListeners.add(listener);
     }
+    /**
+     * Remove a collision event listener.
+     * @param listener The collision event listener.
+     */
     public void removeBodyListener(BodyListener listener) {
         bodyListeners.remove(listener);
     }
 
+    /**
+     * @return The bodies currently in contact with this body.
+     */
     public Set<Body> contacts() {
         return Collections.unmodifiableSet(contacts);
     }
 
+    /**
+     * @return The physics manager.
+     */
     public PhysicsProvider physics() {
         return physics;
     }
+    /**
+     * @return The body node.
+     */
     public Node node() {
         return node;
     }
-
+    /**
+     * @return The body mode.
+     */
     public Mode mode() {
         return mode;
     }
 
+    /**
+     * Set the body mode.
+     */
     public void setMode(Mode mode) {
         this.mode = mode;
 
@@ -118,20 +168,24 @@ public class Body {
         }
     }
 
+    /**
+     * Set the body gravity to {@link PhysicsProvider#gravity}
+     */
     public void resetGravity() {
         gravity.set(physics.gravity);
     }
 
-    public void applyForce(Vector2 f) {
+
+    void applyForce(Vector2 f) {
         force.addi(f);
     }
 
-    public void applyImpulse(Vector2 impulse, Vector2 contactVector) {
+    void applyImpulse(Vector2 impulse, Vector2 contactVector) {
         velocity.addsi(impulse, invMass);
         angularVelocity += invInertia * Vector2.cross(contactVector, impulse);
     }
 
-    public void clearForces() {
+    void clearForces() {
         force.set(0, 0);
         torque = 0;
     }

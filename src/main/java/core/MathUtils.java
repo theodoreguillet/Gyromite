@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * Math functions.
+ */
 public class MathUtils {
     public static final double EPSILON = 0.0000001;
     public static final double EPSILON_SQ = EPSILON * EPSILON;

@@ -6,7 +6,9 @@ import core.Vector2;
  * Physics body polygon shape
  */
 public class PolygonShape extends Shape {
-
+    /**
+     * The maximum number of vertices in the polygon.
+     */
     public static final int MAX_POLY_VERTEX_COUNT = 64;
 
     int vertexCount;
@@ -39,12 +41,21 @@ public class PolygonShape extends Shape {
         return p;
     }
 
+    /**
+     * @return The coefficient of inertia.
+     */
     public double inertia() {
         return I;
     }
+    /**
+     * @return The area of the shape.
+     */
     public double area() {
         return area;
     }
+    /**
+     * @return The centroid (geometric center) the shape.
+     */
     public Vector2 centroid() {
         return centroid.clone();
     }

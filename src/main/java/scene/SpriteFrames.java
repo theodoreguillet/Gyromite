@@ -1,11 +1,14 @@
 package scene;
 
 import core.Rect2;
-import core.Size;
+import core.Size2;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * The frames of an animation of an {@link AnimatedSprite}
+ */
 public class SpriteFrames {
     private final String id;
     private final AnimatedSprite sprite;
@@ -18,22 +21,41 @@ public class SpriteFrames {
         this.sprite = sprite;
     }
 
+    /**
+     * @return The id of the animation
+     */
     public String id() {
         return id;
     }
+    /**
+     * @return The number of frames of the animation
+     */
     public int frameCount() {
         return frames.size();
     }
+    /**
+     * @param idx The position of the frame in the animation
+     * @return The frame at the position <code>idx</code>
+     */
     public BufferedImage getFrame(int idx) {
         return frames.get(idx);
     }
+    /**
+     * @return Return <code>true</code> if the animation loop
+     */
     public boolean isLoop() {
         return loop;
     }
+    /**
+     * @return The speed of the animation in frame per second
+     */
     public double speed() {
         return speed;
     }
 
+    /**
+     * Add a frame to the animation
+     */
     public SpriteFrames addFrame(BufferedImage image) {
         frames.add(image);
         return this;
@@ -46,7 +68,7 @@ public class SpriteFrames {
         return addFrame(image, region, frames.size());
     }
     public SpriteFrames addFrame(BufferedImage image, Rect2 region, int pos) {
-        Size s = region.size();
+        Size2 s = region.size();
         return addFrame(image.getSubimage((int)region.min.x, (int)region.min.y, (int)s.width, (int)s.height), pos);
     }
     public SpriteFrames addFrames(BufferedImage image, int hframes, int vframes, int frameBegin, int frameEnd) {
@@ -82,14 +104,28 @@ public class SpriteFrames {
         return addFrames(getImage(image), hframes, vframes, frameBegin, frameEnd, pos);
     }
 
+    /**
+     * Remove a frame from the animation
+     */
     public SpriteFrames removeFrame(int idx) {
         frames.remove(idx);
         return this;
     }
+
+    /**
+     * Set whether if the animation loop or not
+     * If the animation loop, it will go come back to the first frame
+     * and will be playing again when it ends.
+     * @param loop <code>true</code> if the animation loop
+     */
     public SpriteFrames loop(boolean loop) {
         this.loop = loop;
         return this;
     }
+    /**
+     * Set the speed of the animation in frame per second
+     * @param speed The speed of the animation
+     */
     public SpriteFrames setSpeed(double speed) {
         this.speed = speed;
         return this;

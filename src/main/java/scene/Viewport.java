@@ -7,6 +7,9 @@ import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+/**
+ * The view into the screen.
+ */
 public class Viewport extends Canvas {
     private final ArrayList<AWTEventListener> eventListeners = new ArrayList<>();
 
@@ -24,10 +27,18 @@ public class Viewport extends Canvas {
         }
     }
 
+    /**
+     * Add a listener.
+     * @param listener Listen {@link AWTEvent} from the {@link Canvas}
+     */
     public void addEventListener(AWTEventListener listener) {
         eventListeners.add(listener);
     }
 
+    /**
+     * Remove a listener.
+     * @param listener The listener to remove
+     */
     public void removeEventListener(AWTEventListener listener) {
         eventListeners.remove(listener);
     }

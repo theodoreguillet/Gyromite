@@ -6,6 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+/**
+ * A sprite node that can use multiple image for animations.
+ * Animations are created using {@link SpriteFrames}.
+ * Each animation is associated to an id.
+ */
 public class AnimatedSprite extends SpriteBase {
     private final HashMap<String, SpriteFrames> animations = new HashMap<>();
     boolean playing = false;
@@ -19,37 +24,76 @@ public class AnimatedSprite extends SpriteBase {
         super();
     }
 
+    /**
+     * @param id The id of the animation.
+     * @return <code>true</code> If the animation with the given id exists.
+     */
     public boolean hasAnimation(String id) {
         return animations.containsKey(id);
     }
+    /**
+     * @param id The id of the animation.
+     * @return The animation with the given id or null if the animation does not exist.
+     */
     public SpriteFrames animation(String id) {
         return animations.get(id);
     }
+    /**
+     * @return Return if an animation is playing.
+     */
     public boolean isPlaying() {
         return playing;
     }
+    /**
+     * @return The index of the current animation.
+     */
     public String currentAnimation() {
         return currentAnimation;
     }
+    /**
+     * @return The position of the current frame of the current animation.
+     */
     public int currentFrame() {
         return currentAnimationFrame;
     }
+    /**
+     * @return The speed scale of animations. The animations speed will be multiplied by this value.
+     */
     public double speedScale() {
         return speedScale;
     }
 
+    /**
+     * Set the speed scale of animations.
+     * The animations speed will be multiplied by this value.
+     */
+    public void setSpeedScale(double speedScale) {
+        this.speedScale = speedScale;
+    }
+
+    /**
+     * Add an animation with the given id.
+     * @param id The id of the animation.
+     * @return The animation frames resources. See {@link SpriteFrames}.
+     */
     public SpriteFrames addAnimation(String id) {
         SpriteFrames a = new SpriteFrames(id, this);
         animations.put(id, a);
         return a;
     }
-    public void setSpeedScale(double speedScale) {
-        this.speedScale = speedScale;
-    }
 
+    /**
+     * Play the given animation.
+     * @param id The id of the animation.
+     */
     public void play(String id) {
         play(id, false);
     }
+    /**
+     * Play the given animation.
+     * @param id The id of the animation.
+     * @param backwards If <code>true</code> the animation will be played backward.
+     */
     public void play(String id, boolean backwards) {
         if(hasAnimation(id)) {
             if(isPlaying()) {
@@ -68,9 +112,17 @@ public class AnimatedSprite extends SpriteBase {
             playing = true;
         }
     }
+
+    /**
+     * Stop the current animation without resetting the frame counter.
+     * The animation can be resumed by calling {@link AnimatedSprite#play(String)}.
+     */
     public void stop() {
         playing = false;
     }
+    /**
+     * Stop the current animation and reset the frame counter.
+     */
     public void reset() {
         currentAnimation = null;
         currentAnimationFrame = 0;

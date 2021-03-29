@@ -11,6 +11,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The resources manager.
+ */
 public class Resources {
     private final Map<String, BufferedImage> images = new HashMap<>();
     private final Map<String, TileMap> tilemaps = new HashMap<>();
