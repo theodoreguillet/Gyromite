@@ -117,6 +117,9 @@ public class Node {
      */
     public<T extends Node> T addChild(T childNode) {
         Node child = childNode;
+        if(child.owner != null) {
+            throw new RuntimeException("The child already has a parent");
+        }
         children.add(child);
         child.owner = this;
         child.init();
@@ -130,6 +133,9 @@ public class Node {
      */
     public<T extends Node> T addChildBelow(Node node, T childNode) {
         Node child = childNode;
+        if(child.owner != null) {
+            throw new RuntimeException("The child already has a parent");
+        }
         int nodeIdx = children.indexOf(node);
         if(nodeIdx == -1) {
             children.add(child);
@@ -137,6 +143,7 @@ public class Node {
             children.add(nodeIdx + 1, child);
         }
         child.owner = this;
+        child.init();
         return childNode;
     }
     /**
