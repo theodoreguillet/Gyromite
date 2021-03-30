@@ -24,11 +24,11 @@ public class TiledMap extends Node {
     private final String tilemapResourceId;
     private TileMapData tilemap = null;
 
-    private final HashSet<Integer> collidingTilesIds = new HashSet<>();
-    private final HashSet<String> collidingTilesTypes = new HashSet<>();
+    private final HashMap<Integer, Boolean> collidingTilesIds = new HashMap<>();
+    private final HashMap<String, Boolean> collidingTilesTypes = new HashMap<>();
 
     private final HashMap<Pair<Integer, Integer>, TileObjectFactory> objectFactoriesById = new HashMap<>();
-    private final HashMap<Pair<Integer, String>, TileObjectFactory> objectFactoriesByName = new HashMap<>();
+    private final HashMap<Pair<Integer, String>, TileObjectFactory> objectFactoriesByType = new HashMap<>();
 
     public TiledMap(String tilemap) {
         this.tilemapResourceId = tilemap;
@@ -47,11 +47,27 @@ public class TiledMap extends Node {
     }
 
     public TiledMap enableCollisions(Integer... tileIds) {
-        collidingTilesIds.addAll(Arrays.asList(tileIds));
+        for(var tileId : tileIds) {
+            collidingTilesIds.put(tileId, false);
+        }
         return this;
     }
     public TiledMap enableCollisions(String... tileTypes) {
-        collidingTilesTypes.addAll(Arrays.asList(tileTypes));
+        for(var tileType : tileTypes) {
+            collidingTilesTypes.put(tileType, false);
+        }
+        return this;
+    }
+    public TiledMap enableAreas(Integer... tileIds) {
+        for(var tileId : tileIds) {
+            collidingTilesIds.put(tileId, true);
+        }
+        return this;
+    }
+    public TiledMap enableAreas(String... tileTypes) {
+        for(var tileType : tileTypes) {
+            collidingTilesTypes.put(tileType, true);
+        }
         return this;
     }
 
@@ -62,11 +78,11 @@ public class TiledMap extends Node {
         objectFactoriesById.put(new Pair<>(layer, id), factory);
         return this;
     }
-    public TiledMap setObjectFactory(String layer, String name, TileObjectFactory factory) {
-        return setObjectFactory(getLayerId(layer), name, factory);
+    public TiledMap setObjectFactory(String layer, String type, TileObjectFactory factory) {
+        return setObjectFactory(getLayerId(layer), type, factory);
     }
-    public TiledMap setObjectFactory(int layer, String name, TileObjectFactory factory) {
-        objectFactoriesByName.put(new Pair<>(layer, name), factory);
+    public TiledMap setObjectFactory(int layer, String type, TileObjectFactory factory) {
+        objectFactoriesByType.put(new Pair<>(layer, type), factory);
         return this;
     }
 
@@ -178,7 +194,10 @@ public class TiledMap extends Node {
         sprite.flipV(vflip);
         sprite.flipD(dflip);
 
-        if(collidingTilesIds.contains(tileGid) || (tileData != null && collidingTilesTypes.contains(tileData.type))) {
+        Boolean collidingById = collidingTilesIds.get(tileGid);
+        Boolean collidingByType = tileData == null ? null : collidingTilesTypes.get(tileData.type);
+        if(collidingById != null || collidingByType != null) {
+            boolean transparentArea = (collidingById != null && collidingById) || collidingByType != null;
             if(tileData != null && tileData.objectgroup != null && !tileData.objectgroup.objects.isEmpty()) {
                 for(var shapeObject : tileData.objectgroup.objects) {
                     Shape shape;
@@ -192,10 +211,11 @@ public class TiledMap extends Node {
                     tile.addCollisionShape(shape, new Vector2(
                             shapeObject.x + (shapeObject.width - sprite.size().width) / 2.0,
                             shapeObject.y + (shapeObject.height - sprite.size().height) / 2.0
-                    ));
+                    ), transparentArea);
                 }
             } else {
-                sprite.setBody(new PolygonShape(sprite.size().width / 2, sprite.size().height / 2), Body.Mode.STATIC);
+                sprite.setBody(new PolygonShape(sprite.size().width / 2, sprite.size().height / 2),
+                        transparentArea ? Body.Mode.TRANSPARENT : Body.Mode.STATIC);
             }
         }
     }
@@ -266,7 +286,7 @@ public class TiledMap extends Node {
         for(var object : layer.objects) {
             var factory = objectFactoriesById.get(new Pair<>(layer.id, object.id));
             if(factory == null) {
-                factory = objectFactoriesByName.get(new Pair<>(layer.id, object.name));
+                factory = objectFactoriesByType.get(new Pair<>(layer.id, object.type));
             }
             if(factory != null) {
                 factory.create(this, object, layer);

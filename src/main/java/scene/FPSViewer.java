@@ -16,12 +16,21 @@ public class FPSViewer extends Node {
 
     private long lastSecondTimeMs = 0;
 
+    private Color color = Color.BLACK;
+
     public FPSViewer() {
         super();
     }
 
+    public Color color() {
+        return color;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     @Override
-    protected void update() {
+    public void update() {
         super.update();
 
         ticks++;
@@ -37,13 +46,13 @@ public class FPSViewer extends Node {
     }
 
     @Override
-    protected void render(Graphics2D g) {
+    public void render(Graphics2D g) {
         super.render(g);
 
         frames++;
 
         g.setTransform(new AffineTransform());
-        g.setColor(Color.black);
+        g.setColor(color);
         g.drawString("FPS: " + averageFrames + " Updates: " + averageTicks, 10, 20);
     }
 }

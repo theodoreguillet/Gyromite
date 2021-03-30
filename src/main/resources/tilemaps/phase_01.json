@@ -78,17 +78,8 @@
  "tileheight":32,
  "tilesets":[
         {
-         "columns":6,
          "firstgid":1,
-         "image":"tileset.png",
-         "imageheight":160,
-         "imagewidth":192,
-         "margin":0,
-         "name":"gyromite",
-         "spacing":0,
-         "tilecount":30,
-         "tileheight":32,
-         "tilewidth":32
+         "source":"tileset.json"
         }],
  "tilewidth":32,
  "type":"map",

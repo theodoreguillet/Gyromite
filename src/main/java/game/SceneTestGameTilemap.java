@@ -5,8 +5,10 @@ import core.Rect2;
 import core.Size2;
 import core.Vector2;
 import scene.*;
+import scene.map.Tile;
 import scene.map.TiledMap;
 import scene.physics.Body;
+import scene.physics.BodyListener;
 import scene.physics.CircleShape;
 
 import java.awt.*;
@@ -14,7 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class SceneTestGameTilemap extends Scene {
-    private static class Player extends Node implements KeyListener {
+    private static class Player extends Node implements KeyListener, BodyListener {
         public Player() {
             super();
         }
@@ -22,7 +24,7 @@ public class SceneTestGameTilemap extends Scene {
         @Override
         public void init() {
             scene().input().addListener(this);
-            setBody(new CircleShape(10), Body.Mode.CHARACTER);
+            setBody(new CircleShape(10), Body.Mode.CHARACTER).addBodyListener(this);
         }
 
         @Override
@@ -57,11 +59,25 @@ public class SceneTestGameTilemap extends Scene {
                 body().velocity.y = 0;
             }
         }
+
+        @Override
+        public void bodyEntered(Body b) {
+            if(b.node().owner() instanceof Tile) {
+                Tile tile = (Tile) b.node().owner();
+                if(tile.type.equals("rope")) {
+                    position().x = tile.position().x + 2;
+                }
+            }
+        }
+
+        @Override
+        public void bodyExited(Body b) {
+
+        }
     }
 
     private Window window;
-
-    private static final double GAME_HEIGHT = 500;
+    private FPSViewer fps;
 
     @Override
     protected void preload() {
@@ -73,13 +89,15 @@ public class SceneTestGameTilemap extends Scene {
     protected void init() {
         window = new Window(800, 600, "Test", this);
 
-        FPSViewer fps = root().addChild(new FPSViewer());
+        fps = new FPSViewer();
+        fps.setColor(Color.WHITE);
 
         Player player = root().addChild(new Player());
         // player.body().gravity.set(0, 0);
 
         var tiledmap = root().addChild(new TiledMap("phase_01"))
-                .enableCollisions(1, 2, 3, 4, 5, 6, 14);
+                .enableCollisions(1, 2, 3, 4, 5, 6, 14)
+                .enableAreas("rope");
                 /*.setObjectFactory(2, 3, (builder, object, layer) -> {
                     Sprite s = builder.scene().root().addChild(new Sprite("test"));
                     s.setPosition(builder.getObjectPosition(object));
@@ -113,8 +131,12 @@ public class SceneTestGameTilemap extends Scene {
     }
 
     @Override
-    protected void preUpdate() {
-        // double zoom = viewport().getHeight() / GAME_HEIGHT;
-        // camera().setZoom(new Vector2(zoom, zoom));
+    protected void postRender(Graphics2D g) {
+        fps.render(g);
+    }
+
+    @Override
+    protected void postUpdate() {
+        fps.update();
     }
 }

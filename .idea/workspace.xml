@@ -5,11 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="564f6082-038c-458d-aa2f-5507d7e9cbd1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/tileset.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/Resources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/resources/tilemap/TileSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/game/SceneTestGameTilemap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/SceneTestGameTilemap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/Manifold.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/Manifold.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/physics/PhysicsProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/FPSViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scene/map/TiledMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tilemaps/phase_01.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/phase_01.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tilemaps/tileset.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tilemaps/tileset.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,9 +151,9 @@
       <list>
         <item itemvalue="Gradle.Gyromite [run]" />
         <item itemvalue="Gradle.TestRessources.testLoadImage" />
+        <item itemvalue="Gradle.Gyromite [run]" />
         <item itemvalue="Gradle.TestRessources.testLoadImage" />
-        <item itemvalue="Gradle.Gyromite [run]" />
-        <item itemvalue="Gradle.Gyromite [run]" />
+        <item itemvalue="Gradle.TestRessources.testLoadImage" />
       </list>
     </recent_temporary>
   </component>

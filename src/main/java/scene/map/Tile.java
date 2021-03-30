@@ -23,9 +23,9 @@ public class Tile extends Node {
         this.type = type;
     }
 
-    public void addCollisionShape(Shape shape, Vector2 pos) {
+    public void addCollisionShape(Shape shape, Vector2 pos, boolean transparent) {
         var collision = addChild(new Node());
-        collision.setBody(shape, Body.Mode.STATIC);
+        collision.setBody(shape, transparent ? Body.Mode.TRANSPARENT : Body.Mode.STATIC);
         collision.setPosition(pos);
     }
 }

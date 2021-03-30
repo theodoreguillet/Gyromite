@@ -3,6 +3,7 @@ package core.resources;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.resources.tilemap.TileMapData;
+import core.resources.tilemap.TileSet;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -36,6 +37,7 @@ public class Resources {
         mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
         try {
             var tilemap = mapper.readValue(url, TileMapData.class);
+            loadTileSets(name, tilemap);
             loadTileMapImages(name, tilemap);
             tilemaps.put(id, tilemap);
             return true;
@@ -65,6 +67,34 @@ public class Resources {
         return null;
     }
 
+    private void loadTileSets(String name, TileMapData tilemap) {
+        String dir = getResourceDir(name);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+
+        var it = tilemap.tilesets.listIterator();
+        while (it.hasNext()) {
+            var tileset = it.next();
+            if(tileset.source == null) {
+                continue;
+            }
+            String path = dir.concat(tileset.source.replace('\\', '/'));
+            var url = getClass().getResource(path);
+            if(url == null) {
+                it.remove();
+                continue;
+            }
+            try {
+                var loadedTileset = mapper.readValue(url, TileSet.class);
+                loadedTileset.firstgid = tileset.firstgid;
+                it.set(loadedTileset);
+            } catch (IOException e) {
+                e.printStackTrace(System.err);
+                it.remove();
+            }
+        }
+    }
     private void loadTileMapImages(String name, TileMapData tilemap) {
         String dir = getResourceDir(name);
         for(var tileset : tilemap.tilesets) {
