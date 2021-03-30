@@ -289,7 +289,8 @@ public class TiledMap extends Node {
                 factory = objectFactoriesByType.get(new Pair<>(layer.id, object.type));
             }
             if(factory != null) {
-                factory.create(this, object, layer);
+                var node = factory.create(this, object, layer);
+                addChild(node);
             }
         }
     }
