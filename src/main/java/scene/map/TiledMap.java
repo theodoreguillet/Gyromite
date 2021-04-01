@@ -11,6 +11,7 @@ import scene.physics.PolygonShape;
 import scene.physics.Shape;
 import util.Pair;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -284,12 +285,23 @@ public class TiledMap extends Node {
         }
 
         for(var object : layer.objects) {
-            var factory = objectFactoriesById.get(new Pair<>(layer.id, object.id));
+            // Center coordinates
+            TileObject obj = new TileObject();
+            for (Field field : object.getClass().getDeclaredFields()) { // Clone object
+                try {
+                    field.set(obj, field.get(object));
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                }
+            }
+            obj.x -= ((double)tilemap.width * (double)tilemap.tilewidth) / 2.0;
+            obj.y -= ((double)tilemap.height * (double)tilemap.tileheight) / 2.0;
+            var factory = objectFactoriesById.get(new Pair<>(layer.id, obj.id));
             if(factory == null) {
-                factory = objectFactoriesByType.get(new Pair<>(layer.id, object.type));
+                factory = objectFactoriesByType.get(new Pair<>(layer.id, obj.type));
             }
             if(factory != null) {
-                var node = factory.create(this, object, layer);
+                var node = factory.create(this, obj, layer);
                 addChild(node);
             }
         }

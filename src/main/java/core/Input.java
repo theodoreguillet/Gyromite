@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Input implements AWTEventListener {
     private final ConcurrentLinkedQueue<AWTEvent> events = new ConcurrentLinkedQueue<>();
-    private final List<WeakReference<EventListener>> listeners = new ArrayList<>();
+    private final List<EventListener> listeners = new ArrayList<>();
 
     /**
      * Send events to listeners. Called by {@link scene.Scene}.
@@ -30,7 +30,7 @@ public class Input implements AWTEventListener {
 
             var it = listeners.iterator();
             while(it.hasNext()) {
-                var listener = it.next().get(); // get weak reference
+                var listener = it.next();
                 if(listener == null) {
                     it.remove();
                 } else {
@@ -45,7 +45,7 @@ public class Input implements AWTEventListener {
      * @param listener The event listener.
      */
     public void addListener(EventListener listener) {
-        listeners.add(new WeakReference<>(listener));
+        listeners.add(listener);
     }
 
     /**
@@ -53,7 +53,7 @@ public class Input implements AWTEventListener {
      * @param listener The event listner.
      */
     public void removeListener(EventListener listener) {
-        listeners.removeIf(lwr -> lwr.get() == listener);
+        listeners.removeIf(l -> l == listener);
     }
 
     @Override

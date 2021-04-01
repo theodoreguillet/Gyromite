@@ -56,9 +56,8 @@ class Manifold {
             return;
         }
 
-        // Early out and positional correct if both objects have infinite mass
+        // Return if both objects have infinite mass
         if (MathUtils.equal(A.invMass + B.invMass, 0)) {
-            infiniteMassCorrection();
             return;
         }
 
@@ -131,13 +130,5 @@ class Manifold {
 
         A.applyCorrection(normal, -A.invMass * correction);
         B.applyCorrection(normal, B.invMass * correction);
-    }
-
-    void infiniteMassCorrection() {
-        if(transparent) {
-            return;
-        }
-        A.velocity.set(0, 0);
-        B.velocity.set(0, 0);
     }
 }

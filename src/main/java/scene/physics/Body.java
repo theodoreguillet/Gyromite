@@ -2,6 +2,7 @@ package scene.physics;
 
 import core.Mat2;
 import core.Vector2;
+import game.Column;
 import scene.Node;
 
 import java.util.*;
@@ -213,7 +214,7 @@ public class Body {
     // x += v * dt
 
     void integrateForces(double dt) {
-        if (invMass == 0.0) {
+        if (invMass == 0) {
             return;
         }
 
@@ -229,10 +230,6 @@ public class Body {
     }
 
     void integrateVelocity(double dt) {
-        if (invMass == 0.0) {
-            return;
-        }
-
         node.position().addsi(velocity, dt);
         node.setOrient(node.orient() + angularVelocity * dt);
         computePosition();

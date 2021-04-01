@@ -14,9 +14,10 @@ import scene.physics.CircleShape;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class SceneTestGameTilemap extends Scene {
-    private static class Player extends Node implements KeyListener, BodyListener {
+    private static class Player extends Node implements KeyListener {
         public Player() {
             super();
         }
@@ -24,16 +25,37 @@ public class SceneTestGameTilemap extends Scene {
         @Override
         public void init() {
             scene().input().addListener(this);
-            setBody(new CircleShape(10), Body.Mode.CHARACTER).addBodyListener(this);
+            setBody(new CircleShape(10), Body.Mode.CHARACTER);
         }
 
         @Override
-        public void keyTyped(KeyEvent e) {
-            if(e.getKeyChar() == ' ') {
-                // Jump
-                // body().velocity.y = -80.0;
+        public void update() {
+            Tile ropeTile = null;
+            for(var b : body().contacts()) {
+                if(b.node().owner() instanceof Tile) {
+                    Tile tile = (Tile) b.node().owner();
+                    if(tile.type.equals("rope")) {
+                        ropeTile = tile;
+                    }
+                } else if(b.node() instanceof Column) {
+                    if(((Column)b.node()).isMoving()) {
+                        // Remove column velocity inertia
+                        body().velocity.y = 0.0;
+                    }
+                }
+            }
+            if(ropeTile != null && body().gravity.y != 0.0) {
+                position().x = ropeTile.position().x + 2;
+                body().velocity.set(0, 0);
+                body().gravity.set(0, 0);
+                body().force.set(0, 0);
+            } else if(ropeTile == null && body().gravity.y == 0.0) {
+                body().resetGravity();
             }
         }
+
+        @Override
+        public void keyTyped(KeyEvent e) { }
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -59,21 +81,6 @@ public class SceneTestGameTilemap extends Scene {
                 body().velocity.y = 0;
             }
         }
-
-        @Override
-        public void bodyEntered(Body b) {
-            if(b.node().owner() instanceof Tile) {
-                Tile tile = (Tile) b.node().owner();
-                if(tile.type.equals("rope")) {
-                    position().x = tile.position().x + 2;
-                }
-            }
-        }
-
-        @Override
-        public void bodyExited(Body b) {
-
-        }
     }
 
     private Window window;
@@ -82,7 +89,14 @@ public class SceneTestGameTilemap extends Scene {
     @Override
     protected void preload() {
         resources().loadImage("/img/test.jpg", "test");
+        resources().loadImage("/tilemaps/tileset.png", "tileset");
         resources().loadTilemap("/tilemaps/phase_01.json", "phase_01");
+        for(var layer : resources().getTilemap("phase_01").layers) {
+            if(layer.name.equals("columns_demo")) {
+                layer.visible = false;
+                break;
+            }
+        }
     }
 
     @Override
@@ -92,22 +106,24 @@ public class SceneTestGameTilemap extends Scene {
         fps = new FPSViewer();
         fps.setColor(Color.WHITE);
 
-        Player player = root().addChild(new Player());
-        // player.body().gravity.set(0, 0);
+        physics().gravity.set(0, 100);
 
+        Player player = root().addChild(new Player());
+
+        ArrayList<Column> columns = new ArrayList<>();
         var tiledmap = root().addChild(new TiledMap("phase_01"))
                 .enableCollisions(1, 2, 3, 4, 5, 6, 14)
-                .enableAreas("rope");
-                /*.setObjectFactory(2, 3, (builder, object, layer) -> {
-                    Sprite s = builder.scene().root().addChild(new Sprite("test"));
-                    s.setPosition(builder.getObjectPosition(object));
-                    s.size().set(object.width, object.height);
-                    s.setOpacity(layer.opacity);
-                    return s;
+                .enableAreas("rope")
+                .setObjectFactory("columns", "blue", (tm, object, objectLayer) -> {
+                    var col = new Column(tm, object.x, object.y, object.width, object.height, Column.Type.BLUE);
+                    columns.add(col);
+                    return col;
                 })
-                .enableCollisions(46, 40)
-                .enableCollisions(25, 32)
-                .enableCollisions("cactus")*/
+                .setObjectFactory("columns", "red", (tm, object, objectLayer) -> {
+                    var col = new Column(tm, object.x, object.y, object.width, object.height, Column.Type.RED);
+                    columns.add(col);
+                    return col;
+                });
         tiledmap.build();
 
         Size2 mapSize = tiledmap.size();
@@ -120,6 +136,22 @@ public class SceneTestGameTilemap extends Scene {
                 tiledmap.position().y + mapSize.height / 2.0
         ));
         camera().follow(player, new Rect2(-150, -150, 150, 150));
+
+        input().addListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyChar() == ' ') {
+                    for (var col : columns) {
+                        col.toggle();
+                    }
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) { }
+            @Override
+            public void keyReleased(KeyEvent e) { }
+        });
 
         setRenderPhysics(true);
     }
