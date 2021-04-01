@@ -4,7 +4,7 @@ import core.Vector2;
 
 import java.util.ArrayList;
 
-public class TileObject {
+public class TileObject extends TileElement {
     public int id;
     public String name = "";
     public int gid = 0; // Tile id

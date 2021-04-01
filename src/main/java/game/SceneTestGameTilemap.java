@@ -4,6 +4,7 @@ import core.MathUtils;
 import core.Rect2;
 import core.Size2;
 import core.Vector2;
+import core.resources.tilemap.TileObject;
 import scene.*;
 import scene.map.Tile;
 import scene.map.TiledMap;
@@ -85,6 +86,7 @@ public class SceneTestGameTilemap extends Scene {
 
     private Window window;
     private FPSViewer fps;
+    private final ArrayList<Column> columns = new ArrayList<>();
 
     @Override
     protected void preload() {
@@ -110,20 +112,13 @@ public class SceneTestGameTilemap extends Scene {
 
         Player player = root().addChild(new Player());
 
-        ArrayList<Column> columns = new ArrayList<>();
         var tiledmap = root().addChild(new TiledMap("phase_01"))
                 .enableCollisions(1, 2, 3, 4, 5, 6, 14)
                 .enableAreas("rope")
-                .setObjectFactory("columns", "blue", (tm, object, objectLayer) -> {
-                    var col = new Column(tm, object.x, object.y, object.width, object.height, Column.Type.BLUE);
-                    columns.add(col);
-                    return col;
-                })
-                .setObjectFactory("columns", "red", (tm, object, objectLayer) -> {
-                    var col = new Column(tm, object.x, object.y, object.width, object.height, Column.Type.RED);
-                    columns.add(col);
-                    return col;
-                });
+                .setObjectFactory("columns", "blue", (tm, object, objectLayer) ->
+                        createColumn(tm, object, Column.Type.BLUE))
+                .setObjectFactory("columns", "red", (tm, object, objectLayer) ->
+                        createColumn(tm, object, Column.Type.RED));
         tiledmap.build();
 
         Size2 mapSize = tiledmap.size();
@@ -170,5 +165,13 @@ public class SceneTestGameTilemap extends Scene {
     @Override
     protected void postUpdate() {
         fps.update();
+    }
+
+    private Column createColumn(TiledMap tiledmap, TileObject object, Column.Type type) {
+        Object isTop = object.getProperty("top");
+        var col = new Column(tiledmap, object.x, object.y, object.width, object.height,
+                type, !(isTop instanceof Boolean) || (Boolean)isTop);
+        columns.add(col);
+        return col;
     }
 }

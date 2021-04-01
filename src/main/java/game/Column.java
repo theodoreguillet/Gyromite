@@ -18,17 +18,20 @@ public class Column extends Node {
     private final TiledMap tiledmap;
     private final Size2 size;
     private final Type type;
+    private final boolean isTop;
     private boolean move = false;
     private boolean moveTop = true;
     private boolean movePaused = false;
     private double delay = 0.0;
     private double maxY, minY;
 
-    public Column(TiledMap tiledmap, double x, double y, double width, double height, Type type) {
+    public Column(TiledMap tiledmap, double x, double y, double width, double height, Type type, boolean isTop) {
         super();
         this.tiledmap = tiledmap;
         size = new Size2(width, height);
         this.type = type;
+        this.isTop = isTop;
+        moveTop = isTop;
         setPosition(x, y);
         maxY = minY = y;
     }
@@ -71,8 +74,8 @@ public class Column extends Node {
         position().x += tw / 2.0;
         position().y += height / 2.0;
 
-        minY = position().y;
-        maxY = position().y + height - th;
+        minY = isTop ? position().y : position().y - height + th;
+        maxY = isTop ? position().y + height - th : position().y;
 
         setBody(new PolygonShape(tw / 2.0, height / 2.0 - 2.0), Body.Mode.STATIC);
         body().restitution = 0.0;

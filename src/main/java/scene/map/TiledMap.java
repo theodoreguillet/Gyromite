@@ -294,6 +294,7 @@ public class TiledMap extends Node {
                     e.printStackTrace(System.err);
                 }
             }
+            obj.properties = object.properties;
             obj.x -= ((double)tilemap.width * (double)tilemap.tilewidth) / 2.0;
             obj.y -= ((double)tilemap.height * (double)tilemap.tileheight) / 2.0;
             var factory = objectFactoriesById.get(new Pair<>(layer.id, obj.id));
