@@ -190,9 +190,9 @@ public class SceneTestGameTilemap extends Scene {
         tiledmap.build();
 
         Size2 mapSize = tiledmap.size();
-        double gameHeight = mapSize.height + 32.0;
+        double gameHeight = mapSize.height + 32.0; // Space for top counters offset
         camera().setSize(new Size2(gameHeight * 4.0 / 3.0, gameHeight));
-        camera().position().y = 32.0;
+        camera().position().y = 32.0; // Top counters offset
         camera().setStretchMode(Camera.StretchMode.KEEP_ASPECT);
         camera().setBounds(new Rect2(
                 tiledmap.position().x - mapSize.width / 2.0,
