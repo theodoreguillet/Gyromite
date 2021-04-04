@@ -15,6 +15,9 @@ import scene.physics.CircleShape;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 public class SceneTestGameTilemap extends Scene {
@@ -84,9 +87,74 @@ public class SceneTestGameTilemap extends Scene {
         }
     }
 
+    private static class Counters extends Node {
+        @Override
+        public void init() {
+
+        }
+
+        @Override
+        public void update() {
+            var camera = scene().camera();
+            position().x = camera.position().x - camera.size().width / 2.0;
+            position().y = camera.position().y - camera.size().height / 2.0 + 26.0;
+        }
+
+        @Override
+        public void render(Graphics2D g) {
+            super.render(g);
+            Size2 size = scene().camera().size();
+
+            g.scale(size.width / 256.0, size.height / 224.0);
+
+            double w1 = 32.0;
+            double w2 = 80.0;
+
+            g.setStroke(new BasicStroke(1));
+
+            g.setColor(Color.RED);
+            g.draw(new Line2D.Double(0, 0, w1, 0));
+            g.setColor(Color.ORANGE);
+            g.draw(new Rectangle2D.Double(-2, 4, w1 + 2, 6));
+            g.draw(new Line2D.Double(0, 7, w1, 7));
+            g.setColor(Color.RED);
+            g.draw(new Line2D.Double(0, 14, w1, 14));
+
+            g.translate(w1, 0);
+            g.setColor(Color.BLUE);
+            g.draw(new RoundRectangle2D.Double(5, 0, 70, 14, 1, 1));
+            g.translate(w2, 0);
+
+            g.setColor(Color.RED);
+            g.draw(new Line2D.Double(0, 0, w1, 0));
+            g.setColor(Color.ORANGE);
+            g.draw(new Rectangle2D.Double(0, 4, w1, 6));
+            g.draw(new Line2D.Double(0, 7, w1, 7));
+            g.setColor(Color.RED);
+            g.draw(new Line2D.Double(0, 14, w1, 14));
+
+            g.translate(w1, 0);
+            g.setColor(Color.BLUE);
+            g.draw(new RoundRectangle2D.Double(5, 0, 70, 14, 1, 1));
+            g.translate(w2, 0);
+
+            g.setColor(Color.RED);
+            g.draw(new Line2D.Double(0, 0, w1, 0));
+            g.setColor(Color.ORANGE);
+            g.draw(new Rectangle2D.Double(0, 4, w1 + 2, 6));
+            g.draw(new Line2D.Double(0, 7, w1, 7));
+            g.setColor(Color.RED);
+            g.draw(new Line2D.Double(0, 14, w1, 14));
+        }
+    }
+
     private Window window;
     private FPSViewer fps;
+    private TiledMap tiledmap;
     private final ArrayList<Column> columns = new ArrayList<>();
+
+    private int score = 0;
+    private int timeLeft = 999;
 
     @Override
     protected void preload() {
@@ -112,7 +180,7 @@ public class SceneTestGameTilemap extends Scene {
 
         Player player = root().addChild(new Player());
 
-        var tiledmap = root().addChild(new TiledMap("phase_01"))
+        tiledmap = root().addChild(new TiledMap("phase_01"))
                 .enableCollisions(1, 2, 3, 4, 5, 6, 14)
                 .enableAreas("rope")
                 .setObjectFactory("columns", "blue", (tm, object, objectLayer) ->
@@ -122,7 +190,9 @@ public class SceneTestGameTilemap extends Scene {
         tiledmap.build();
 
         Size2 mapSize = tiledmap.size();
-        camera().setSize(new Size2(mapSize.height * 4.0 / 3.0, mapSize.height));
+        double gameHeight = mapSize.height + 32.0;
+        camera().setSize(new Size2(gameHeight * 4.0 / 3.0, gameHeight));
+        camera().position().y = 32.0;
         camera().setStretchMode(Camera.StretchMode.KEEP_ASPECT);
         camera().setBounds(new Rect2(
                 tiledmap.position().x - mapSize.width / 2.0,
@@ -131,6 +201,8 @@ public class SceneTestGameTilemap extends Scene {
                 tiledmap.position().y + mapSize.height / 2.0
         ));
         camera().follow(player, new Rect2(-150, -150, 150, 150));
+
+        root().addChild(new Counters());
 
         input().addListener(new KeyListener() {
             @Override
