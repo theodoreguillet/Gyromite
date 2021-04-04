@@ -102,7 +102,11 @@ public class SceneTestGameTilemap extends Scene {
             var camera = scene().camera();
             position().x = camera.position().x - camera.size().width / 2.0;
             position().y = camera.position().y - camera.size().height / 2.0 + 26.0;
-            timeLeft -= MainLoop.DT;
+            timeLeft = Math.max(0.0, timeLeft - MainLoop.DT);
+
+            if(timeLeft == 0) {
+                // Game over
+            }
         }
 
         @Override
