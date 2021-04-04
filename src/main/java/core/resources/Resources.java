@@ -6,7 +6,9 @@ import core.resources.tilemap.TileMapData;
 import core.resources.tilemap.TileSet;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ import java.util.Map;
 public class Resources {
     private final Map<String, BufferedImage> images = new HashMap<>();
     private final Map<String, TileMapData> tilemaps = new HashMap<>();
+    private final Map<String, Font> fonts = new HashMap<>();
 
     public boolean loadImage(String name, String id) {
         var img = loadImage(name);
@@ -25,6 +28,22 @@ public class Resources {
         }
         images.put(id, img);
         return true;
+    }
+
+    public boolean loadFont(String name, String id) {
+        var stream = getClass().getResourceAsStream(name);
+        if(stream == null) {
+            System.err.println("Font not found: " + name);
+            return false;
+        }
+        try {
+            var font = Font.createFont(Font.TRUETYPE_FONT, stream);
+            fonts.put(id, font);
+            return true;
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace(System.err);
+        }
+        return false;
     }
 
     public boolean loadTilemap(String name, String id) {
@@ -52,6 +71,9 @@ public class Resources {
     }
     public TileMapData getTilemap(String id) {
         return tilemaps.get(id);
+    }
+    public Font getFont(String id) {
+        return fonts.get(id);
     }
 
     private BufferedImage loadImage(String name) {

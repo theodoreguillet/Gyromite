@@ -88,6 +88,9 @@ public class SceneTestGameTilemap extends Scene {
     }
 
     private static class Counters extends Node {
+        private int score = 0;
+        private int timeLeft = 999;
+
         @Override
         public void init() {
 
@@ -123,6 +126,12 @@ public class SceneTestGameTilemap extends Scene {
             g.translate(w1, 0);
             g.setColor(Color.BLUE);
             g.draw(new RoundRectangle2D.Double(5, 0, 70, 14, 1, 1));
+            g.setColor(new Color(168, 228, 252));
+            g.setFont(scene().resources().getFont("pixel1").deriveFont(Font.PLAIN, 9.5f));
+            g.drawString("1p-", 6, 11);
+            g.setColor(Color.GREEN);
+            g.setFont(scene().resources().getFont("pixel").deriveFont(Font.PLAIN, 11f));
+            g.drawString(String.format("%06d" , score), 22, 11);
             g.translate(w2, 0);
 
             g.setColor(Color.RED);
@@ -136,6 +145,9 @@ public class SceneTestGameTilemap extends Scene {
             g.translate(w1, 0);
             g.setColor(Color.BLUE);
             g.draw(new RoundRectangle2D.Double(5, 0, 70, 14, 1, 1));
+            g.setColor(Color.GREEN);
+            g.setFont(scene().resources().getFont("pixel").deriveFont(Font.PLAIN, 11f));
+            g.drawString("TIME " + String.format("%03d" , timeLeft), 8, 11);
             g.translate(w2, 0);
 
             g.setColor(Color.RED);
@@ -153,12 +165,11 @@ public class SceneTestGameTilemap extends Scene {
     private TiledMap tiledmap;
     private final ArrayList<Column> columns = new ArrayList<>();
 
-    private int score = 0;
-    private int timeLeft = 999;
-
     @Override
     protected void preload() {
         resources().loadImage("/img/test.jpg", "test");
+        resources().loadFont("/fonts/pixel.ttf", "pixel");
+        resources().loadFont("/fonts/pixel1.ttf", "pixel1");
         resources().loadImage("/tilemaps/tileset.png", "tileset");
         resources().loadTilemap("/tilemaps/phase_01.json", "phase_01");
         for(var layer : resources().getTilemap("phase_01").layers) {
@@ -220,7 +231,7 @@ public class SceneTestGameTilemap extends Scene {
             public void keyReleased(KeyEvent e) { }
         });
 
-        setRenderPhysics(true);
+        // setRenderPhysics(true);
     }
 
     @Override
