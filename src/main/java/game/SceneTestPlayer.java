@@ -3,14 +3,13 @@ package game;
 import core.MathUtils;
 import core.Rect2;
 import core.Size2;
+import core.Vector2;
 import core.resources.tilemap.TileObject;
-import scene.Camera;
-import scene.FPSViewer;
-import scene.Node;
-import scene.Scene;
+import scene.*;
 import scene.map.Tile;
 import scene.map.TiledMap;
 import scene.physics.Body;
+import scene.physics.BodyListener;
 import scene.physics.CircleShape;
 
 import java.awt.*;
@@ -18,75 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-public class SceneTestGameTilemap extends Scene {
-    private static class Player extends Node implements KeyListener {
-        public Player() {
-            super();
-        }
-
-        @Override
-        public void init() {
-            scene().input().addListener(this);
-            setBody(new CircleShape(10), Body.Mode.CHARACTER);
-        }
-
-        @Override
-        public void update() {
-            Tile ropeTile = null;
-            for (var b : body().contacts()) {
-                if (b.node().owner() instanceof Tile) {
-                    Tile tile = (Tile) b.node().owner();
-                    if (tile.type.equals("rope")) {
-                        ropeTile = tile;
-                    }
-                } else if (b.node() instanceof Column) {
-                    if (((Column) b.node()).isMoving()) {
-                        // Remove column velocity inertia
-                        body().velocity.y = 0.0;
-                    }
-                }
-            }
-            if (ropeTile != null && body().gravity.y != 0.0) {
-                position().x = ropeTile.position().x + 2;
-                body().velocity.set(0, 0);
-                body().gravity.set(0, 0);
-                body().force.set(0, 0);
-            } else if (ropeTile == null && body().gravity.y == 0.0) {
-                body().resetGravity();
-            }
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                body().velocity.x = 100.0;
-                setOrient(0.0);
-            } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                body().velocity.x = -100.0;
-                setOrient(MathUtils.PI);
-            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                body().velocity.y = -100.0;
-                setOrient(-MathUtils.PI / 2.0);
-            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                body().velocity.y = 100.0;
-                setOrient(MathUtils.PI / 2.0);
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
-                body().velocity.x = 0;
-            }
-            if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
-                body().velocity.y = 0;
-            }
-        }
-    }
+public class SceneTestPlayer extends Scene {
 
     private Window window;
     private FPSViewer fps;
@@ -97,8 +28,8 @@ public class SceneTestGameTilemap extends Scene {
         resources().loadImage("/img/test.jpg", "test");
         resources().loadImage("/tilemaps/tileset.png", "tileset");
         resources().loadTilemap("/tilemaps/phase_01.json", "phase_01");
-        for (var layer : resources().getTilemap("phase_01").layers) {
-            if (layer.name.equals("columns_demo")) {
+        for(var layer : resources().getTilemap("phase_01").layers) {
+            if(layer.name.equals("columns_demo")) {
                 layer.visible = false;
                 break;
             }
@@ -139,7 +70,7 @@ public class SceneTestGameTilemap extends Scene {
         input().addListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == ' ') {
+                if(e.getKeyChar() == ' ') {
                     for (var col : columns) {
                         col.toggle();
                     }
@@ -147,12 +78,9 @@ public class SceneTestGameTilemap extends Scene {
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
+            public void keyPressed(KeyEvent e) { }
             @Override
-            public void keyReleased(KeyEvent e) {
-            }
+            public void keyReleased(KeyEvent e) { }
         });
 
         setRenderPhysics(true);
@@ -177,7 +105,7 @@ public class SceneTestGameTilemap extends Scene {
     private Column createColumn(TiledMap tiledmap, TileObject object, Column.Type type) {
         Object isTop = object.getProperty("top");
         var col = new Column(tiledmap, object.x, object.y, object.width, object.height,
-                type, !(isTop instanceof Boolean) || (Boolean) isTop);
+                type, !(isTop instanceof Boolean) || (Boolean)isTop);
         columns.add(col);
         return col;
     }
