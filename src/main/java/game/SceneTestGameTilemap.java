@@ -1,9 +1,6 @@
 package game;
 
-import core.MathUtils;
-import core.Rect2;
-import core.Size2;
-import core.Vector2;
+import core.*;
 import core.resources.tilemap.TileObject;
 import scene.*;
 import scene.map.Tile;
@@ -89,11 +86,15 @@ public class SceneTestGameTilemap extends Scene {
 
     private static class Counters extends Node {
         private int score = 0;
-        private int timeLeft = 999;
+        private double timeLeft = 999;
 
-        @Override
-        public void init() {
+        public void addReward(int reward) {
+            score += reward;
+        }
 
+        public void reset() {
+            score = 0;
+            timeLeft = 999;
         }
 
         @Override
@@ -101,6 +102,7 @@ public class SceneTestGameTilemap extends Scene {
             var camera = scene().camera();
             position().x = camera.position().x - camera.size().width / 2.0;
             position().y = camera.position().y - camera.size().height / 2.0 + 26.0;
+            timeLeft -= MainLoop.DT;
         }
 
         @Override
@@ -147,7 +149,7 @@ public class SceneTestGameTilemap extends Scene {
             g.draw(new RoundRectangle2D.Double(5, 0, 70, 14, 1, 1));
             g.setColor(Color.GREEN);
             g.setFont(scene().resources().getFont("pixel").deriveFont(Font.PLAIN, 11f));
-            g.drawString("TIME " + String.format("%03d" , timeLeft), 8, 11);
+            g.drawString("TIME " + String.format("%03d" , (int)Math.ceil(timeLeft)), 8, 11);
             g.translate(w2, 0);
 
             g.setColor(Color.RED);
