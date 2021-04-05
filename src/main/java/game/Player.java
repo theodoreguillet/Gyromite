@@ -1,5 +1,6 @@
 package game;
 
+import core.MainLoop;
 import core.MathUtils;
 import scene.AnimatedSprite;
 import scene.Node;
@@ -20,7 +21,8 @@ public class Player extends AnimatedSprite implements KeyListener {
         ROPE_CLIMB,
         JUMP,
         PUT_RADISH,
-        CRUSH,
+        CRUSHING,
+        CRUSHED,
         DIE
     }
     private enum Direction {
@@ -37,6 +39,7 @@ public class Player extends AnimatedSprite implements KeyListener {
     private Direction direction = Direction.LEFT;
     private Radish radish = null;
     private Tile ropeTile = null;
+    private double crushDelay;
 
     private boolean inContactCeiling = false;
     private boolean inContactFloor = false;
@@ -83,10 +86,10 @@ public class Player extends AnimatedSprite implements KeyListener {
                 .addFrames("player", 6, 5, 14, 14)
                 .setSpeed(1)
                 .loop(true);
+        this.addAnimation("crushing")
+                .addFrames("player", 6, 5, 15, 15);
         this.addAnimation("crushed")
-                .addFrames("player", 6, 5, 15, 16)
-                .setSpeed(1)
-                .loop(false);
+                .addFrames("player", 6, 5, 16, 16);
         this.addAnimation("dead")
                 .addFrames("player", 6, 5, 18, 19)
                 .setSpeed(1)
@@ -101,7 +104,7 @@ public class Player extends AnimatedSprite implements KeyListener {
         updateContacts();
 
         if (ropeTile != null && body().gravity.y != 0.0) {
-            position().x = ropeTile.position().x + 2;
+            position().x = ropeTile.position().x + 1;
             body().velocity.set(0, 0);
             body().gravity.set(0, 0);
             body().force.set(0, 0);
@@ -110,8 +113,10 @@ public class Player extends AnimatedSprite implements KeyListener {
         }
 
         if((inContactCeiling && inContactColBottom) || (inContactFloor && inContactColTop)) {
-            System.out.println("isCrushed");
-            state = State.CRUSH;
+            if(state != State.CRUSHING && state != State.CRUSHED) {
+                state = State.CRUSHING;
+                crushDelay = 0.4;
+            }
         }
 
         if(state == State.JUMP && (inContactFloor || inContactColBottom)) {
@@ -124,10 +129,25 @@ public class Player extends AnimatedSprite implements KeyListener {
         } else if(state == State.ROPE_CLIMB) {
             body().velocity.y = direction == Direction.UP ? -100 : 100;
         } else if(state == State.JUMP) {
-            body().velocity.x = Math.signum(body().velocity.x) * Math.max(0, Math.abs(body().velocity.x) - 1);
+            body().velocity.x = Math.signum(body().velocity.x) *
+                    Math.max(0, Math.abs(body().velocity.x) - 100.0 / 32.0);
+        }
+
+        if(state == State.CRUSHING) {
+            crushDelay -= MainLoop.DT;
+            if(crushDelay <= 0) {
+                state = State.CRUSHED;
+                offset().y = -12;
+            } else {
+                offset().y = -12 * (0.4 - crushDelay) / 0.4;
+            }
         }
 
         updateAnimations();
+
+        if(state == State.CRUSHED) {
+            scene().setPaused(true);
+        }
     }
 
 
@@ -149,6 +169,9 @@ public class Player extends AnimatedSprite implements KeyListener {
                 state = State.ROPE_CLIMB;
                 direction = e.getKeyCode() == KeyEvent.VK_UP ? Direction.UP : Direction.DOWN;
             }
+        }
+        if(e.getKeyChar() == 'a') {
+            scene().setPaused(true);
         }
     }
     @Override
@@ -245,7 +268,8 @@ public class Player extends AnimatedSprite implements KeyListener {
                 anim = "climb";
                 backward = direction == Direction.UP;
             }
-            case CRUSH -> anim = "crushed";
+            case CRUSHING -> anim = "crushing";
+            case CRUSHED -> anim = "crushed";
             case PUT_RADISH -> anim = "putRadish";
             case DIE -> anim = "dead";
             case IDLE -> anim = onRope() ? "idleRope" : "idle";

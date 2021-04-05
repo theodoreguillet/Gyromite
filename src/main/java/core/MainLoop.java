@@ -75,11 +75,16 @@ public class MainLoop {
             final long now = System.nanoTime();
 
             // update the game
-            if (now - nextTick >= 0 && !paused.get()) {
-                processInput();
+            boolean isPaused = paused.get();
+            if (now - nextTick >= 0) {
+                if(!isPaused) {
+                    processInput();
+                }
                 do {
-                    updatePhysics();
-                    update();
+                    if(!isPaused) {
+                        updatePhysics();
+                        update();
+                    }
 
                     nextTick += NANOS_PER_TICK;
                 } while (now - nextTick >= 0);
