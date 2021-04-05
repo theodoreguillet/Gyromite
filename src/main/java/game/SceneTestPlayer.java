@@ -28,6 +28,7 @@ public class SceneTestPlayer extends Scene {
         resources().loadImage("/img/test.jpg", "test");
         resources().loadImage("/tilemaps/tileset.png", "tileset");
         resources().loadTilemap("/tilemaps/phase_01.json", "phase_01");
+        Player.preload(this);
         for(var layer : resources().getTilemap("phase_01").layers) {
             if(layer.name.equals("columns_demo")) {
                 layer.visible = false;
@@ -83,7 +84,7 @@ public class SceneTestPlayer extends Scene {
             public void keyReleased(KeyEvent e) { }
         });
 
-        setRenderPhysics(true);
+        // setRenderPhysics(true);
     }
 
     @Override

@@ -3,108 +3,103 @@ package game;
 import core.MathUtils;
 import scene.AnimatedSprite;
 import scene.Node;
+import scene.Scene;
 import scene.map.Tile;
 import scene.physics.Body;
 import scene.physics.CircleShape;
+import scene.physics.PolygonShape;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Player extends AnimatedSprite implements KeyListener {
+    private enum State {
+        IDLE,
+        WALK,
+        ROPE_CLIMB,
+        JUMP,
+        PUT_RADISH,
+        CRUSH,
+        DIE
+    }
+    private enum Direction {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    }
+    private static double WIDTH = 32;
+    private static double HEIGHT = 44;
+    private static double BODY_WIDTH2 = 12;
+    private static double BODY_HEIGHT2 = 22;
+    private State state = State.IDLE;
+    private Direction direction = Direction.LEFT;
+    private Radish radish = null;
+    private Tile ropeTile = null;
 
-    private Node radish;
+    private boolean inContactCeiling = false;
+    private boolean inContactFloor = false;
+    private boolean inContactColTop = false;
+    private boolean inContactColBottom = false;
 
-    public void preload() {
-        scene().resources().loadImage("/img/player.png", "player");
+    public static void preload(Scene scene) {
+        scene.resources().loadImage("/img/player.png", "player");
     }
 
     @Override
     public void init() {
-        preload();
-        radish = null;
         scene().input().addListener(this);
-        setBody(new CircleShape(15), Body.Mode.CHARACTER);
-        size().set(40.0, 40.0);
+        // setBody(new CircleShape(BODY_WIDTH2), Body.Mode.CHARACTER);
+        setBody(new PolygonShape(BODY_WIDTH2, BODY_HEIGHT2), Body.Mode.CHARACTER);
+        body().restitution = 0.0;
+        size().set(WIDTH, HEIGHT);
 
-        // TDOD : ajouter une animation quand il fait rien
         this.addAnimation("idle")
                 .addFrames("player", 6, 5, 0, 0)
-                .setSpeed(50)
+                .setSpeed(1)
                 .loop(false);
         this.addAnimation("walk")
                 .addFrames("player", 6, 5, 0, 4)
-                .setSpeed(50)
+                .setSpeed(10)
                 .loop(true);
         this.addAnimation("walkWithRadish")
                 .addFrames("player", 6, 5, 6, 10)
-                .setSpeed(50)
+                .setSpeed(10)
                 .loop(true);
         this.addAnimation("putRadish")
                 .addFrames("player", 6, 5, 11, 11)
-                .setSpeed(50)
+                .setSpeed(1)
                 .loop(false);
         this.addAnimation("climb")
                 .addFrames("player", 6, 5, 12, 13)
-                .setSpeed(10)
+                .setSpeed(5)
+                .loop(true);
+        this.addAnimation("idleRope")
+                .addFrames("player", 6, 5, 12, 12)
+                .setSpeed(1)
                 .loop(true);
         this.addAnimation("jump")
                 .addFrames("player", 6, 5, 14, 14)
-                .setSpeed(50)
+                .setSpeed(1)
                 .loop(true);
         this.addAnimation("crushed")
                 .addFrames("player", 6, 5, 15, 16)
-                .setSpeed(50)
+                .setSpeed(1)
                 .loop(false);
         this.addAnimation("dead")
                 .addFrames("player", 6, 5, 18, 19)
-                .setSpeed(50)
+                .setSpeed(1)
                 .loop(false);
         play("idle");
     }
 
     @Override
     public void update() {
-        Tile ropeTile = null;
-        boolean isInContactFloor = false;
-        for (var b : body().contacts()) {
-            if (b.node().owner() instanceof Tile) {
-                Tile tile = (Tile) b.node().owner();
-                if (tile.type.equals("rope")) {
-                    ropeTile = tile;
-                } else if(tile.type.equals("floor") || tile.type.equals("ceiling")) {
-                    isInContactFloor = true;
-                }
-            } else if (b.node() instanceof Column) {
-                if (((Column) b.node()).isMoving()) {
-                    // Remove column velocity inertia
-                    body().velocity.y = 0.0;
-                    if(isInContactFloor)
-                        System.out.println("isCrushed");
-                        play("crushed");
-                }
-            } else if (b.node() instanceof Enemy) {
-                if (!((Enemy) b.node()).isEating()) {
-                    if (radish != null) {
-                        ((Enemy) (b.node())).feed();
-                        flipH(false);
-                        this.play("putRadish");
-                        removeChild(radish);
-                        radish = null;
-                    } else {
-                        play("dead");
-                    }
-                }
-            } else if (b.node() instanceof Bomb) {
-                addChild(b.node());
-            } else if (b.node() instanceof Radish) {
-                if (radish == null) {
-                    Radish tmpRadish = (Radish) b.node();
-                    addChild(tmpRadish);
-                    radish = tmpRadish;
-                    play("putRadish");
-                }
-            }
-        }
+        super.update();
+
+        updateContacts();
+
         if (ropeTile != null && body().gravity.y != 0.0) {
             position().x = ropeTile.position().x + 2;
             body().velocity.set(0, 0);
@@ -113,77 +108,154 @@ public class Player extends AnimatedSprite implements KeyListener {
         } else if (ropeTile == null && body().gravity.y == 0.0) {
             body().resetGravity();
         }
+
+        if((inContactCeiling && inContactColBottom) || (inContactFloor && inContactColTop)) {
+            System.out.println("isCrushed");
+            state = State.CRUSH;
+        }
+
+        if(state == State.JUMP && (inContactFloor || inContactColBottom)) {
+            state = State.IDLE;
+            body().velocity.x = 0;
+        }
+
+        if(state == State.WALK) {
+            body().velocity.x = direction == Direction.LEFT ? -100 : 100;
+        } else if(state == State.ROPE_CLIMB) {
+            body().velocity.y = direction == Direction.UP ? -100 : 100;
+        } else if(state == State.JUMP) {
+            body().velocity.x = Math.signum(body().velocity.x) * Math.max(0, Math.abs(body().velocity.x) - 1);
+        }
+
+        updateAnimations();
     }
 
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
+    public void keyTyped(KeyEvent e) { }
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            body().velocity.x = 100.0;
-            setOrient(0.0);
-            playHorizontalAnim(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            body().velocity.x = -100.0;
-            setOrient(MathUtils.PI);
-            playHorizontalAnim(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if (checkIfOnRope()) {
-                body().velocity.y = -100.0;
-                setOrient(0.0);
-                playVerticalAnim();
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
+            if((state == State.IDLE || state == State.JUMP) && (inContactFloor || inContactColBottom)) {
+                state = State.WALK;
+                direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
+            } else if(onRope()) {
+                state = State.JUMP;
+                direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
+                body().velocity.x = direction == Direction.LEFT ? -100 : 100;
             }
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if (checkIfOnRope()) {
-                body().velocity.y = 100.0;
-                setOrient(0.0);
-                playVerticalAnim();
+        } else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
+            if (onRope()) {
+                state = State.ROPE_CLIMB;
+                direction = e.getKeyCode() == KeyEvent.VK_UP ? Direction.UP : Direction.DOWN;
             }
         }
     }
-
-    public void playHorizontalAnim(boolean toRight) {
-        flipH(true);
-        flipV(!toRight);
-        if (checkIfOnRope()) {
-            play("jump", true);
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
+            if(state != State.JUMP) {
+                state = State.IDLE;
+            }
+            body().velocity.x = 0;
         }
-        else
-            play("walk", true);
-    }
-
-    public void playVerticalAnim() {
-        if(isFlipV())
-            flipV(false);
-        if (checkIfOnRope()) {
-            play("climb");
+        if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
+            if(onRope()) {
+                state = State.IDLE;
+                body().velocity.y = 0;
+            }
         }
     }
 
-    public boolean checkIfOnRope() {
+    private boolean onRope() {
+        return ropeTile != null;
+    }
+
+    private void updateContacts() {
+        ropeTile = null;
+
+        inContactCeiling = false;
+        inContactFloor = false;
+        inContactColTop = false;
+        inContactColBottom = false;
+
         for (var b : body().contacts()) {
             if (b.node().owner() instanceof Tile) {
                 Tile tile = (Tile) b.node().owner();
                 if (tile.type.equals("rope")) {
-                    return true;
+                    ropeTile = tile;
+                } else if((tile.type.equals("floor") || tile.type.equals("ceiling")) &&
+                        Math.abs(tile.position().x - position().x) <= BODY_WIDTH2 + tile.sprite.size().width / 2.0
+                ) {
+                    if(tile.position().y < position().y) {
+                        inContactCeiling = true;
+                    } else {
+                        inContactFloor = true;
+                    }
+                }
+            } else if (b.node() instanceof Column) {
+                Column column = (Column)b.node();
+                if (column.isMoving()) {
+                    // Remove column velocity inertia
+                    body().velocity.y = 0.0;
+                    if(Math.abs(column.position().x - position().x) <= BODY_WIDTH2 + column.size().width / 2.0) {
+                        if(column.position().y < position().y) {
+                            inContactColTop = true;
+                        } else {
+                            inContactColBottom = true;
+                        }
+                    }
+                }
+            } else if (b.node() instanceof Enemy) {
+                var enemy = (Enemy) b.node();
+                if (!enemy.isEating()) {
+                    if (radish != null) {
+                        enemy.feed();
+                        radish.remove();
+                        radish = null;
+                        owner().addChild(new Radish()).position().set(position().x, position().y);
+                        state = State.PUT_RADISH;
+                    } else {
+                        state = State.DIE;
+                    }
+                }
+            } else if (b.node() instanceof Bomb) {
+                b.node().remove();
+                // Add score;
+            } else if (b.node() instanceof Radish) {
+                if (radish == null) {
+                    b.node().remove();
+                    radish = addChild(new Radish());
+                    radish.position().set(0, 10);
                 }
             }
         }
-        return false;
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
-            body().velocity.x = 0;
-            play("idle");
+    private void updateAnimations() {
+        String anim = "idle";
+        boolean backward = false;
+        switch (state) {
+            case WALK -> {
+                anim = radish != null ? "walkWithRadish" : "walk";
+                backward = true;
+            }
+            case JUMP -> anim = "jump";
+            case ROPE_CLIMB -> {
+                anim = "climb";
+                backward = direction == Direction.UP;
+            }
+            case CRUSH -> anim = "crushed";
+            case PUT_RADISH -> anim = "putRadish";
+            case DIE -> anim = "dead";
+            case IDLE -> anim = onRope() ? "idleRope" : "idle";
         }
-        if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
-            body().velocity.y = 0;
+        flipH(false);
+        if(direction == Direction.RIGHT) {
+            flipH(true);
+        }
+        if(!currentAnimation().equals(anim) || !isPlaying() || isPlayingBackwards() != backward) {
+            play(anim, backward);
         }
     }
 }

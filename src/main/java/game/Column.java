@@ -40,6 +40,10 @@ public class Column extends Node {
         return move;
     }
 
+    public Size2 size() {
+        return size;
+    }
+
     public void toggle() {
         moveTop = !moveTop;
         movePaused = false;

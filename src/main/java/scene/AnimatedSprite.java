@@ -15,7 +15,7 @@ public class AnimatedSprite extends SpriteBase {
     private final HashMap<String, SpriteFrames> animations = new HashMap<>();
     boolean playing = false;
     boolean playBackwards = false;
-    String currentAnimation = null;
+    String currentAnimation = "";
     int currentAnimationFrame = 0;
     private long frameTime = 0;
     private double speedScale = 1.0;
@@ -43,6 +43,12 @@ public class AnimatedSprite extends SpriteBase {
      */
     public boolean isPlaying() {
         return playing;
+    }
+    /**
+     * @return Return if the current animation is playing backwards.
+     */
+    public boolean isPlayingBackwards() {
+        return playing && playBackwards;
     }
     /**
      * @return The index of the current animation.
@@ -124,7 +130,7 @@ public class AnimatedSprite extends SpriteBase {
      * Stop the current animation and reset the frame counter.
      */
     public void reset() {
-        currentAnimation = null;
+        currentAnimation = "";
         currentAnimationFrame = 0;
         frameTime = 0;
         playing = false;
