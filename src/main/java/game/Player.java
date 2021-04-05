@@ -79,6 +79,7 @@ public class Player extends AnimatedSprite implements KeyListener {
                     // Remove column velocity inertia
                     body().velocity.y = 0.0;
                     if(isInContactFloor)
+                        System.out.println("isCrushed");
                         play("crushed");
                 }
             } else if (b.node() instanceof Enemy) {
@@ -156,7 +157,8 @@ public class Player extends AnimatedSprite implements KeyListener {
     }
 
     public void playVerticalAnim() {
-
+        if(isFlipV())
+            flipV(false);
         if (checkIfOnRope()) {
             play("climb");
         }
