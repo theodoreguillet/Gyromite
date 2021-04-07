@@ -111,13 +111,16 @@ public class Body {
 
     /**
      * Add a collision event listener to the body.
+     *
      * @param listener The collision event listener.
      */
     public void addBodyListener(BodyListener listener) {
         bodyListeners.add(listener);
     }
+
     /**
      * Remove a collision event listener.
+     *
      * @param listener The collision event listener.
      */
     public void removeBodyListener(BodyListener listener) {
@@ -137,12 +140,14 @@ public class Body {
     public PhysicsProvider physics() {
         return physics;
     }
+
     /**
      * @return The body node.
      */
     public Node node() {
         return node;
     }
+
     /**
      * @return The body mode.
      */
@@ -163,9 +168,6 @@ public class Body {
             invInertia = 0.0;
             mass = 0.0;
             invMass = 0.0;
-        } else if (mode == Mode.CHARACTER) {
-            inertia = 0.0;
-            invInertia = 0.0;
         }
     }
 
@@ -183,7 +185,9 @@ public class Body {
 
     void applyImpulse(Vector2 impulse, Vector2 contactVector) {
         velocity.addsi(impulse, invMass);
-        angularVelocity += invInertia * Vector2.cross(contactVector, impulse);
+        if(mode != Mode.CHARACTER) {
+            angularVelocity += invInertia * Vector2.cross(contactVector, impulse);
+        }
     }
 
     void clearForces() {
@@ -194,9 +198,11 @@ public class Body {
     Vector2 position() {
         return position;
     }
+
     double orient() {
         return orient;
     }
+
     Mat2 orientMat() {
         return orientMat;
     }
@@ -258,24 +264,25 @@ public class Body {
     }
 
     void updateContacts() {
-        for(Body body : contacts) {
-            if(!lastContacts.remove(body)) {
+        for (Body body : contacts) {
+            if (!lastContacts.remove(body)) {
                 handleBodyEntered(body);
             }
         }
-        for(Body body : lastContacts) {
+        for (Body body : lastContacts) {
             handleBodyExited(body);
         }
         lastContacts.clear();
     }
 
     private void handleBodyEntered(Body body) {
-        for(BodyListener listener : bodyListeners) {
+        for (BodyListener listener : bodyListeners) {
             listener.bodyEntered(body);
         }
     }
+
     private void handleBodyExited(Body body) {
-        for(BodyListener listener : bodyListeners) {
+        for (BodyListener listener : bodyListeners) {
             listener.bodyExited(body);
         }
     }
