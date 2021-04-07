@@ -240,11 +240,13 @@ public class Node {
     protected void destroy() {
         boolean lastUpdateFlag = updatingChildNodes;
         updatingChildNodes = true; // Prevent child removing during loop
-        for(var child : children) {
+        for (var child : children) {
             child.destroy();
         }
         updatingChildNodes = lastUpdateFlag;
-        scene().physics().remove(this.body);
+        if (this.body != null) {
+            scene().physics().remove(this.body);
+        }
     }
 
     /**
