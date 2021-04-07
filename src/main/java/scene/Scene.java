@@ -95,6 +95,7 @@ public class Scene extends MainLoop {
             root.destroy();
         }
         this.root = root;
+        this.root.init();
     }
     /**
      * @param camera Set the camera used to render the game in the {@link Viewport}
