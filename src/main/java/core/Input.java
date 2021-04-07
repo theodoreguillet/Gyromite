@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Input implements AWTEventListener {
     private final ConcurrentLinkedQueue<AWTEvent> events = new ConcurrentLinkedQueue<>();
-    private final List<EventListener> listeners = new ArrayList<>();
+    private List<EventListener> listeners = new ArrayList<>();
 
     /**
      * Send events to listeners. Called by {@link scene.Scene}.
@@ -50,17 +50,20 @@ public class Input implements AWTEventListener {
 
     /**
      * Remove an event listener.
-     * @param listener The event listner.
+     * @param listener The event listener.
      */
     public void removeListener(EventListener listener) {
-        listeners.removeIf(l -> l == listener);
+        int idx = listeners.indexOf(listener);
+        if(idx != -1) {
+            listeners.set(idx, null);
+        }
     }
 
     /**
      * Remove all event listeners.
      */
     public void removeAllListeners() {
-        listeners.clear();
+        listeners = new ArrayList<>();
     }
 
     @Override
