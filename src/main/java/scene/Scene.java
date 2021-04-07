@@ -3,6 +3,7 @@ package scene;
 import core.Input;
 import core.MainLoop;
 import core.resources.Resources;
+import org.jetbrains.annotations.NotNull;
 import scene.physics.PhysicsProvider;
 
 import javax.swing.text.html.parser.Entity;
@@ -88,14 +89,14 @@ public class Scene extends MainLoop {
     /**
      * Set the root of the scene nodes tree.
      * Will remove the existing node tree.
-     * @param root
+     * @param sceneRoot The new root node.
      */
-    public void setRoot(SceneRoot root) {
-        if(this.root != null && !this.root.isDestroyed()) {
+    public void setRoot(@NotNull SceneRoot sceneRoot) {
+        if(!root.isDestroyed()) {
             root.destroy();
         }
-        this.root = root;
-        this.root.init();
+        root = sceneRoot;
+        root.init();
     }
     /**
      * @param camera Set the camera used to render the game in the {@link Viewport}
