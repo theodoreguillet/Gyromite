@@ -86,6 +86,17 @@ public class Scene extends MainLoop {
     }
 
     /**
+     * Set the root of the scene nodes tree.
+     * Will remove the existing node tree.
+     * @param root
+     */
+    public void setRoot(SceneRoot root) {
+        if(this.root != null && !this.root.isDestroyed()) {
+            root.destroy();
+        }
+        this.root = root;
+    }
+    /**
      * @param camera Set the camera used to render the game in the {@link Viewport}
      */
     public void setCamera(Camera camera) {

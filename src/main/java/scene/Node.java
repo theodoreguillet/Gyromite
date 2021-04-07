@@ -19,6 +19,7 @@ public class Node {
     private final ArrayList<Node> children = new ArrayList<>();
     private Node owner = null;
     private Body body = null;
+    private boolean destroyed = false;
 
     private final Vector2 position = new Vector2();
     private double orient = 0.0; // Orientation in radians
@@ -65,6 +66,12 @@ public class Node {
      */
     public Body body() {
         return body;
+    }
+    /**
+     * @return Return true if the node was destroyed from the scene tree (see {@link Node#remove()}).
+     */
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     /**

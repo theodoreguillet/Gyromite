@@ -13,4 +13,9 @@ public class SceneRoot extends Node {
     public Scene scene() {
         return scene;
     }
+
+    @Override
+    public void remove() {
+        scene.setRoot(null);
+    }
 }
