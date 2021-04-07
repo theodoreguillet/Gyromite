@@ -173,6 +173,23 @@ public class Node {
     }
 
     /**
+     * Remove all children nodes.
+     * Also removes the body of the child node.
+     * If this method is called during a child node update,
+     * the remove will be processed after the update.
+     */
+    public void removeAllChildren() {
+        for(var childNode : children) {
+            childNode.destroy();
+        }
+        if(updatingChildNodes) {
+            childrenToRemove.addAll(children);
+        } else {
+            children.clear();
+        }
+    }
+
+    /**
      * Set a body to the node
      * @param shape The shape of the body
      * @param mode The mode of the body. See {@link Body.Mode}
