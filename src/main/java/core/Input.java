@@ -49,11 +49,18 @@ public class Input implements AWTEventListener {
     }
 
     /**
-     * Remove an event listener
+     * Remove an event listener.
      * @param listener The event listner.
      */
     public void removeListener(EventListener listener) {
         listeners.removeIf(l -> l == listener);
+    }
+
+    /**
+     * Remove all event listeners.
+     */
+    public void removeAllListeners() {
+        listeners.clear();
     }
 
     @Override
