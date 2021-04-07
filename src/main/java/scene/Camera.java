@@ -47,16 +47,31 @@ public class Camera {
 
     private final Scene scene;
     private final Vector2 position = new Vector2();
-    private final Size2 size = new Size2(800, 600);
+    private final Size2 size = new Size2();
     private final Vector2 offset = new Vector2();
-    private final Vector2 zoom = new Vector2(1, 1);
+    private final Vector2 zoom = new Vector2();
     private final Rect2 bounds = new Rect2();
-    private Node followed = null;
+    private Node followed;
     private final Rect2 followBox = new Rect2();
-    private StretchMode stretchMode = StretchMode.DISABLED;
+    private StretchMode stretchMode;
 
     public Camera(Scene scene) {
         this.scene = scene;
+        reset();
+    }
+
+    /**
+     * Reset all properties of the camera.
+     */
+    public void reset() {
+       position.set(0, 0);
+       size.set(800, 600);
+       offset.set(0, 0);
+       zoom.set(1, 1);
+       bounds.set(new Rect2());
+       followed = null;
+       followBox.set(new Rect2());
+       stretchMode = StretchMode.DISABLED;
     }
 
     /**
