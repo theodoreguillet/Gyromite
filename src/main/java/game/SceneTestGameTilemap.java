@@ -32,7 +32,7 @@ public class SceneTestGameTilemap extends Scene {
         @Override
         public void update() {
             Tile ropeTile = null;
-            for(var b : body().contacts()) {
+            for(var b : body().contacts().keySet()) {
                 if(b.node().owner() instanceof Tile) {
                     Tile tile = (Tile) b.node().owner();
                     if(tile.type.equals("rope")) {

@@ -41,8 +41,8 @@ public class Body {
     private final Node node;
     private Mode mode;
 
-    private HashSet<Body> contacts = new HashSet<>();
-    private HashSet<Body> lastContacts = new HashSet<>();
+    private HashMap<Body, Manifold> contacts = new HashMap();
+    private HashMap<Body, Manifold> lastContacts = new HashMap<>();
 
     private final ArrayList<BodyListener> bodyListeners = new ArrayList<>();
 
@@ -130,8 +130,8 @@ public class Body {
     /**
      * @return The bodies currently in contact with this body.
      */
-    public Set<Body> contacts() {
-        return Collections.unmodifiableSet(contacts);
+    public Map<Body, Manifold> contacts() {
+        return Collections.unmodifiableMap(contacts);
     }
 
     /**
@@ -250,7 +250,7 @@ public class Body {
 
     void clearContacts() {
         lastContacts = contacts;
-        contacts = new HashSet<>();
+        contacts = new HashMap<>();
     }
 
     void computePosition() {
@@ -259,19 +259,19 @@ public class Body {
         orientMat = new Mat2(orient);
     }
 
-    void addContact(Body other) {
-        contacts.add(other);
+    void addContact(Body other, Manifold m) {
+        contacts.put(other, m);
     }
 
     void updateContacts() {
-        for (Body body : contacts) {
-            if (!lastContacts.remove(body)) {
+        contacts.forEach((body, m) -> {
+            if (lastContacts.remove(body) == null) {
                 handleBodyEntered(body);
             }
-        }
-        for (Body body : lastContacts) {
+        });
+        lastContacts.forEach((body, m) -> {
             handleBodyExited(body);
-        }
+        });
         lastContacts.clear();
     }
 

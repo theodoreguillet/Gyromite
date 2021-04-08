@@ -21,8 +21,8 @@ public class Player extends AnimatedSprite implements KeyListener {
         JUMP,
         PUT_RADISH,
         CRUSHING,
-        CRUSHED,
-        DIE
+        HIT,
+        DEAD
     }
 
     private static final double WIDTH = 32;
@@ -37,10 +37,6 @@ public class Player extends AnimatedSprite implements KeyListener {
     private boolean onFloor = false;
     private double crushSpacing = -1;
     private double crushDelay;
-
-    public static void preload(Scene scene) {
-        scene.resources().loadImage("/img/player.png", "player");
-    }
 
     @Override
     public void init() {
@@ -57,6 +53,10 @@ public class Player extends AnimatedSprite implements KeyListener {
                 .loop(false);
         this.addAnimation("walk")
                 .addFrames("player", 6, 5, 0, 4)
+                .setSpeed(10)
+                .loop(true);
+        this.addAnimation("idleWithRadish")
+                .addFrames("player", 6, 5, 6, 6)
                 .setSpeed(10)
                 .loop(true);
         this.addAnimation("walkWithRadish")
@@ -83,7 +83,7 @@ public class Player extends AnimatedSprite implements KeyListener {
                 .addFrames("player", 6, 5, 15, 15);
         this.addAnimation("crushed")
                 .addFrames("player", 6, 5, 16, 16);
-        this.addAnimation("dead")
+        this.addAnimation("hit")
                 .addFrames("player", 6, 5, 18, 19)
                 .setSpeed(1)
                 .loop(false);
@@ -116,7 +116,7 @@ public class Player extends AnimatedSprite implements KeyListener {
         }
 
         if (crushSpacing != -1) {
-            if (state != State.CRUSHING && state != State.CRUSHED) {
+            if (state != State.CRUSHING && state != State.DEAD) {
                 state = State.CRUSHING;
                 crushDelay = 1;
             }
@@ -124,7 +124,6 @@ public class Player extends AnimatedSprite implements KeyListener {
 
         if (state == State.JUMP && onFloor && body().velocity.x == 0) {
             state = State.IDLE;
-            body().velocity.x = 0;
         }
 
         if (state == State.WALK) {
@@ -140,13 +139,20 @@ public class Player extends AnimatedSprite implements KeyListener {
             crushDelay -= MainLoop.DT;
             offset().y = -Math.max(0, BODY_HEIGHT2 - crushSpacing / 2.0);
             if(crushSpacing <= 2 || crushDelay <= 0) {
-                state = State.CRUSHED;
+                state = State.DEAD;
             }
+        }
+
+        if(state == State.PUT_RADISH && !isPlaying()) {
+            state = State.IDLE;
+        }
+        if(state == State.HIT && !isPlaying()) {
+            state = State.DEAD;
         }
 
         updateAnimations();
 
-        if (state == State.CRUSHED) {
+        if (state == State.DEAD) {
             scene().setPaused(true);
         }
     }
@@ -165,7 +171,7 @@ public class Player extends AnimatedSprite implements KeyListener {
             if (state == State.IDLE && onFloor) {
                 state = State.WALK;
                 direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
-            } else if (onRope() && state != State.JUMP) {
+            } else if (onRope() && state != State.JUMP && state != State.WALK) {
                 state = State.JUMP;
                 direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
                 body().velocity.x = direction == Direction.LEFT ? -100 : 100;
@@ -212,94 +218,91 @@ public class Player extends AnimatedSprite implements KeyListener {
         Column topColumn = null;
         Column bottomColumn = null;
 
-        for (var b : body().contacts()) {
+        for (var contactEntry : body().contacts().entrySet()) {
+            var b = contactEntry.getKey();
+            var manifold = contactEntry.getValue();
+
             if (b.node().owner() instanceof Tile) {
                 Tile tile = (Tile) b.node().owner();
                 if (tile.type.equals("rope")) {
                     ropeTile = tile;
-                } else if ((tile.type.equals("floor") || tile.type.equals("ceiling")) &&
-                        Math.abs(tile.position().x - position().x) <= BODY_WIDTH2 + tile.sprite.size().width / 2.0) {
-                    if (tile.position().y < position().y) {
-                        topTile = tile;
-                    } else {
+                } else if(manifold.normal.y != 0) {
+                    if(manifold.normal.y < 0) {
                         bottomTile = tile;
+                    } else {
+                        topTile = tile;
                     }
                 }
             } else if (b.node() instanceof Column) {
                 Column column = (Column) b.node();
                 // Remove column velocity inertia
                 body().velocity.y = 0.0;
-                if (Math.abs(column.position().x - position().x) <= BODY_WIDTH2 + column.size().width / 2.0) {
-                    if (column.position().y < position().y) {
-                        topColumn = column;
-                    } else {
+
+                if(manifold.normal.y != 0) {
+                    if (manifold.normal.y < 0) {
                         bottomColumn = column;
+                    } else {
+                        topColumn = column;
                     }
                 }
             } else if (b.node() instanceof Enemy) {
                 var enemy = (Enemy) b.node();
                 if (!enemy.isEating()) {
                     if (radish != null) {
-                        enemy.feed(radish);
+                        enemy.feedRadish();
                         radish.remove();
                         radish = null;
-                        owner().addChild(new Radish()).position().set(position().x, position().y);
                         state = State.PUT_RADISH;
                     } else {
-                        state = State.DIE;
+                        Direction dir;
+                        if(manifold.normal.y == 0) {
+                            if(manifold.normal.x > 0) {
+                                dir = Direction.LEFT;
+                            } else {
+                                dir = Direction.RIGHT;
+                            }
+                        } else if(manifold.normal.y > 0) {
+                            dir = Direction.UP;
+                        } else {
+                            dir = Direction.DOWN;
+                        }
+                        enemy.attack(dir);
+                        state = State.HIT;
+                        body().velocity.set(0, 0);
+                        body().force.set(0, 0);
                     }
                 }
             } else if (b.node() instanceof Bomb) {
                 b.node().remove();
-                // Add score;
+                // TODO: Add score;
             } else if (b.node() instanceof Radish) {
                 if (radish == null) {
                     b.node().remove();
-                    radish = addChild(new Radish());
-                    radish.position().set(0, 10);
+                    radish = addChild(new Radish(false));
                 }
             }
         }
 
-        if(bottomTile != null || bottomColumn != null) {
-            double bottomTopY = bottomTile != null
-                    ? bottomTile.position().y - bottomTile.sprite.size().height / 2.0
-                    : bottomColumn.position().y - bottomColumn.size().height / 2.0;
-            double bodyBottomY = position().y + BODY_HEIGHT2;
-            onFloor = Math.abs(bodyBottomY - bottomTopY) < BODY_HEIGHT2 / 10.0;
-        } else {
-            onFloor = false;
-        }
+        onFloor = (bottomTile != null || bottomColumn != null);
+
         crushSpacing = -1;
         if(topTile != null && bottomColumn != null) {
-            double dst1 = Math.abs(topTile.position().x - position().x);
-            double dst2 = Math.abs(bottomColumn.position().x - position().x);
-            if(dst1 < BODY_WIDTH2 + topTile.sprite.size().width / 2.0 - topTile.sprite.size().width / 10.0 &&
-                    dst2 < BODY_WIDTH2 + bottomColumn.size().width / 2.0 - bottomColumn.size().width / 10.0
-            ) {
-                double topBottomY = topTile.position().y + topTile.sprite.size().height / 2.0;
-                double bottomTopY = bottomColumn.position().y - bottomColumn.size().height / 2.0;
-                if(topBottomY <= bottomTopY) { // y axe is inverted
-                    crushSpacing = bottomTopY - topBottomY;
-                }
+            double topBottomY = topTile.position().y + topTile.sprite.size().height / 2.0;
+            double bottomTopY = bottomColumn.position().y - bottomColumn.size().height / 2.0;
+            if(topBottomY <= bottomTopY) { // y axe is inverted
+                crushSpacing = bottomTopY - topBottomY;
             }
         } else if(topColumn != null && bottomTile != null) {
-            double dst1 = Math.abs(bottomTile.position().x - position().x);
-            double dst2 = Math.abs(topColumn.position().x - position().x);
-            if(dst1 < BODY_WIDTH2 + bottomTile.sprite.size().width / 2.0 - bottomTile.sprite.size().width / 10.0 &&
-                    dst2 < BODY_WIDTH2 + topColumn.size().width / 2.0 - topColumn.size().width / 10.0
-            ) {
-                double topBottomY = topColumn.position().y + topColumn.size().height / 2.0;
-                double bottomTopY = bottomTile.position().y - bottomTile.sprite.size().height / 2.0;
-                if(topBottomY <= bottomTopY) { // y axe is inverted
-                    crushSpacing = bottomTopY - topBottomY;
-                }
+            double topBottomY = topColumn.position().y + topColumn.size().height / 2.0;
+            double bottomTopY = bottomTile.position().y - bottomTile.sprite.size().height / 2.0;
+            if(topBottomY <= bottomTopY) { // y axe is inverted
+                crushSpacing = bottomTopY - topBottomY;
             }
         }
     }
 
     private void updateAnimations() {
-        String anim = "idle";
+        String anim = null;
         boolean backward = false;
         switch (state) {
             case WALK -> {
@@ -312,14 +315,16 @@ public class Player extends AnimatedSprite implements KeyListener {
                 backward = direction == Direction.UP;
             }
             case CRUSHING -> anim = crushSpacing > 25 ? "crushing" : "crushed";
-            case CRUSHED -> anim = null;
             case PUT_RADISH -> anim = "putRadish";
-            case DIE -> anim = "dead";
-            case IDLE -> anim = onRope() ? "idleRope" : "idle";
+            case HIT -> anim = "hit";
+            case IDLE -> anim = onRope() ? "idleRope" : radish != null ? "idleWithRadish" : "idle";
         }
         flipH(false);
         if (direction == Direction.RIGHT) {
             flipH(true);
+        }
+        if(radish != null) {
+            radish.position().set(direction == Direction.RIGHT ? 14 : -14, 0);
         }
         if(anim == null) {
             reset();

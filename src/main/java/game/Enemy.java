@@ -2,7 +2,6 @@ package game;
 
 import core.MainLoop;
 import scene.AnimatedSprite;
-import scene.Scene;
 import scene.map.Tile;
 import scene.map.TiledMap;
 import scene.physics.Body;
@@ -19,7 +18,7 @@ public class Enemy extends AnimatedSprite {
     private static final double WIDTH = 32;
     private static final double HEIGHT = 32;
     private static final double BODY_WIDTH2 = 10;
-    private static final double BODY_HEIGHT2 = 19;
+    private static final double BODY_HEIGHT2 = 16;
 
     private static final double SPRITE_BODY_HEIGHT2 = 28.0/2.0;
     private static final double SPRITE_BODY_WIDTH2 = 32.0/2.0;
@@ -36,23 +35,17 @@ public class Enemy extends AnimatedSprite {
     private Direction lastVerticalDirection;
     private State state = State.WALK;
 
+    private Radish radish = null;
+
     public Enemy() {
         super();
-    }
-
-    /**
-     * preload the spriteSheet
-     */
-
-    public static void preload(Scene scene) {
-        scene.resources().loadImage("/img/enemy.png", "enemy");
     }
 
     /**
      * init values of attirbutes of this class
      */
     @Override
-    public void init() {
+    protected void init() {
         lastHorizontalDirection = direction = Math.random() < 0.5 ? Direction.LEFT : Direction.RIGHT;
         lastVerticalDirection = Direction.UP;
         setBody(new PolygonShape(BODY_WIDTH2, BODY_HEIGHT2), Body.Mode.CHARACTER);
@@ -90,7 +83,7 @@ public class Enemy extends AnimatedSprite {
     }
 
     @Override
-    public void update() {
+    protected void update() {
         super.update();
 
         updateContacts();
@@ -114,18 +107,30 @@ public class Enemy extends AnimatedSprite {
         } else if (ropeTile == null && body().gravity.y == 0.0) {
             body().resetGravity();
         }
-        if(state == State.ROPE_CLIMB) {
+        if(state == State.ROPE_CLIMB && ropeTile != null) {
             position().x = ropeTile.position().x + 1;
             body().velocity.x = 0;
         }
-        if(state == State.JUMP && onFloor) {
+        if((state == State.JUMP && onFloor) || (state == State.ROPE_CLIMB && ropeTile == null)) {
             state = State.WALK;
         }
+
+        if(state == State.EATING_RADISH && radish != null) {
+            if(radish.isEaten()) {
+                radish.remove();
+                radish = null;
+
+                body().setMode(Body.Mode.CHARACTER);
+                state = onRope() ? State.ROPE_CLIMB : State.WALK;
+            }
+        }
+
         updateDirection();
         move();
         updateAnimations();
 
         if(state == State.CRUSHED) {
+            // Dead with particles
             owner().addChild(new SmickParticles()).position().set(position());
             remove();
         }
@@ -144,7 +149,7 @@ public class Enemy extends AnimatedSprite {
         }
     }
 
-    public void inverseDirection() {
+    public void invertDirection() {
         if (direction == Direction.RIGHT) {
             direction = Direction.LEFT;
         } else if (direction == Direction.LEFT) {
@@ -156,17 +161,31 @@ public class Enemy extends AnimatedSprite {
         }
     }
 
-    public void feed(Radish radish) {
-        // TODO : stop the enemy while the radish is still in the game and the he have to continue his way
-        state = State.EATING_RADISH;
-        radish.setGettingEated();
+    public void feedRadish() {
+        if(state != State.EATING_RADISH) {
+            state = State.EATING_RADISH;
+            radish = addChild(new Radish(false));
+            radish.position().set(direction == Direction.RIGHT ? 14 : -14, 0);
+            radish.setGettingEaten();
+
+            body().setMode(Body.Mode.TRANSPARENT);
+            body().velocity.set(0, 0);
+            body().force.set(0, 0);
+        }
+    }
+
+    public void attack(Direction direction) {
+        state = State.EATING_HECTOR;
+        this.direction = direction;
+        body().velocity.set(0, 0);
+        body().force.set(0, 0);
     }
 
     public boolean isEating() {
         return state == State.EATING_RADISH;
     }
 
-    public void updateAnimations() {
+    private void updateAnimations() {
         String anim = "idle";
         boolean backward = false;
         switch (state) {
@@ -179,11 +198,16 @@ public class Enemy extends AnimatedSprite {
             case CRUSHING -> anim = "crushing";
             case CRUSHED -> anim = null;
             case EATING_RADISH -> anim = "eatRadish";
-            case EATING_HECTOR -> anim = onRope() ? "eatHector" : "eatHectorOnRope";
+            case EATING_HECTOR -> anim = direction == Direction.RIGHT ||
+                    direction == Direction.LEFT ? "eatHector" : "eatHectorOnRope";
         }
         flipH(false);
+        flipV(false);
         if (direction == Direction.RIGHT) {
             flipH(true);
+        }
+        if(state == State.EATING_HECTOR && direction == Direction.DOWN) {
+            flipV(true);
         }
         if(anim == null) {
             reset();
@@ -192,24 +216,24 @@ public class Enemy extends AnimatedSprite {
         }
     }
 
-    public void updateDirection() {
+    private void updateDirection() {
         if((state == State.WALK || state == State.JUMP) &&
                 (inContactLeft && direction == Direction.LEFT) ||
                 (inContactRight && direction == Direction.RIGHT)
         ) {
             if(onRope()) {
-                lastHorizontalDirection = direction;
                 if(state == State.JUMP) {
-                    direction = lastVerticalDirection == Direction.UP
-                            ? Direction.DOWN : Direction.UP;
-                    lastHorizontalDirection = lastHorizontalDirection == Direction.RIGHT
-                            ? Direction.LEFT : Direction.RIGHT;
+                    invertDirection();
+                    lastHorizontalDirection = direction;
+                    direction = lastVerticalDirection;
+                    invertDirection();
                 } else {
+                    lastHorizontalDirection = direction;
                     direction = Direction.UP;
                 }
                 state = State.ROPE_CLIMB;
             } else {
-                inverseDirection();
+                invertDirection();
             }
         } else if(state == State.ROPE_CLIMB && (
                 (direction == Direction.UP && inContactCeiling) ||
@@ -226,20 +250,19 @@ public class Enemy extends AnimatedSprite {
             boolean obstacleRight = rightTile != null &&
                     (rightTile.type.equals("floor") || rightTile.type.equals("wall"));
 
-            boolean jump = (!obstacleLeft || !obstacleRight) && Math.random() < 0.8;
+            boolean jump = (!obstacleLeft || !obstacleRight);// && Math.random() < 0.8;
             if(jump) {
-                if((lastHorizontalDirection == Direction.LEFT && !obstacleLeft) ||
-                        (lastHorizontalDirection == Direction.RIGHT && !obstacleRight)
+                lastVerticalDirection = direction;
+                direction = lastHorizontalDirection;
+                if((direction == Direction.LEFT && obstacleLeft) ||
+                        (direction == Direction.RIGHT && obstacleRight)
                 ) {
-                    lastVerticalDirection = direction;
-                    direction = lastHorizontalDirection;
-                    state = State.JUMP;
-                    body().velocity.x = direction == Direction.LEFT ? -50 : 50;
-                } else {
-                    inverseDirection();
+                    invertDirection();
                 }
+                state = State.JUMP;
+                body().velocity.x = direction == Direction.LEFT ? -50 : 50;
             } else {
-                inverseDirection();
+                invertDirection();
             }
         }
     }
@@ -259,91 +282,80 @@ public class Enemy extends AnimatedSprite {
         inContactLeft = false;
         inContactRight = false;
 
-        for (var b : body().contacts()) {
+        for (var contactEntry : body().contacts().entrySet()) {
+            var b = contactEntry.getKey();
+            var manifold = contactEntry.getValue();
+
             if (b.node().owner() instanceof Tile) {
                 Tile tile = (Tile) b.node().owner();
                 if (tile.type.equals("rope")) {
                     ropeTile = tile;
                 } else {
-                    if(Math.abs(tile.position().x - position().x) <=
-                            BODY_WIDTH2 + SPRITE_BODY_WIDTH2
-                    ) {
-                        boolean isTopOrBottom = false;
-                        if(tile.type.equals("floor") || tile.type.equals("ceiling") || tile.type.equals("wall")) {
-                            if(Math.abs(tile.position().y - position().y) <= BODY_HEIGHT2) {
-                                if (tile.position().x < position().x) {
-                                    inContactLeft = true;
-                                } else {
-                                    inContactRight = true;
-                                }
+                    if(manifold.normal.y == 0) {
+                        if(Math.abs(tile.position().y - position().y) <= BODY_HEIGHT2) {
+                            if (manifold.normal.x < 0) {
+                                inContactRight = true;
                             } else {
-                                if (tile.position().y < position().y) {
-                                    topTile = tile;
-                                } else {
-                                    bottomTile = tile;
-                                }
+                                inContactLeft = true;
                             }
                         }
+                    } else if(manifold.normal.y < 0) {
+                        bottomTile = tile;
+                    } else {
+                        topTile = tile;
                     }
                 }
             } else if (b.node() instanceof Column) {
                 Column column = (Column) b.node();
                 // Remove column velocity inertia
                 body().velocity.y = 0.0;
-                if (Math.abs(column.position().x - position().x) <=
-                        BODY_WIDTH2 + SPRITE_BODY_WIDTH2
-                ) {
-                    if (column.position().y < position().y) {
-                        topColumn = column;
-                    } else {
-                        bottomColumn = column;
+
+                if(manifold.normal.y == 0) {
+                    if(Math.abs(column.position().y - position().y) <=
+                            BODY_HEIGHT2 + column.size().height / 2.0 - SPRITE_BODY_HEIGHT2
+                    ) {
+                        if (manifold.normal.x < 0) {
+                            inContactRight = true;
+                        } else {
+                            inContactLeft = true;
+                        }
                     }
+                } else if(manifold.normal.y < 0) {
+                    bottomColumn = column;
+                } else {
+                    topColumn = column;
                 }
             } else if (b.node() instanceof Radish) {
-                state = State.EATING_RADISH;
-            } else if (b.node() instanceof Player) {
-                if (state != State.EATING_RADISH) {
-                    state = State.EATING_HECTOR;
+                feedRadish();
+                b.node().remove();
+            } else if(b.node() instanceof Enemy) {
+                var other = (Enemy)b.node();
+                if((body().velocity.x > 0 && b.velocity.x < 0 && position().x < other.position().x) ||
+                        (b.velocity.x > 0 && body().velocity.x < 0 && other.position().x < position().x) ||
+                        (body().velocity.y > 0 && b.velocity.y < 0 && position().y < other.position().y) ||
+                        (b.velocity.y > 0 && body().velocity.y < 0 && other.position().y < position().y)
+                ) {
+                    invertDirection();
                 }
             }
         }
 
         inContactCeiling = topTile != null;
 
-        if(bottomTile != null || bottomColumn != null) {
-            double bottomTopY = bottomTile != null
-                    ? bottomTile.position().y - SPRITE_BODY_HEIGHT2
-                    : bottomColumn.position().y - bottomColumn.size().height / 2.0;
-            double bodyBottomY = position().y + BODY_HEIGHT2;
-            onFloor = Math.abs(bodyBottomY - bottomTopY) < BODY_HEIGHT2 / 10.0;
-        } else {
-            onFloor = false;
-        }
+        onFloor = (bottomTile != null || bottomColumn != null);
 
         crushSpacing = -1;
         if(topTile != null && bottomColumn != null) {
-            double dst1 = Math.abs(topTile.position().x - position().x);
-            double dst2 = Math.abs(bottomColumn.position().x - position().x);
-            if(dst1 < BODY_WIDTH2 + SPRITE_BODY_WIDTH2 - SPRITE_BODY_WIDTH2 / 5.0 &&
-                    dst2 < BODY_WIDTH2 + bottomColumn.size().width / 2.0 - bottomColumn.size().width / 10.0
-            ) {
-                double topBottomY = topTile.position().y + SPRITE_BODY_HEIGHT2;
-                double bottomTopY = bottomColumn.position().y - bottomColumn.size().height / 2.0;
-                if(topBottomY <= bottomTopY) { // y axe is inverted
-                    crushSpacing = bottomTopY - topBottomY;
-                }
+            double topBottomY = topTile.position().y + SPRITE_BODY_HEIGHT2;
+            double bottomTopY = bottomColumn.position().y - bottomColumn.size().height / 2.0;
+            if(topBottomY <= bottomTopY) { // y axe is inverted
+                crushSpacing = bottomTopY - topBottomY;
             }
         } else if(topColumn != null && bottomTile != null) {
-            double dst1 = Math.abs(bottomTile.position().x - position().x);
-            double dst2 = Math.abs(topColumn.position().x - position().x);
-            if(dst1 < BODY_WIDTH2 + SPRITE_BODY_WIDTH2 - SPRITE_BODY_WIDTH2 / 5.0 &&
-                    dst2 < BODY_WIDTH2 + topColumn.size().width / 2.0 - topColumn.size().width / 10.0
-            ) {
-                double topBottomY = topColumn.position().y + topColumn.size().height / 2.0;
-                double bottomTopY = bottomTile.position().y - SPRITE_BODY_HEIGHT2;
-                if(topBottomY <= bottomTopY) { // y axe is inverted
-                    crushSpacing = bottomTopY - topBottomY;
-                }
+            double topBottomY = topColumn.position().y + topColumn.size().height / 2.0;
+            double bottomTopY = bottomTile.position().y - SPRITE_BODY_HEIGHT2;
+            if(topBottomY <= bottomTopY) { // y axe is inverted
+                crushSpacing = bottomTopY - topBottomY;
             }
         }
     }

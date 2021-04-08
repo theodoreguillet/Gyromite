@@ -28,9 +28,10 @@ public class SceneTestPlayer extends Scene {
         resources().loadImage("/img/test.jpg", "test");
         resources().loadImage("/tilemaps/tileset.png", "tileset");
         resources().loadTilemap("/tilemaps/phase_01.json", "phase_01");
-        Player.preload(this);
-        Enemy.preload(this);
-        SmickParticles.preload(this);
+        resources().loadImage("/img/player.png", "player");
+        resources().loadImage("/img/enemy.png", "enemy");
+        resources().loadImage("/img/particles.png", "particles");
+        resources().loadImage("/img/bomb.png", "bomb");
         for(var layer : resources().getTilemap("phase_01").layers) {
             if(layer.name.equals("columns_demo")) {
                 layer.visible = false;
@@ -68,6 +69,14 @@ public class SceneTestPlayer extends Scene {
                     var player = new Player();
                     player.position().set(object.x + object.width / 2.0, object.y + object.height / 2.0);
                     return player;
+                }).setObjectFactory("consumables", "radish", (tm, object, objectLayer) -> {
+                    var radish = new Radish(true);
+                    radish.position().set(object.x + object.width / 2.0, object.y + object.height / 2.0);
+                    return radish;
+                }).setObjectFactory("consumables", "bomb", (tm, object, objectLayer) -> {
+                    var bomb = new Bomb();
+                    bomb.position().set(object.x + object.width / 2.0, object.y + object.height / 2.0);
+                    return bomb;
                 });
         tiledmap.build();
 

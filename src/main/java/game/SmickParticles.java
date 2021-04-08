@@ -4,21 +4,22 @@ import scene.AnimatedSprite;
 import scene.Scene;
 
 public class SmickParticles extends AnimatedSprite {
-    public static void preload(Scene scene) {
-        scene.resources().loadImage("/img/particles.png", "particles");
-    }
-
     @Override
     protected void init() {
+        super.init();
+
+        size().set(108, 64);
         addAnimation("particles")
                 .addFrames("particles", 3, 1, 0, 2)
-                .setSpeed(1)
+                .setSpeed(5)
                 .loop(false);
-        size().set(108, 64);
+        play("particles");
     }
 
     @Override
     protected void update() {
+        super.update();
+
         if(!isPlaying()) {
             remove();
         }

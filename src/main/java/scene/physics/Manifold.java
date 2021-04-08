@@ -3,17 +3,17 @@ package scene.physics;
 import core.MathUtils;
 import core.Vector2;
 
-class Manifold {
-    Body A;
-    Body B;
-    boolean transparent;
-    double penetration;
-    final Vector2 normal = new Vector2();
-    final Vector2[] contacts = {new Vector2(), new Vector2()};
-    int contactCount;
-    double e;
-    double df;
-    double sf;
+public class Manifold {
+    public Body A;
+    public Body B;
+    public boolean transparent;
+    public double penetration;
+    public final Vector2 normal = new Vector2();
+    public final Vector2[] contacts = {new Vector2(), new Vector2()};
+    public int contactCount;
+    public double e;
+    public double df;
+    public double sf;
 
     Manifold(Body a, Body b) {
         A = a;

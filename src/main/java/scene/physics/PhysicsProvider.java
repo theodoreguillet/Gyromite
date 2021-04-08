@@ -101,8 +101,8 @@ public class PhysicsProvider {
 
         // Update bodies contacts
         for (Manifold contact : contacts) {
-            contact.A.addContact(contact.B);
-            contact.B.addContact(contact.A);
+            contact.A.addContact(contact.B, contact);
+            contact.B.addContact(contact.A, contact);
         }
         for(Body b : bodies) {
             b.updateContacts();
