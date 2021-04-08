@@ -49,6 +49,7 @@ public class Enemy extends AnimatedSprite {
     @Override
     public void init() {
         direction = Math.random() < 0.5 ? Direction.LEFT : Direction.RIGHT;
+        horizontalDirection = direction;
         setBody(new PolygonShape(BODY_WIDTH2, BODY_HEIGHT2), Body.Mode.CHARACTER);
         body().restitution = 0.0;
         size().set(WIDTH, HEIGHT);
@@ -101,7 +102,7 @@ public class Enemy extends AnimatedSprite {
         } else if (ropeTile == null && body().gravity.y == 0.0) {
             body().resetGravity();
         }
-//        updateDirection();
+        updateDirection(false, false);
         updateAnimations();
         move();
     }
@@ -164,20 +165,26 @@ public class Enemy extends AnimatedSprite {
         if (direction == Direction.RIGHT) {
             flipH(true);
         }
-        play(anim, backward);
+        if(anim == null) {
+            reset();
+        } else if (!currentAnimation().equals(anim) || !isPlaying() || isPlayingBackwards() != backward) {
+            play(anim, backward);
+        }
     }
 
     public void updateDirection(boolean obstacleRight, boolean obstacleLeft) {
-        if(ropeTile != null) {
-            if(verticalDirection == null) {
+        if (ropeTile != null) {
+            if (verticalDirection == null) {
                 direction = verticalDirection = Direction.UP;
                 state = State.ROPE_CLIMB;
-            }else {
-                if(inContactCeiling || inContactFloor) {
-                    if(Math.random() < 0.5) {
+            } else {
+                if (inContactCeiling || inContactFloor) {
+                    if (Math.random() < 0.5) {
                         direction = horizontalDirection;
-                        verticalDirection = null;
+                       // verticalDirection = null;
                         state = State.JUMP;
+                        System.out.println("ContactSeiling and jumping");
+                        System.out.println(horizontalDirection);
                     } else {
                         inverseDirection();
                         verticalDirection = direction;
@@ -207,10 +214,10 @@ public class Enemy extends AnimatedSprite {
                 ) {
                     if (tile.position().y < position().y) {
                         inContactCeiling = true;
-                    }
-                    else {
+                    } else {
                         inContactFloor = true;
                     }
+
                 }
             } else if (b.node() instanceof Column) {
                 Column column = (Column) b.node();
@@ -225,9 +232,9 @@ public class Enemy extends AnimatedSprite {
                         }
                     }
                 }
-            }  else if (b.node() instanceof Radish) {
+            } else if (b.node() instanceof Radish) {
                 state = State.EATINGRADISH;
-            } else if(b.node() instanceof Player) {
+            } else if (b.node() instanceof Player) {
                 if (state != State.EATINGRADISH) {
                     state = ropeTile == null ? State.EATINGHECTOR : State.EATINGHECTORONROPE;
                 }
