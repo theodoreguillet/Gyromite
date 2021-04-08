@@ -51,21 +51,25 @@ public class Menu extends SceneRoot {
         selector.setFrame(15);
         selector.size().set(32, 32);
 
+        scene().audio().play("select_mode");
+
         scene().input().addListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {
-                if(e.getKeyChar() == '\n') {
-                    ((GameTestTitle)scene()).showGame();
-                }
-            }
+            public void keyTyped(KeyEvent e) { }
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    selectedOption = Option.values()[Math.max(0,
-                            selectedOption.ordinal() - 1)];
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    ((GameTestTitle)scene()).startPhase();
+                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    if(selectedOption.ordinal() > 0) {
+                        selectedOption = Option.values()[selectedOption.ordinal() - 1];
+                        scene().audio().play("bip");
+                    }
                 } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    selectedOption = Option.values()[Math.min(Option.values().length - 1,
-                            selectedOption.ordinal() + 1)];
+                    if(selectedOption.ordinal() < Option.values().length - 1) {
+                        selectedOption = Option.values()[selectedOption.ordinal() + 1];
+                        scene().audio().play("bip");
+                    }
                 }
             }
             @Override

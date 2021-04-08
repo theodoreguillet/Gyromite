@@ -6,9 +6,9 @@ import core.resources.tilemap.TileMapData;
 import core.resources.tilemap.TileSet;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,11 @@ public class Resources {
     private final Map<String, BufferedImage> images = new HashMap<>();
     private final Map<String, TileMapData> tilemaps = new HashMap<>();
     private final Map<String, Font> fonts = new HashMap<>();
+    private final Map<String, Clip> audios = new HashMap<>();
 
+    /**
+     * Load an image.
+     */
     public boolean loadImage(String name, String id) {
         var img = loadImage(name);
         if(img == null) {
@@ -30,6 +34,10 @@ public class Resources {
         return true;
     }
 
+    /**
+     * Load a font.
+     * Only ttf is supported.
+     */
     public boolean loadFont(String name, String id) {
         var stream = getClass().getResourceAsStream(name);
         if(stream == null) {
@@ -46,9 +54,35 @@ public class Resources {
         return false;
     }
 
+    /**
+     * Load an audio.
+     * Only wav is supported.
+     */
+    public boolean loadAudio(String name, String id) {
+        var stream = getClass().getResourceAsStream(name);
+        if(stream == null) {
+            System.err.println("Audio not found: " + name);
+            return false;
+        }
+        try {
+            var audio = AudioSystem.getAudioInputStream(stream);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audio);
+            audios.put(id, clip);
+            return true;
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace(System.err);
+        }
+        return false;
+    }
+
+    /**
+     * Load a json tilemap.
+     */
     public boolean loadTilemap(String name, String id) {
         var url = getClass().getResource(name);
         if(url == null) {
+            System.err.println("Tilemap not found: " + name);
             return false;
         }
         ObjectMapper mapper = new ObjectMapper();
@@ -75,10 +109,14 @@ public class Resources {
     public Font getFont(String id) {
         return fonts.get(id);
     }
+    public Clip getAudio(String id) {
+        return audios.get(id);
+    }
 
     private BufferedImage loadImage(String name) {
         var url = getClass().getResource(name);
         if(url == null) {
+            System.err.println("Image not found: " + name);
             return null;
         }
         try {

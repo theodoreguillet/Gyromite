@@ -1,5 +1,6 @@
 package scene;
 
+import core.Audio;
 import core.Input;
 import core.MainLoop;
 import core.resources.Resources;
@@ -21,6 +22,7 @@ import java.util.Iterator;
 public class Scene extends MainLoop {
     private final Viewport viewport = new Viewport();
     private final Input input = new Input();
+    private final Audio audio = new Audio(this);
     private final Resources resources = new Resources();
     private final PhysicsProvider physics = new PhysicsProvider(MainLoop.DT, 10);
     private SceneRoot root = new SceneRoot(this);
@@ -44,6 +46,13 @@ public class Scene extends MainLoop {
      */
     public Input input() {
         return input;
+    }
+
+    /**
+     * @return The audio manager.
+     */
+    public Audio audio() {
+        return audio;
     }
     /**
      * @return The resources manager.

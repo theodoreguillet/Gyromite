@@ -12,8 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Title extends SceneRoot {
-    private double delay = 5;
-
     public Title(Scene scene) {
         super(scene);
     }
@@ -26,6 +24,8 @@ public class Title extends SceneRoot {
         title.size().set(512, 448);
         scene().camera().size().set(512, 448);
         scene().camera().setStretchMode(Camera.StretchMode.KEEP_ASPECT);
+
+        scene().audio().play("title");
 
         scene().input().addListener(new KeyListener() {
             @Override
@@ -45,13 +45,13 @@ public class Title extends SceneRoot {
     protected void update() {
         super.update();
 
-        delay -= MainLoop.DT;
-        if(delay <= 0) {
+        if(!scene().audio().isPlaying()) {
             showMenu();
         }
     }
 
     private void showMenu() {
+        scene().audio().stop();
         ((GameTestTitle)scene()).showMenu();
     }
 }

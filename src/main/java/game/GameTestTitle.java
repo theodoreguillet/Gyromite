@@ -1,6 +1,7 @@
 package game;
 
 import game.scenes.Menu;
+import game.scenes.PhaseBegin;
 import game.scenes.Title;
 import scene.Camera;
 import scene.Scene;
@@ -18,7 +19,12 @@ public class GameTestTitle extends Scene {
         resources().loadImage("/img/title.png", "title");
         resources().loadImage("/img/menu.png", "menu");
         resources().loadImage("/img/enemy.png", "smick");
+        resources().loadImage("/img/player.png", "hector");
         resources().loadFont("/fonts/pixel.ttf", "pixel");
+        resources().loadAudio("/audios/01_Title_Screen.wav", "title");
+        resources().loadAudio("/audios/02_Select_Mode.wav", "select_mode");
+        resources().loadAudio("/audios/bip.wav", "bip");
+        resources().loadAudio("/audios/06_Phase_Begin.wav", "phase_begin");
     }
 
     @Override
@@ -45,7 +51,13 @@ public class GameTestTitle extends Scene {
         setRoot(new Menu(this));
     }
 
-    public void showGame() {
+    public void startPhase() {
+        camera().reset();
+        input().removeAllListeners();
+        setRoot(new PhaseBegin(this));
+    }
+
+    public void startGame() {
         camera().reset();
         input().removeAllListeners();
         setRoot(new SceneRoot(this));
