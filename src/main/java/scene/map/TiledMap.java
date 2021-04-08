@@ -24,6 +24,7 @@ public class TiledMap extends Node {
 
     private final String tilemapResourceId;
     private TileMapData tilemap = null;
+    private final ArrayList<ArrayList<Tile>> tiles = new ArrayList<>();
 
     private final HashMap<Integer, Boolean> collidingTilesIds = new HashMap<>();
     private final HashMap<String, Boolean> collidingTilesTypes = new HashMap<>();
@@ -96,6 +97,16 @@ public class TiledMap extends Node {
         throw new IllegalArgumentException(String.format("Layer '%s' does not exists in tilemap", layerName));
     }
 
+    public Tile getTile(int layerId, int x, int y) {
+        return tiles.get(layerId - 1).get(y * tilemap.width + x);
+    }
+
+    public Tile getTileFromPosition(int layerId, Vector2 position) {
+        int x = (int)((position.x + size().width / 2.0) / tilemap.tilewidth);
+        int y = (int)((position.y + size().height / 2.0) / tilemap.tileheight);
+        return getTile(layerId, x, y);
+    }
+
     public void build() {
         if(tilemap.infinite || !tilemap.orientation.equals(TileMapData.ORTHOGONAL)) {
             System.err.println("Unsupported tilemap format");
@@ -126,12 +137,16 @@ public class TiledMap extends Node {
         if(layer.data == null) {
             return;
         }
+        var layerTiles = new ArrayList<Tile>(layer.data.size());
+        tiles.clear();
         for(int i = 0; i < layer.data.size(); i++) {
-            buildTile(layer, i, layer.data.get(i));
+            var tile = buildTile(layer, i, layer.data.get(i));
+            layerTiles.add(tile);
         }
+        tiles.add(layerTiles);
     }
 
-    private void buildTile(Layer layer, int tileMapIdx, long tileGidRaw) {
+    private Tile buildTile(Layer layer, int tileMapIdx, long tileGidRaw) {
         // Read out the flags
         boolean hflip = (tileGidRaw & FLIPPED_HORIZONTALLY_FLAG) != 0;
         boolean vflip = (tileGidRaw & FLIPPED_VERTICALLY_FLAG) != 0;
@@ -144,14 +159,14 @@ public class TiledMap extends Node {
         // Resolve the tile
         var tileset = getTileSet(tileGid);
         if (tileset == null) {
-            return;
+            return null;
         }
 
         int tileId = tileGid - tileset.firstgid;
 
         Rect2 mapRect = getTileMapRect(layer, tileMapIdx);
         if(mapRect == null) {
-            return;
+            return null;
         }
 
         Tile tile;
@@ -159,13 +174,13 @@ public class TiledMap extends Node {
         TileData tileData = getTile(tileset, tileId);
         if(tileData != null && tileData.animation != null && !tileData.animation.isEmpty()) {
             AnimatedSprite animatedSprite = new AnimatedSprite();
-            tile = addChild(new Tile(animatedSprite, layer.id, tileId, tileGid, tileData.type));
+            tile = addChild(new Tile(animatedSprite, layer.id, tileId, tileGid, tileMapIdx, tileData.type));
             var anim = animatedSprite.addAnimation("tile");
             double totalDuration = 0.0;
             for(var frame : tileData.animation) {
                 var frameTileRect = getTileRect(tileset, frame.tileid);
                 if(frameTileRect == null) {
-                    return;
+                    return null;
                 }
 
                 anim.addFrame(tileset.loadedImage, frameTileRect).loop(true);
@@ -176,11 +191,11 @@ public class TiledMap extends Node {
         } else {
             Rect2 tileRect = getTileRect(tileset, tileId);
             if(tileRect == null) {
-                return;
+                return null;
             }
 
             Sprite staticSprite = new Sprite(tileset.loadedImage);
-            tile = addChild(new Tile(staticSprite, layer.id, tileId, tileGid,
+            tile = addChild(new Tile(staticSprite, layer.id, tileId, tileGid, tileMapIdx,
                     tileData != null ? tileData.type : ""));
             staticSprite.setRegion(tileRect);
         }
@@ -219,6 +234,8 @@ public class TiledMap extends Node {
                         transparentArea ? Body.Mode.TRANSPARENT : Body.Mode.STATIC);
             }
         }
+
+        return tile;
     }
 
     private TileSet getTileSet(int tileGid) {

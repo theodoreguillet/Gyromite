@@ -11,17 +11,32 @@ import scene.physics.Shape;
  */
 public class Tile extends Node {
     public final SpriteBase sprite;
-    public final int layerId, id, gid;
+    public final int layerId, id, gid, mapIndex;
     public final String type;
 
-    public Tile(SpriteBase sprite, int layerId, int id, int gid, String type) {
+    public Tile(SpriteBase sprite, int layerId, int id, int gid, int mapIndex, String type) {
         super();
         this.sprite = addChild(sprite);
         this.layerId = layerId;
         this.id = id;
         this.gid = gid;
+        this.mapIndex = mapIndex;
         this.type = type;
     }
+
+    public int getX() {
+        if(!(owner() instanceof TiledMap)) {
+            return 0;
+        }
+        return mapIndex % ((TiledMap)owner()).tilemap().layers.get(layerId).width;
+    }
+    public int getY() {
+        if(!(owner() instanceof TiledMap)) {
+            return 0;
+        }
+        return mapIndex / ((TiledMap)owner()).tilemap().layers.get(layerId).width;
+    }
+
 
     public void addCollisionShape(Shape shape, Vector2 pos, boolean transparent) {
         var collision = addChild(new Node());

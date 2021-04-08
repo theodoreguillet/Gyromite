@@ -49,7 +49,7 @@ public class SceneTestPlayer extends Scene {
 
        // Player player = root().addChild(new Player());
 
-        Enemy enemy = root().addChild(new Enemy());
+        // Enemy enemy = root().addChild(new Enemy());
 
         var tiledmap = root().addChild(new TiledMap("phase_01"))
                 .enableCollisions(1, 2, 3, 4, 5, 6, 14)
@@ -57,7 +57,17 @@ public class SceneTestPlayer extends Scene {
                 .setObjectFactory("columns", "blue", (tm, object, objectLayer) ->
                         createColumn(tm, object, Column.Type.BLUE))
                 .setObjectFactory("columns", "red", (tm, object, objectLayer) ->
-                        createColumn(tm, object, Column.Type.RED));
+                        createColumn(tm, object, Column.Type.RED))
+                .setObjectFactory("characters", "smick", (tm, object, objectLayer) -> {
+                    var enemy = new Enemy();
+                    enemy.position().set(object.x + object.width / 2.0, object.y + object.height / 2.0);
+                    return enemy;
+                })
+                .setObjectFactory("characters", "player", (tm, object, objectLayer) -> {
+                    var player = new Player();
+                    player.position().set(object.x + object.width / 2.0, object.y + object.height / 2.0);
+                    return player;
+                });
         tiledmap.build();
 
         Size2 mapSize = tiledmap.size();
@@ -87,7 +97,7 @@ public class SceneTestPlayer extends Scene {
             public void keyReleased(KeyEvent e) { }
         });
 
-        // setRenderPhysics(true);
+        setRenderPhysics(true);
     }
 
     @Override
