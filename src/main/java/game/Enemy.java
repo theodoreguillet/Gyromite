@@ -50,6 +50,7 @@ public class Enemy extends AnimatedSprite {
     @Override
     public void init() {
         direction = Math.random() < 0.5 ? Direction.LEFT : Direction.RIGHT;
+        horizontalDirection = direction;
         setBody(new PolygonShape(BODY_WIDTH2, BODY_HEIGHT2), Body.Mode.CHARACTER);
         body().restitution = 0.0;
         size().set(WIDTH, HEIGHT);
@@ -165,7 +166,11 @@ public class Enemy extends AnimatedSprite {
         if (direction == Direction.RIGHT) {
             flipH(true);
         }
-        play(anim, backward);
+        if(anim == null) {
+            reset();
+        } else if (!currentAnimation().equals(anim) || !isPlaying() || isPlayingBackwards() != backward) {
+            play(anim, backward);
+        }
     }
 
     public void updateDirection() {
@@ -220,8 +225,7 @@ public class Enemy extends AnimatedSprite {
                 ) {
                     if (tile.position().y < position().y) {
                         inContactCeiling = true;
-                    }
-                    else {
+                    } else {
                         inContactFloor = true;
                     }
                 }
@@ -238,9 +242,9 @@ public class Enemy extends AnimatedSprite {
                         }
                     }
                 }
-            }  else if (b.node() instanceof Radish) {
+            } else if (b.node() instanceof Radish) {
                 state = State.EATINGRADISH;
-            } else if(b.node() instanceof Player) {
+            } else if (b.node() instanceof Player) {
                 if (state != State.EATINGRADISH) {
                     state = ropeTile == null ? State.EATINGHECTOR : State.EATINGHECTORONROPE;
                 }
