@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 repositories {
@@ -27,4 +28,9 @@ ext {
 application {
     mainClassName = "Main"
     applicationDefaultJvmArgs = ['-Dsun.java2d.uiScale=1']
+}
+
+javafx {
+    version = "15.0.1"
+    modules = [ 'javafx.media' ]
 }

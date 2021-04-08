@@ -1,6 +1,7 @@
 package scene;
 
 import core.Vector2;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import scene.physics.Body;
 import scene.physics.Shape;
 
@@ -19,6 +20,7 @@ public class Node {
     private final ArrayList<Node> children = new ArrayList<>();
     private Node owner = null;
     private Body body = null;
+    private boolean destroyed = false;
 
     private final Vector2 position = new Vector2();
     private double orient = 0.0; // Orientation in radians
@@ -65,6 +67,12 @@ public class Node {
      */
     public Body body() {
         return body;
+    }
+    /**
+     * @return Return true if the node was destroyed from the scene tree (see {@link Node#remove()}).
+     */
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     /**
@@ -173,6 +181,23 @@ public class Node {
     }
 
     /**
+     * Remove all children nodes.
+     * Also removes the body of the child node.
+     * If this method is called during a child node update,
+     * the remove will be processed after the update.
+     */
+    public void removeAllChildren() {
+        for(var childNode : children) {
+            childNode.destroy();
+        }
+        if(updatingChildNodes) {
+            childrenToRemove.addAll(children);
+        } else {
+            children.clear();
+        }
+    }
+
+    /**
      * Set a body to the node
      * @param shape The shape of the body
      * @param mode The mode of the body. See {@link Body.Mode}
@@ -220,19 +245,23 @@ public class Node {
      * Destroy method called when {@link Node#remove()} or {@link Node#removeChild(Node)} is called with this node.
      * This method should be overrided to free resources and allow this object to be garbage collected.
      */
+    @MustBeInvokedByOverriders
     protected void destroy() {
         boolean lastUpdateFlag = updatingChildNodes;
         updatingChildNodes = true; // Prevent child removing during loop
-        for(var child : children) {
+        for (var child : children) {
             child.destroy();
         }
         updatingChildNodes = lastUpdateFlag;
-        scene().physics().remove(this.body);
+        if (this.body != null) {
+            scene().physics().remove(this.body);
+        }
     }
 
     /**
      * Update method called each update tick (See {@link core.MainLoop})
      */
+    @MustBeInvokedByOverriders
     protected void update() {
         updateChildNodes();
     }
@@ -241,6 +270,7 @@ public class Node {
      * Render method called each render frame (See {@link core.MainLoop})
      * @param g The graphics context
      */
+    @MustBeInvokedByOverriders
     protected void render(Graphics2D g) {
         AffineTransform at = new AffineTransform(g.getTransform());
 

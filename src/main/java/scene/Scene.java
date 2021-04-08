@@ -1,8 +1,10 @@
 package scene;
 
+import core.Audio;
 import core.Input;
 import core.MainLoop;
 import core.resources.Resources;
+import org.jetbrains.annotations.NotNull;
 import scene.physics.PhysicsProvider;
 
 import javax.swing.text.html.parser.Entity;
@@ -20,6 +22,7 @@ import java.util.Iterator;
 public class Scene extends MainLoop {
     private final Viewport viewport = new Viewport();
     private final Input input = new Input();
+    private final Audio audio = new Audio(this);
     private final Resources resources = new Resources();
     private final PhysicsProvider physics = new PhysicsProvider(MainLoop.DT, 10);
     private SceneRoot root = new SceneRoot(this);
@@ -43,6 +46,13 @@ public class Scene extends MainLoop {
      */
     public Input input() {
         return input;
+    }
+
+    /**
+     * @return The audio manager.
+     */
+    public Audio audio() {
+        return audio;
     }
     /**
      * @return The resources manager.
@@ -85,6 +95,18 @@ public class Scene extends MainLoop {
         return renderPhysics;
     }
 
+    /**
+     * Set the root of the scene nodes tree.
+     * Will remove the existing node tree.
+     * @param sceneRoot The new root node.
+     */
+    public void setRoot(@NotNull SceneRoot sceneRoot) {
+        if(!root.isDestroyed()) {
+            root.destroy();
+        }
+        root = sceneRoot;
+        root.init();
+    }
     /**
      * @param camera Set the camera used to render the game in the {@link Viewport}
      */
