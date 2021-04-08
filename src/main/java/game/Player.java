@@ -105,6 +105,9 @@ public class Player extends AnimatedSprite implements KeyListener {
                 body().gravity.set(0, 0);
                 body().force.set(0, 0);
             }
+            if(state == State.JUMP && body().velocity.x == 0.0) {
+                state = State.IDLE;
+            }
             if(state == State.ROPE_CLIMB || state == State.IDLE) {
                 position().x = ropeTile.position().x + 1;
             }

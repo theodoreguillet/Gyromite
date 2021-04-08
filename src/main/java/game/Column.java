@@ -83,6 +83,8 @@ public class Column extends Node {
 
         setBody(new PolygonShape(tw / 2.0, height / 2.0 - 2.0), Body.Mode.STATIC);
         body().restitution = 0.0;
+        body().staticFriction = 0.0;
+        body().dynamicFriction = 0.0;
     }
 
     @Override
