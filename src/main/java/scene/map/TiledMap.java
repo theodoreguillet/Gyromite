@@ -98,13 +98,19 @@ public class TiledMap extends Node {
     }
 
     public Tile getTile(int layerId, int x, int y) {
+        if(x < 0 || y < 0 || x >= tilemap.layers.get(layerId).width || y >= tilemap.layers.get(layerId).height) {
+            return null;
+        }
         return tiles.get(layerId - 1).get(y * tilemap.width + x);
     }
-
-    public Tile getTileFromPosition(int layerId, Vector2 position) {
+    public int[] getTileCoordFromPosition(int layerId, Vector2 position) {
         int x = (int)((position.x + size().width / 2.0) / tilemap.tilewidth);
         int y = (int)((position.y + size().height / 2.0) / tilemap.tileheight);
-        return getTile(layerId, x, y);
+        return new int[] { x, y };
+    }
+    public Tile getTileFromPosition(int layerId, Vector2 position) {
+        var coord = getTileCoordFromPosition(layerId, position);
+        return getTile(layerId, coord[0], coord[1]);
     }
 
     public void build() {
