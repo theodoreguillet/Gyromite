@@ -3,6 +3,7 @@ package game;
 import scene.AnimatedSprite;
 import scene.Scene;
 import scene.map.Tile;
+import scene.map.TiledMap;
 import scene.physics.Body;
 import scene.physics.PolygonShape;
 
@@ -102,9 +103,10 @@ public class Enemy extends AnimatedSprite {
         } else if (ropeTile == null && body().gravity.y == 0.0) {
             body().resetGravity();
         }
-        updateDirection(false, false);
-        updateAnimations();
+        updateDirection();
+
         move();
+        updateAnimations();
     }
 
 
@@ -172,9 +174,21 @@ public class Enemy extends AnimatedSprite {
         }
     }
 
-    public void updateDirection(boolean obstacleRight, boolean obstacleLeft) {
-        if (ropeTile != null) {
-            if (verticalDirection == null) {
+    public void updateDirection() {
+        var tilemap = ((TiledMap)owner());
+        int layerId = tilemap.getLayerId("background");
+        var coords = tilemap.getTileCoordFromPosition(layerId, position());
+        Tile leftTile = tilemap.getTile(layerId, coords[0] - 1, coords[1]);
+        Tile rightTile = tilemap.getTile(layerId, coords[0] + 1, coords[1]);
+
+        boolean obstacleLeft = leftTile != null &&
+                (leftTile.type.equals("floor") || leftTile.type.equals("wall"));
+        boolean obstacleRight = rightTile != null &&
+                (rightTile.type.equals("floor") || rightTile.type.equals("wall"));
+
+        if(ropeTile != null) {
+            if(verticalDirection == null) {
+
                 direction = verticalDirection = Direction.UP;
                 state = State.ROPE_CLIMB;
             } else {
