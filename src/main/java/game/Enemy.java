@@ -184,9 +184,10 @@ public class Enemy extends AnimatedSprite {
             if(verticalDirection == null) {
                 direction = verticalDirection = Direction.UP;
                 state = State.ROPE_CLIMB;
-            }else {
+            } else {
                 if(inContactCeiling || inContactFloor) {
-                    if(Math.random() < 0.5) {
+                    boolean jump = Math.random() < 0.5;
+                    if(jump) {
                         direction = horizontalDirection;
                         verticalDirection = null;
                         state = State.JUMP;
