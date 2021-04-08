@@ -10,4 +10,8 @@ public class Radish extends Sprite {
     public void init() {
         
     }
+
+    public void setGettingEated() {
+        // TODO : remove the radish form the world after a time interval
+    }
 }

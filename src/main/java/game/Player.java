@@ -1,16 +1,12 @@
 package game;
 
 import core.MainLoop;
-import core.MathUtils;
 import scene.AnimatedSprite;
-import scene.Node;
 import scene.Scene;
 import scene.map.Tile;
 import scene.physics.Body;
-import scene.physics.CircleShape;
 import scene.physics.PolygonShape;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -25,12 +21,7 @@ public class Player extends AnimatedSprite implements KeyListener {
         CRUSHED,
         DIE
     }
-    private enum Direction {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
-    }
+
     private static double WIDTH = 32;
     private static double HEIGHT = 44;
     private static double BODY_WIDTH2 = 12;
@@ -53,7 +44,6 @@ public class Player extends AnimatedSprite implements KeyListener {
     @Override
     public void init() {
         scene().input().addListener(this);
-        // setBody(new CircleShape(BODY_WIDTH2), Body.Mode.CHARACTER);
         setBody(new PolygonShape(BODY_WIDTH2, BODY_HEIGHT2), Body.Mode.CHARACTER);
         body().restitution = 0.0;
         size().set(WIDTH, HEIGHT);
@@ -112,30 +102,30 @@ public class Player extends AnimatedSprite implements KeyListener {
             body().resetGravity();
         }
 
-        if((inContactCeiling && inContactColBottom) || (inContactFloor && inContactColTop)) {
-            if(state != State.CRUSHING && state != State.CRUSHED) {
+        if ((inContactCeiling && inContactColBottom) || (inContactFloor && inContactColTop)) {
+            if (state != State.CRUSHING && state != State.CRUSHED) {
                 state = State.CRUSHING;
                 crushDelay = 0.4;
             }
         }
 
-        if(state == State.JUMP && (inContactFloor || inContactColBottom)) {
+        if (state == State.JUMP && (inContactFloor || inContactColBottom)) {
             state = State.IDLE;
             body().velocity.x = 0;
         }
 
-        if(state == State.WALK) {
+        if (state == State.WALK) {
             body().velocity.x = direction == Direction.LEFT ? -100 : 100;
-        } else if(state == State.ROPE_CLIMB) {
+        } else if (state == State.ROPE_CLIMB) {
             body().velocity.y = direction == Direction.UP ? -100 : 100;
-        } else if(state == State.JUMP) {
+        } else if (state == State.JUMP) {
             body().velocity.x = Math.signum(body().velocity.x) *
                     Math.max(0, Math.abs(body().velocity.x) - 100.0 / 32.0);
         }
 
-        if(state == State.CRUSHING) {
+        if (state == State.CRUSHING) {
             crushDelay -= MainLoop.DT;
-            if(crushDelay <= 0) {
+            if (crushDelay <= 0) {
                 state = State.CRUSHED;
                 offset().y = -12;
             } else {
@@ -145,21 +135,23 @@ public class Player extends AnimatedSprite implements KeyListener {
 
         updateAnimations();
 
-        if(state == State.CRUSHED) {
+        if (state == State.CRUSHED) {
             scene().setPaused(true);
         }
     }
 
 
     @Override
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if((state == State.IDLE || state == State.JUMP) && (inContactFloor || inContactColBottom)) {
+            if ((state == State.IDLE || state == State.JUMP) && (inContactFloor || inContactColBottom)) {
                 state = State.WALK;
                 direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
-            } else if(onRope()) {
+            } else if (onRope()) {
                 state = State.JUMP;
                 direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
                 body().velocity.x = direction == Direction.LEFT ? -100 : 100;
@@ -170,20 +162,21 @@ public class Player extends AnimatedSprite implements KeyListener {
                 direction = e.getKeyCode() == KeyEvent.VK_UP ? Direction.UP : Direction.DOWN;
             }
         }
-        if(e.getKeyChar() == 'a') {
+        if (e.getKeyChar() == 'a') {
             scene().setPaused(true);
         }
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if(state != State.JUMP) {
+            if (state != State.JUMP) {
                 state = State.IDLE;
             }
             body().velocity.x = 0;
         }
         if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if(onRope()) {
+            if (onRope()) {
                 state = State.IDLE;
                 body().velocity.y = 0;
             }
@@ -207,22 +200,22 @@ public class Player extends AnimatedSprite implements KeyListener {
                 Tile tile = (Tile) b.node().owner();
                 if (tile.type.equals("rope")) {
                     ropeTile = tile;
-                } else if((tile.type.equals("floor") || tile.type.equals("ceiling")) &&
+                } else if ((tile.type.equals("floor") || tile.type.equals("ceiling")) &&
                         Math.abs(tile.position().x - position().x) <= BODY_WIDTH2 + tile.sprite.size().width / 2.0
                 ) {
-                    if(tile.position().y < position().y) {
+                    if (tile.position().y < position().y) {
                         inContactCeiling = true;
                     } else {
                         inContactFloor = true;
                     }
                 }
             } else if (b.node() instanceof Column) {
-                Column column = (Column)b.node();
+                Column column = (Column) b.node();
                 if (column.isMoving()) {
                     // Remove column velocity inertia
                     body().velocity.y = 0.0;
-                    if(Math.abs(column.position().x - position().x) <= BODY_WIDTH2 + column.size().width / 2.0) {
-                        if(column.position().y < position().y) {
+                    if (Math.abs(column.position().x - position().x) <= BODY_WIDTH2 + column.size().width / 2.0) {
+                        if (column.position().y < position().y) {
                             inContactColTop = true;
                         } else {
                             inContactColBottom = true;
@@ -233,7 +226,7 @@ public class Player extends AnimatedSprite implements KeyListener {
                 var enemy = (Enemy) b.node();
                 if (!enemy.isEating()) {
                     if (radish != null) {
-                        enemy.feed();
+                        enemy.feed(radish);
                         radish.remove();
                         radish = null;
                         owner().addChild(new Radish()).position().set(position().x, position().y);
@@ -275,11 +268,12 @@ public class Player extends AnimatedSprite implements KeyListener {
             case IDLE -> anim = onRope() ? "idleRope" : "idle";
         }
         flipH(false);
-        if(direction == Direction.RIGHT) {
+        if (direction == Direction.RIGHT) {
             flipH(true);
         }
-        if(!currentAnimation().equals(anim) || !isPlaying() || isPlayingBackwards() != backward) {
+        if (!currentAnimation().equals(anim) || !isPlaying() || isPlayingBackwards() != backward) {
             play(anim, backward);
         }
     }
+
 }

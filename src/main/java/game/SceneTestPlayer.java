@@ -29,6 +29,7 @@ public class SceneTestPlayer extends Scene {
         resources().loadImage("/tilemaps/tileset.png", "tileset");
         resources().loadTilemap("/tilemaps/phase_01.json", "phase_01");
         Player.preload(this);
+        Enemy.preload(this);
         for(var layer : resources().getTilemap("phase_01").layers) {
             if(layer.name.equals("columns_demo")) {
                 layer.visible = false;
@@ -46,7 +47,9 @@ public class SceneTestPlayer extends Scene {
 
         physics().gravity.set(0, 100);
 
-        Player player = root().addChild(new Player());
+       // Player player = root().addChild(new Player());
+
+        Enemy enemy = root().addChild(new Enemy());
 
         var tiledmap = root().addChild(new TiledMap("phase_01"))
                 .enableCollisions(1, 2, 3, 4, 5, 6, 14)
@@ -66,7 +69,7 @@ public class SceneTestPlayer extends Scene {
                 tiledmap.position().x + mapSize.width / 2.0,
                 tiledmap.position().y + mapSize.height / 2.0
         ));
-        camera().follow(player, new Rect2(-150, -150, 150, 150));
+      //  camera().follow(player, new Rect2(-150, -150, 150, 150));
 
         input().addListener(new KeyListener() {
             @Override
