@@ -30,6 +30,7 @@ public class SceneTestPlayer extends Scene {
         resources().loadTilemap("/tilemaps/phase_01.json", "phase_01");
         Player.preload(this);
         Enemy.preload(this);
+        SmickParticles.preload(this);
         for(var layer : resources().getTilemap("phase_01").layers) {
             if(layer.name.equals("columns_demo")) {
                 layer.visible = false;
