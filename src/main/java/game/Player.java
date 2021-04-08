@@ -2,6 +2,7 @@ package game;
 
 import core.MainLoop;
 import core.Rect2;
+import core.Vector2;
 import scene.AnimatedSprite;
 import scene.Scene;
 import scene.map.Tile;
@@ -98,12 +99,16 @@ public class Player extends AnimatedSprite implements KeyListener {
         var tiledmap = ((TiledMap)owner());
         Tile tile = ((TiledMap)owner()).getTileFromPosition(tiledmap.getLayerId("background"), position());
 
-        if (ropeTile != null && body().gravity.y != 0.0) {
-            position().x = ropeTile.position().x + 1;
-            body().velocity.set(0, 0);
-            body().gravity.set(0, 0);
-            body().force.set(0, 0);
-        } else if (ropeTile == null && body().gravity.y == 0.0) {
+        if (ropeTile != null) {
+            if(body().gravity.y != 0.0) {
+                body().velocity.set(0, 0);
+                body().gravity.set(0, 0);
+                body().force.set(0, 0);
+            }
+            if(state == State.ROPE_CLIMB || state == State.IDLE) {
+                position().x = ropeTile.position().x + 1;
+            }
+        } else if (body().gravity.y == 0.0) {
             body().resetGravity();
         }
 
@@ -114,7 +119,7 @@ public class Player extends AnimatedSprite implements KeyListener {
             }
         }
 
-        if (state == State.JUMP && onFloor) {
+        if (state == State.JUMP && onFloor && body().velocity.x == 0) {
             state = State.IDLE;
             body().velocity.x = 0;
         }
@@ -154,16 +159,17 @@ public class Player extends AnimatedSprite implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if ((state == State.IDLE || state == State.JUMP) && onFloor) {
+            if (state == State.IDLE && onFloor) {
                 state = State.WALK;
                 direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
-            } else if (onRope()) {
+            } else if (onRope() && state != State.JUMP) {
                 state = State.JUMP;
                 direction = e.getKeyCode() == KeyEvent.VK_RIGHT ? Direction.RIGHT : Direction.LEFT;
                 body().velocity.x = direction == Direction.LEFT ? -100 : 100;
+                body().velocity.y = 0;
             }
         } else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if (onRope()) {
+            if (onRope() && (state == State.WALK || state == State.IDLE || state == State.ROPE_CLIMB)) {
                 state = State.ROPE_CLIMB;
                 direction = e.getKeyCode() == KeyEvent.VK_UP ? Direction.UP : Direction.DOWN;
             }
@@ -178,12 +184,14 @@ public class Player extends AnimatedSprite implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (state != State.JUMP) {
                 state = State.IDLE;
+                body().velocity.x = 0;
             }
-            body().velocity.x = 0;
         }
         if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
             if (onRope()) {
-                state = State.IDLE;
+                if(state == State.ROPE_CLIMB) {
+                    state = State.IDLE;
+                }
                 body().velocity.y = 0;
             }
         }
@@ -250,21 +258,39 @@ public class Player extends AnimatedSprite implements KeyListener {
             }
         }
 
-        onFloor = (bottomTile != null || bottomColumn != null);
+        if(bottomTile != null || bottomColumn != null) {
+            double bottomTopY = bottomTile != null
+                    ? bottomTile.position().y - bottomTile.sprite.size().height / 2.0
+                    : bottomColumn.position().y - bottomColumn.size().height / 2.0;
+            double bodyBottomY = position().y + BODY_HEIGHT2;
+            onFloor = Math.abs(bodyBottomY - bottomTopY) < BODY_HEIGHT2 / 10.0;
+        } else {
+            onFloor = false;
+        }
         crushSpacing = -1;
         if(topTile != null && bottomColumn != null) {
-            double dstx = Math.abs(topTile.position().x - position().x);
-            if(dstx < BODY_WIDTH2 + topTile.sprite.size().width / 2.0 - topTile.sprite.size().width / 10.0) {
+            double dst1 = Math.abs(topTile.position().x - position().x);
+            double dst2 = Math.abs(bottomColumn.position().x - position().x);
+            if(dst1 < BODY_WIDTH2 + topTile.sprite.size().width / 2.0 - topTile.sprite.size().width / 10.0 &&
+                    dst2 < BODY_WIDTH2 + bottomColumn.size().width / 2.0 - bottomColumn.size().width / 10.0
+            ) {
                 double topBottomY = topTile.position().y + topTile.sprite.size().height / 2.0;
                 double bottomTopY = bottomColumn.position().y - bottomColumn.size().height / 2.0;
-                crushSpacing = Math.abs(topBottomY - bottomTopY);
+                if(topBottomY <= bottomTopY) { // y axe is inverted
+                    crushSpacing = bottomTopY - topBottomY;
+                }
             }
         } else if(topColumn != null && bottomTile != null) {
-            double dstx = Math.abs(bottomTile.position().x - position().x);
-            if(dstx < BODY_WIDTH2 + bottomTile.sprite.size().width / 2.0 - bottomTile.sprite.size().width / 10.0) {
-                double topBottomY = topColumn.position().y - topColumn.size().height / 2.0;
-                double bottomTopY = bottomTile.position().y + bottomTile.sprite.size().height / 2.0;
-                crushSpacing = Math.abs(topBottomY - bottomTopY);
+            double dst1 = Math.abs(bottomTile.position().x - position().x);
+            double dst2 = Math.abs(topColumn.position().x - position().x);
+            if(dst1 < BODY_WIDTH2 + bottomTile.sprite.size().width / 2.0 - bottomTile.sprite.size().width / 10.0 &&
+                    dst2 < BODY_WIDTH2 + topColumn.size().width / 2.0 - topColumn.size().width / 10.0
+            ) {
+                double topBottomY = topColumn.position().y + topColumn.size().height / 2.0;
+                double bottomTopY = bottomTile.position().y - bottomTile.sprite.size().height / 2.0;
+                if(topBottomY <= bottomTopY) { // y axe is inverted
+                    crushSpacing = bottomTopY - topBottomY;
+                }
             }
         }
     }
