@@ -17,6 +17,8 @@ public class GameTestTitle extends Scene {
     protected void preload() {
         resources().loadImage("/img/title.png", "title");
         resources().loadImage("/img/menu.png", "menu");
+        resources().loadImage("/img/enemy.png", "smick");
+        resources().loadFont("/fonts/pixel.ttf", "pixel");
     }
 
     @Override
