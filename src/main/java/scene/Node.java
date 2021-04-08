@@ -1,6 +1,7 @@
 package scene;
 
 import core.Vector2;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import scene.physics.Body;
 import scene.physics.Shape;
 
@@ -244,6 +245,7 @@ public class Node {
      * Destroy method called when {@link Node#remove()} or {@link Node#removeChild(Node)} is called with this node.
      * This method should be overrided to free resources and allow this object to be garbage collected.
      */
+    @MustBeInvokedByOverriders
     protected void destroy() {
         boolean lastUpdateFlag = updatingChildNodes;
         updatingChildNodes = true; // Prevent child removing during loop
@@ -259,6 +261,7 @@ public class Node {
     /**
      * Update method called each update tick (See {@link core.MainLoop})
      */
+    @MustBeInvokedByOverriders
     protected void update() {
         updateChildNodes();
     }
@@ -267,6 +270,7 @@ public class Node {
      * Render method called each render frame (See {@link core.MainLoop})
      * @param g The graphics context
      */
+    @MustBeInvokedByOverriders
     protected void render(Graphics2D g) {
         AffineTransform at = new AffineTransform(g.getTransform());
 
