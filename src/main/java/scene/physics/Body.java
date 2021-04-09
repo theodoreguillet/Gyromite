@@ -2,7 +2,6 @@ package scene.physics;
 
 import core.Mat2;
 import core.Vector2;
-import game.Column;
 import scene.Node;
 
 import java.util.*;

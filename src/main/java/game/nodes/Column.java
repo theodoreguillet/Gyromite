@@ -1,4 +1,4 @@
-package game;
+package game.nodes;
 
 import core.MainLoop;
 import core.MathUtils;
@@ -9,7 +9,10 @@ import scene.map.TiledMap;
 import scene.physics.Body;
 import scene.physics.PolygonShape;
 
-public class Column extends Node {
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class Column extends Node implements KeyListener {
     public enum Type {
         BLUE,
         RED
@@ -52,7 +55,9 @@ public class Column extends Node {
     }
 
     @Override
-    public void init() {
+    protected void init() {
+        super.init();
+
         double tw = tiledmap.tilemap().tilewidth;
         double th = tiledmap.tilemap().tileheight;
         int n = (int)Math.round(size.height / th);
@@ -85,10 +90,14 @@ public class Column extends Node {
         body().restitution = 0.0;
         body().staticFriction = 0.0;
         body().dynamicFriction = 0.0;
+
+        scene().input().addListener(this);
     }
 
     @Override
-    public void update() {
+    protected void update() {
+        super.update();
+
         if(!move) {
             return;
         }
@@ -116,4 +125,23 @@ public class Column extends Node {
             body().velocity.y = 0.0;
         }
     }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        scene().input().removeListener(this);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyChar() == 'a' && type == Type.BLUE) {
+            toggle();
+        } else if(e.getKeyChar() == 'z' && type == Type.RED) {
+            toggle();
+        }
+    }
+    @Override
+    public void keyPressed(KeyEvent e) { }
+    @Override
+    public void keyReleased(KeyEvent e) { }
 }

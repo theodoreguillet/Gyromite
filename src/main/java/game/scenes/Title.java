@@ -1,12 +1,10 @@
 package game.scenes;
 
-import core.MainLoop;
-import game.GameTestTitle;
+import game.Game;
 import scene.Camera;
 import scene.Scene;
 import scene.SceneRoot;
 import scene.Sprite;
-import scene.map.Tile;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -52,6 +50,6 @@ public class Title extends SceneRoot {
 
     private void showMenu() {
         scene().audio().stop();
-        ((GameTestTitle)scene()).showMenu();
+        ((Game)scene()).showMenu();
     }
 }

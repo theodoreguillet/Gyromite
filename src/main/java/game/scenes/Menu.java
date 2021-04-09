@@ -1,6 +1,6 @@
 package game.scenes;
 
-import game.GameTestTitle;
+import game.Game;
 import scene.Camera;
 import scene.Scene;
 import scene.SceneRoot;
@@ -59,7 +59,7 @@ public class Menu extends SceneRoot {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    ((GameTestTitle)scene()).startPhase();
+                    ((Game)scene()).showPhaseBegin();
                 } else if (e.getKeyCode() == KeyEvent.VK_UP) {
                     if(selectedOption.ordinal() > 0) {
                         selectedOption = Option.values()[selectedOption.ordinal() - 1];

@@ -1,4 +1,4 @@
-package game;
+package game.nodes;
 
 import scene.AnimatedSprite;
 import scene.physics.Body;

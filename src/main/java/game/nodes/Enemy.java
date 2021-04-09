@@ -1,6 +1,7 @@
-package game;
+package game.nodes;
 
 import core.MainLoop;
+import game.Game;
 import scene.AnimatedSprite;
 import scene.map.Tile;
 import scene.map.TiledMap;
@@ -53,31 +54,31 @@ public class Enemy extends AnimatedSprite {
         size().set(WIDTH, HEIGHT);
 
         this.addAnimation("walk")
-                .addFrames("enemy", 4, 5, 0, 2)
+                .addFrames("smick", 4, 5, 0, 2)
                 .setSpeed(10)
                 .loop(true);
         this.addAnimation("eatRadish")
-                .addFrames("enemy", 4, 5, 8, 9)
+                .addFrames("smick", 4, 5, 8, 9)
                 .setSpeed(10)
                 .loop(true);
         this.addAnimation("eatHector")
-                .addFrames("enemy", 4, 5, 10, 10)
+                .addFrames("smick", 4, 5, 10, 10)
                 .setSpeed(10)
                 .loop(true);
         this.addAnimation("jump")
-                .addFrames("enemy", 4, 5, 11, 11)
+                .addFrames("smick", 4, 5, 11, 11)
                 .setSpeed(10)
                 .loop(false);
         this.addAnimation("climb")
-                .addFrames("enemy", 4, 5, 12, 13)
+                .addFrames("smick", 4, 5, 12, 13)
                 .setSpeed(10)
                 .loop(false);
         this.addAnimation("eatHectorOnRope")
-                .addFrames("enemy", 4, 5, 14, 14)
+                .addFrames("smick", 4, 5, 14, 14)
                 .setSpeed(10)
                 .loop(false);
         this.addAnimation("crushing")
-                .addFrames("enemy", 4, 5, 16, 16)
+                .addFrames("smick", 4, 5, 16, 16)
                 .setSpeed(10)
                 .loop(false);
     }
@@ -102,14 +103,22 @@ public class Enemy extends AnimatedSprite {
             }
         }
 
-        if (ropeTile != null && body().gravity.y != 0.0) {
-            body().gravity.set(0, 0);
-        } else if (ropeTile == null && body().gravity.y == 0.0) {
+        if (ropeTile != null) {
+            if(body().gravity.y != 0.0) {
+                body().velocity.set(0, 0);
+                body().gravity.set(0, 0);
+                body().force.set(0, 0);
+            }
+            if(state == State.JUMP && body().velocity.x == 0.0) {
+                state = State.ROPE_CLIMB;
+                direction = lastVerticalDirection;
+            }
+            if(state == State.ROPE_CLIMB) {
+                position().x = ropeTile.position().x + 1;
+                body().velocity.x = 0;
+            }
+        } else if (body().gravity.y == 0.0) {
             body().resetGravity();
-        }
-        if(state == State.ROPE_CLIMB && ropeTile != null) {
-            position().x = ropeTile.position().x + 1;
-            body().velocity.x = 0;
         }
         if((state == State.JUMP && onFloor) || (state == State.ROPE_CLIMB && ropeTile == null)) {
             state = State.WALK;
@@ -133,6 +142,8 @@ public class Enemy extends AnimatedSprite {
             // Dead with particles
             owner().addChild(new SmickParticles()).position().set(position());
             remove();
+
+            ((Game)scene()).smickDead();
         }
     }
 

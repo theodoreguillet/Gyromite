@@ -1,4 +1,4 @@
-package game;
+package game.nodes;
 
 import core.MainLoop;
 import scene.Sprite;
@@ -28,7 +28,7 @@ public class Radish extends Sprite {
         super.init();
 
         size().set(32, 32);
-        setImage("enemy");
+        setImage("smick");
         setHframes(4);
         setVframes(5);
         setFrame(17);

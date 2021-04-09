@@ -1,9 +1,7 @@
-import game.*;
-import scene.Scene;
+import game.Game;
 
 public class Main {
     public static void main(String[] args) {
-        Scene game = new SceneTestPlayer();
-        game.start();
+        new Game().start();
     }
 }

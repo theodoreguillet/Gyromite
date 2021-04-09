@@ -1,10 +1,9 @@
-package game;
+package game.nodes;
 
 import core.MainLoop;
 import core.Rect2;
-import core.Vector2;
+import game.Game;
 import scene.AnimatedSprite;
-import scene.Scene;
 import scene.map.Tile;
 import scene.map.TiledMap;
 import scene.physics.Body;
@@ -153,20 +152,25 @@ public class Player extends AnimatedSprite implements KeyListener {
         updateAnimations();
 
         if (state == State.DEAD) {
-            scene().setPaused(true);
+            ((Game)scene()).endPhase(false);
         }
     }
-
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        if(e.getKeyChar() == 'p') {
-            scene().setPaused(true);
-        }
+    protected void destroy() {
+        super.destroy();
+        scene().input().removeListener(this);
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if(state == State.HIT || state == State.CRUSHING || state == State.DEAD) {
+            return;
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (state == State.IDLE && onFloor) {
                 state = State.WALK;
@@ -183,13 +187,13 @@ public class Player extends AnimatedSprite implements KeyListener {
                 direction = e.getKeyCode() == KeyEvent.VK_UP ? Direction.UP : Direction.DOWN;
             }
         }
-        if (e.getKeyChar() == 'a') {
-            scene().setPaused(true);
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if(state == State.HIT || state == State.CRUSHING || state == State.DEAD) {
+            return;
+        }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (state != State.JUMP) {
                 state = State.IDLE;
@@ -274,7 +278,7 @@ public class Player extends AnimatedSprite implements KeyListener {
                 }
             } else if (b.node() instanceof Bomb) {
                 b.node().remove();
-                // TODO: Add score;
+                ((Game)scene()).bombRemoved();
             } else if (b.node() instanceof Radish) {
                 if (radish == null) {
                     b.node().remove();
