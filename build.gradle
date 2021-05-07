@@ -32,7 +32,7 @@ dependencies {
 }
 
 version = '0.0.1'
-mainClassName = 'gyromite/gyromite.Main'
+mainClassName = 'gyromite/Main'
 
 application {
     applicationDefaultJvmArgs = ['-Dsun.java2d.uiScale=1']
